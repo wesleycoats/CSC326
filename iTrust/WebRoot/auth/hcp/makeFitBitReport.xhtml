@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</h:head>
+<h:body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageStyle"></ui:define>
+		<ui:define name="pageTitle">iTrust - Fitbit Report</ui:define>
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/hcp/menu.xhtml" />
+		</ui:define>
+		<ui:define name="mainContent">
+			<div align="center">
+				<br />
+				<h2 style="font-size: 175%; font-weight: bold;">
+					FitBit Report For: #{user.getUserNameForID(sessionScope['pid'])}
+					<br/>
+				</h2>
+				<br/>
+			</div>
+			
+      	<h:form>
+	         <h:inputText id="dateInput" value="#{fitbit_controller.startDate}"
+	            label="Date" >
+	            <f:convertDateTime pattern="mm-dd-yyyy" />
+	         </h:inputText>
+	         <h:commandButton value="Submit Start Date" action="result"/>
+      	</h:form>
+      	<br/>
+      	<h:message for="dateInput" style="color:red" />
+		
+		<h:form>
+	         <h:inputText id="dateInput" value="#{fitbit_controller.endDate}"
+	            label="Date" >
+	            <f:convertDateTime pattern="mm-dd-yyyy" />
+	         </h:inputText>
+	         <h:commandButton value="Submit End Date" action="result"/>
+      	</h:form>
+      	<br/>
+      	<h:message for="dateInput" style="color:red" />
+      	
+      	<h:commandButton value="Run Test" onclick="#{fitbit_controller.submit()}"/>
+		</ui:define>
+		<ui:define name="pageScripts"></ui:define>
+	</ui:composition>
+</h:body>
+</html>
