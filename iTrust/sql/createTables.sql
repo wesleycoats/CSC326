@@ -413,6 +413,29 @@ CREATE TABLE officeVisit
 	FOREIGN KEY (apptTypeID) REFERENCES appointmenttype(apptType_id)
 )  ENGINE=MyISAM;
 
+CREATE TABLE obstetricsVisit
+(
+	visitID BIGINT(20) UNSIGNED,
+	patientMID BIGINT(20) UNSIGNED NOT NULL,
+	lmp VARCHAR(10) NOT NULL,
+	edd VARCHAR(10) NOT NULL,
+	weeksPregnant INT(10) UNSIGNED,
+	FOREIGN KEY(visitID) REFERENCES officeVisit(visitID),
+	FOREIGN KEY (patientMID) REFERENCES patients(MID)
+) ENGINE=MyISAM;
+
+CREATE TABLE pregnancies
+(
+	patientMID BIGINT(20) UNSIGNED NOT NULL,
+	yearOfConception INT(10) UNSIGNED,
+	weeksPregnant INT(10) UNSIGNED,
+	hoursInLabor INT(10) UNSIGNED,
+	weightGain FLOAT,
+	deliveryType enum("vaginal delivery", "vaginal delivery vacuum assist", "vaginal delivery forceps assist", "caesarean section", "miscarriage"),
+	numChildren INT(3),
+	FOREIGN KEY (patientMID) REFERENCES patients(MID)
+) ENGINE=MyISAM;
+
 CREATE TABLE labProcedure (
 	labProcedureID 		BIGINT(20)		UNSIGNED NOT NULL AUTO_INCREMENT,
 	labTechnicianID		BIGINT(20)		UNSIGNED NOT NULL,
