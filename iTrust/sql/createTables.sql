@@ -429,10 +429,11 @@ CREATE TABLE pregnancies
 	patientMID BIGINT(20) UNSIGNED NOT NULL,
 	yearOfConception INT(10) UNSIGNED,
 	weeksPregnant INT(10) UNSIGNED,
-	hoursInLabor INT(10) UNSIGNED,
+	hoursInLabor FLOAT UNSIGNED,
 	weightGain FLOAT,
 	deliveryType enum("vaginal delivery", "vaginal delivery vacuum assist", "vaginal delivery forceps assist", "caesarean section", "miscarriage"),
 	numChildren INT(3),
+	pregnancyID BIGINT(20) UNSIGNED,
 	FOREIGN KEY (patientMID) REFERENCES patients(MID)
 ) ENGINE=MyISAM;
 
