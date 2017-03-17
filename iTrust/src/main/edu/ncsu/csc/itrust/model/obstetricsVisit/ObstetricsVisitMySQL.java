@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -246,5 +247,26 @@ public class ObstetricsVisitMySQL implements Serializable {
 		}
 
 		return dateOfVisit.toLocalDate();
+	}
+	
+	public List<ObstetricsVisit> sortByDate(List<ObstetricsVisit> unsorted) {
+		List<ObstetricsVisit> sorted = new LinkedList<ObstetricsVisit>();
+		for(int i = 0; i < unsorted.size(); i++) {
+			ObstetricsVisit nextToAdd = unsorted.get(i);
+			for(int j = 0; j <= sorted.size(); j++) {
+				if(j == sorted.size()) {
+					sorted.add(unsorted.get(i));
+					break;
+				} else {
+					LocalDate d1 = getDateOfVisit(sorted.get(j).getVisitID());
+					LocalDate d2 = getDateOfVisit(nextToAdd.getVisitID());
+					if(d1.isAfter(d2)) {
+						sorted.add(i, nextToAdd);
+						break;
+					}
+				}
+			}
+		}
+		return sorted;
 	}
 }
