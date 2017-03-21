@@ -1,16 +1,10 @@
 package edu.ncsu.csc.itrust.unit.model.obstetricsVisit;
 
 import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import edu.ncsu.csc.itrust.exception.FormValidationException;
-import edu.ncsu.csc.itrust.model.ConverterDAO;
-import edu.ncsu.csc.itrust.model.cptcode.CPTCode;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsVisit;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsVisitValidator;
 import junit.framework.TestCase;
@@ -19,11 +13,9 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     
     private ObstetricsVisit ov;
     private ObstetricsVisitValidator ovv;
-    private DataSource ds;
     
     @Override
     public void setUp(){
-    	ds = ConverterDAO.getDataSource();
     	ov = new ObstetricsVisit();
     	ovv = new ObstetricsVisitValidator();
     }
@@ -33,7 +25,7 @@ public class ObstetricsVisitValidatorTest extends TestCase {
 		ov.setPatientMID(2l);
 		ov.setVisitID(3l);
 		ov.setWeeksPregnant(4);
-		ov.setEDD(LocalDateTime.of(2017, 03, 20, 16, 41));
+		ov.setEDD(LocalDateTime.of(2017, 12, 20, 16, 41));
 		ov.setLMP(LocalDateTime.of(2017, 03, 20, 16, 41));
     	try{ 
     		ovv.validate(ov);
@@ -60,7 +52,7 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     	ov = new ObstetricsVisit();
     	ov.setPatientMID(2l);
 		ov.setWeeksPregnant(4);
-		ov.setEDD(LocalDateTime.of(2017, 03, 20, 16, 41));
+		ov.setEDD(LocalDateTime.of(2017, 12, 20, 16, 41));
 		ov.setLMP(LocalDateTime.of(2017, 03, 20, 16, 41));
 		try{ 
     		ovv.validate(ov);
@@ -77,7 +69,7 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     	ov.setPatientMID(2l);
     	ov.setVisitID(-3l);
 		ov.setWeeksPregnant(4);
-		ov.setEDD(LocalDateTime.of(2017, 03, 20, 16, 41));
+		ov.setEDD(LocalDateTime.of(2017, 12, 20, 16, 41));
 		ov.setLMP(LocalDateTime.of(2017, 03, 20, 16, 41));
 		try{ 
     		ovv.validate(ov);
@@ -93,7 +85,41 @@ public class ObstetricsVisitValidatorTest extends TestCase {
 		ov.setPatientMID(2l);
 		ov.setVisitID(3l);
 		ov.setWeeksPregnant(-4);
-		ov.setEDD(LocalDateTime.of(2017, 03, 20, 16, 41));
+		ov.setEDD(LocalDateTime.of(2017, 12, 20, 16, 41));
+		ov.setLMP(LocalDateTime.of(2017, 03, 20, 16, 41));
+		try{ 
+    		ovv.validate(ov);
+    	} catch( FormValidationException e){
+    		Assert.assertTrue(true);
+    		return;
+    	}
+    	Assert.fail();
+    }
+    
+    @Test
+    public void testValidationFutureLMP(){
+    	ov = new ObstetricsVisit();
+    	ov.setPatientMID(2l);
+    	ov.setVisitID(-3l);
+		ov.setWeeksPregnant(4);
+		ov.setEDD(LocalDateTime.of(2017, 12, 20, 16, 41));
+		ov.setLMP(LocalDateTime.of(2089, 03, 20, 16, 41));
+		try{ 
+    		ovv.validate(ov);
+    	} catch( FormValidationException e){
+    		Assert.assertTrue(true);
+    		return;
+    	}
+    	Assert.fail();
+    }
+    
+    @Test
+    public void testValidationLongPregnancy(){
+    	ov = new ObstetricsVisit();
+    	ov.setPatientMID(2l);
+    	ov.setVisitID(-3l);
+		ov.setWeeksPregnant(53);
+		ov.setEDD(LocalDateTime.of(2017, 12, 20, 16, 41));
 		ov.setLMP(LocalDateTime.of(2017, 03, 20, 16, 41));
 		try{ 
     		ovv.validate(ov);

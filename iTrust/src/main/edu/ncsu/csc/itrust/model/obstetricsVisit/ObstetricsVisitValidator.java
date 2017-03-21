@@ -1,5 +1,7 @@
 package edu.ncsu.csc.itrust.model.obstetricsVisit;
 
+import java.time.LocalDateTime;
+
 import edu.ncsu.csc.itrust.exception.ErrorList;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.POJOValidator;
@@ -46,6 +48,12 @@ public class ObstetricsVisitValidator extends POJOValidator<ObstetricsVisit> {
 
 		if (obj.getWeeksPegnant() < 0) {
 			errorList.addIfNotNull("Weeks Pregnant: Invalid Weeks Pregnant");
+		} else if (obj.getWeeksPegnant() > 52) {
+			errorList.addIfNotNull("Weeks Pregnant: You set a world record! Patient should not be pregnant for over a year.");
+		}
+		
+		if(obj.getLMP().isAfter(LocalDateTime.now())) {
+			errorList.addIfNotNull("lmp: Last Period cannot be in the future");
 		}
 		
 		if (errorList.hasErrors()) {
