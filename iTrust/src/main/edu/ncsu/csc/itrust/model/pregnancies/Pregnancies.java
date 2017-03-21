@@ -1,41 +1,62 @@
 package edu.ncsu.csc.itrust.model.pregnancies;
 
+/**
+ * Represents a prior Pregnancy. Holds all of the information that can be seen by iTrust
+ * users.
+ * @author bmhogan
+ */
 public class Pregnancies {
 	private long MID;
 	private String delType = "";
 	private int yearOfConception;
 	private double hoursInLabor;
 	private double weightGain;
+	private int weeksPregnant;
 	private short numChildren;
-	private long pregID;
+	private long pregID = -1;
 	
+	/**
+	 * Creates a new Pregnancy object with fields inititalized to -1, and delType initialized to null 
+	 */
 	public Pregnancies() {
 		clearFields();
 	}
 	
-	public Pregnancies(long MID, String type, int year, double labor, double weight, short children) {
+	/**
+	 * Creates a new Pregnancy object with the values passed in, then computes the pregID and stores it
+	 */
+	public Pregnancies(long MID, String type, int year, double labor, double weight, int weeksPregnant, short children) {
 		this.MID = MID;
 		this.delType = type;
 		this.yearOfConception = year;
 		this.hoursInLabor = labor;
 		this.weightGain = weight;
+		this.weeksPregnant = weeksPregnant;
 		this.numChildren = children;
 		setID();
 	}
 
+	public int getWeeksPregnant() {
+		return weeksPregnant;
+	}
+
+	public void setWeeksPregnant(int weeksPregnant) {
+		this.weeksPregnant = weeksPregnant;
+	}
+
 	private void clearFields() {
 		MID = -1;
-		delType = "";
+		delType = null;
 		yearOfConception = -1;
 		hoursInLabor = -1;
 		weightGain = -1;
 		numChildren = -1;
-		setID();
+		pregID = -1;
 	}
 
 	/*
 	 * Sets a unique pregnancy ID by hashing the patient MID with the number of children,
-	 * hours in labor, and year of conception
+	 * hours in labor, and year of conception.
 	 */
 	private void setID() {
 		// Prime number used for hashing
@@ -43,12 +64,13 @@ public class Pregnancies {
 		pregID = MID + (numChildren * hash) + (yearOfConception + hash) + Math.round(hoursInLabor * hash * hash);
 	}
 
-	public long getMID() {
+	public long getPatientMID() {
 		return MID;
 	}
 
-	public void setMID(long mID) {
+	public void setPatientMID(long mID) {
 		MID = mID;
+		setID();
 	}
 
 	public String getDelType() {
@@ -89,6 +111,10 @@ public class Pregnancies {
 
 	public void setNumChildren(short numChildren) {
 		this.numChildren = numChildren;
+	}
+	
+	public long getPregID() {
+		return pregID;
 	}
 
 }
