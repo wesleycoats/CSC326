@@ -110,15 +110,32 @@ public class PregnanciesMySQL {
 	}
 	
 	/**
-	 * Updates the Pregnancy object in the Database with the given 
-	 * pregID value
+	 * Updates the Pregnancy object in the Database with the same patientMID and
+	 * yearOfConception
 	 * @param p
-	 * @param pregID
 	 * @return
 	 * @throws DBException
 	 */
-	public boolean update(Pregnancies p, long pregID) throws DBException {
-		//TODO
+	public boolean update(Pregnancies p) throws DBException {
+		boolean successfullyUpdated = false;
+		Connection conn = null;
+		PreparedStatement updateStatement = null;
+		try {
+			validator.validate(p);
+		} catch (FormValidationException e1) {
+			throw new DBException(new SQLException(e1.getMessage()));
+		}
+		try {
+			conn = ds.getConnection();
+			updateStatement = loader.loadParameters(conn, updateStatement, p, false);
+			int exitStatus = updateStatement.executeUpdate();
+			successfullyUpdated = (exitStatus > 0);
+		} catch (SQLException e) {
+			throw new DBException(e);
+		} finally {
+			DBUtil.closeConnection(conn, updateStatement);
+		}
+		return successfullyUpdated;
 	}
 	
 	/**
@@ -225,13 +242,11 @@ public class PregnanciesMySQL {
 				+ PREG_ID +	") VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 		
 		private static final String UPDATE = "UPDATE " + PREGNANCIES_TABLE_NAME + " SET " 
-				+ PATIENT_MID + "=?, "
-				+ CONCEPTION_YEAR + "=?, "
 				+ WEEKS_PREG + "=?, "
 				+ HOURS_IN_LABOR + "=?, "
 				+ WEIGHT_GAIN + "=?, "
 				+ TYPE + "=?, "
-				+ NUM_CHILDREN + "=?, WHERE" + PREG_ID + " =?";
+				+ NUM_CHILDREN + "=?, WHERE" + PATIENT_MID + " =?, " + CONCEPTION_YEAR + "=?;";
 		
 		public static final String SELECT_BY_PATIENT_MID = "SELECT * from " + PREGNANCIES_TABLE_NAME + " WHERE "
 				+ PATIENT_MID + "=?;";
@@ -264,15 +279,24 @@ public class PregnanciesMySQL {
 			StringBuilder query = new StringBuilder(newInstance ? INSERT : UPDATE);
 			ps = conn.prepareStatement(query.toString());
 			
-			ps.setLong(1, pregnancy.getPatientMID());
-			ps.setInt(2, pregnancy.getYearOfConception());
-			ps.setInt(3, pregnancy.getWeeksPregnant());
-			ps.setDouble(4, pregnancy.getHoursInLabor());
-			ps.setDouble(5,  pregnancy.getWeightGain());
-			ps.setString(6, pregnancy.getDelType());
-			ps.setShort(7, pregnancy.getNumChildren());
-			ps.setLong(8, pregnancy.getPregID());
-			
+			if (newInstance) {
+				ps.setLong(1, pregnancy.getPatientMID());
+				ps.setInt(2, pregnancy.getYearOfConception());
+				ps.setInt(3, pregnancy.getWeeksPregnant());
+				ps.setDouble(4, pregnancy.getHoursInLabor());
+				ps.setDouble(5, pregnancy.getWeightGain());
+				ps.setString(6, pregnancy.getDelType());
+				ps.setShort(7, pregnancy.getNumChildren());
+				ps.setLong(8, pregnancy.getPregID());
+			} else {
+				ps.setInt(1, pregnancy.getWeeksPregnant());
+				ps.setDouble(2, pregnancy.getHoursInLabor());
+				ps.setDouble(3, pregnancy.getWeightGain());
+				ps.setString(4, pregnancy.getDelType());
+				ps.setShort(5, pregnancy.getNumChildren());
+				ps.setLong(6, pregnancy.getPatientMID());
+				ps.setInt(7, pregnancy.getYearOfConception());
+			}
 			return ps;
 		}
 		
