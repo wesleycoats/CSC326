@@ -27,6 +27,20 @@ public class ObstetricsVisit {
 	public ObstetricsVisit(){
 	}
 	
+	/**
+	 * constructor for OfficeVisit for already existing values
+	 */
+	public ObstetricsVisit(long visitID, long patientMID, LocalDateTime lastPeriod){
+		this.visitID = visitID;
+		this.patientMID = patientMID;
+		this.lmp = lastPeriod;
+		this.edd = lmp.plusDays(280l);
+		int yearsDiff = LocalDateTime.now().getYear() - lmp.getYear();
+		int daysLMP = lmp.getDayOfYear();
+		int daysNow = LocalDateTime.now().getDayOfYear();
+		this.weeksPregnant = (yearsDiff * 366 + (daysNow - daysLMP)) / 7;
+	}
+	
 	
 	/**
 	 * @return the patientMID
