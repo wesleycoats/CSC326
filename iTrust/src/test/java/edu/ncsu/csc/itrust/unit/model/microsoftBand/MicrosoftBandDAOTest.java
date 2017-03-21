@@ -9,10 +9,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.microsoftBand.MicrosoftBandBean;
 import edu.ncsu.csc.itrust.model.microsoftBand.MicrosoftBandDAO;

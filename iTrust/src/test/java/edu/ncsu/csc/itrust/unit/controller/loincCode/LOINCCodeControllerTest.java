@@ -14,13 +14,10 @@ import javax.sql.DataSource;
 import org.junit.Assert;
 import org.mockito.Mockito;
 
-import edu.ncsu.csc.itrust.controller.icdcode.ICDCodeController;
 import edu.ncsu.csc.itrust.controller.loinccode.LoincCodeController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
-import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
-import edu.ncsu.csc.itrust.model.icdcode.ICDCodeMySQL;
 import edu.ncsu.csc.itrust.model.loinccode.LOINCCode;
 import edu.ncsu.csc.itrust.model.loinccode.LOINCCodeMySQL;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;

@@ -136,6 +136,9 @@ public class FileValidator implements Validator {
 				//invalid file format OR junk at beginning of file
 			}
 			
+			ls.close();
+			ts.close();
+			
 		}
         
 	}

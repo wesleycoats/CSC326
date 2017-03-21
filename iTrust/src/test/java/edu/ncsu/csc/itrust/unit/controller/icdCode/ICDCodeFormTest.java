@@ -9,7 +9,6 @@ import javax.sql.DataSource;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import edu.ncsu.csc.itrust.controller.icdcode.ICDCodeController;
 import edu.ncsu.csc.itrust.controller.icdcode.ICDCodeForm;
