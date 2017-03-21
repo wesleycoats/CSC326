@@ -716,6 +716,10 @@ public class TestDataGenerator {
 		new DBBuilder(factory).executeSQLFile(DIR + "/uc52.sql");
 	}
 
+	public void uc93() throws SQLException, FileNotFoundException, IOException {
+		new DBBuilder(factory).executeSQLFile(DIR + "/uc93.sql");
+	}
+
 	public void uc47SetUp() throws FileNotFoundException, SQLException, IOException {
 		new DBBuilder(factory).executeSQLFile(DIR + "/uc47SetUp.sql");
 	}
@@ -958,6 +962,7 @@ public class TestDataGenerator {
 		uc15();
 		uc19();
 		uc26();
+		uc93();
 
 		loinc();
 		cptCode();

@@ -38,8 +38,10 @@ public class ObstetricsVisitValidator extends POJOValidator<ObstetricsVisit> {
 		
 		if (obj.getVisitID() != null) {
 			if (obj.getVisitID() <= 0) {
-				errorList.addIfNotNull("Visit ID: Invalid Visit ID");
+				errorList.addIfNotNull("Visit ID: Negative Visit ID");
 			}
+		} else {
+			errorList.addIfNotNull("Visit ID: Null Visit ID");
 		}
 
 		if (obj.getWeeksPegnant() < 0) {
