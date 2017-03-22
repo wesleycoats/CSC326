@@ -11,6 +11,9 @@
     <f:event type="preRenderView" listener="#{obstetrics_controller.logViewObstetrics()}"/>
     <f:event type="preRenderView" listener="#{obstetrics_controller.generateOBList()}" />
 </f:metadata>
+
+
+    
 <h:body>
 	<ui:composition template="/iTrust_template.xhtml">
 		<ui:define name="pageStyle"></ui:define>
@@ -20,43 +23,81 @@
 		</ui:define>
 
 		<ui:define name="mainContent">
-			<div align="center">
-				<h:message for="" class="iTrustError" />
-				<br />
-				<h2 style="font-size: 175%; font-weight: bold;">
-					Obstetrics Report For <br />
-					<br /> #{user.getUserNameForID(sessionScope['pid'])}
-				</h2>
-				<br />
-				<h:dataTable value="#{obstetrics_controller.obList}" var="o">
 				
-                    <h:column>
-                    <f:facet name="patientMID">patientMID</f:facet>
-                    #{o.patientMID}
-                    </h:column>
-                    
-                    <h:column>
-                    <f:facet name="dateCreated">dateCreated</f:facet>
-                    #{o.dateCreated}
-                    </h:column>
-                    
-                    <h:column>
-                    <f:facet name="lmp">LMP</f:facet>
-                    #{o.lmp}
-                    </h:column>
-                    
-                    <h:column>
-                    <f:facet name="edd">EDD</f:facet>
-                    #{o.edd}
-                    </h:column>
-				
-				</h:dataTable>
-			</div>
+			<c:choose>
+				<c:when test="#{obstetrics_controller.isObstetricsPatient()}">
+					<div align="center">
+						<h2 style="font-size: 175%; font-weight: bold;">
+							Obstetrics Report For <br />
+							#{user.getUserNameForID(sessionScope['pid'])}
+						</h2>
+						<br />
+						<h:dataTable var="o" value="#{obstetrics_controller.getobList()}"
+							border="1" width="100%">
+		                    <h:column headerText = "Patient MID">
+		                    	<h:outputText value="#{o.getPatientMID()}" />
+		                    </h:column>
+		                    
+		                    <h:column headerText = "Date Created">
+		                    	<h:outputText value="#{o.dateCreated}" />
+		                    </h:column>
+		                    
+		                    <h:column headerText = "LMP">
+		                    	<h:outputText value="#{o.lmp}" />
+		                    </h:column>
+		                    
+		                    <h:column headerText = "EDD">
+		                    	<h:outputText value="#{o.edd}" />
+		                    </h:column>
+						
+						</h:dataTable>
+						
+						<br />
+						
+						<h:dataTable var="previousO" 
+						value="#{obstetrics_controller.getobList()}" border="1" width="100%">
+							
+		                    <h:column headerText = "Year of Conception">
+		                    	<h:outputText value="#{previousO.yearOfConception}" />
+		                    </h:column>
+		                    
+		                    <h:column headerText = "Weeks Pregnant">
+		                    	<h:outputText value="#{previousO.weeksPregnant}" />
+		                    </h:column>
+		                    
+		                    <h:column headerText = "Hours in Labor">
+		                    	<h:outputText value="#{previousO.hoursLabor}" />
+		                    </h:column>
+		                    
+		                    <h:column headerText = "Weight Gain">
+		                    	<h:outputText value="#{previousO.weight}" />
+		                    </h:column>
+		                    
+							<h:column headerText = "Delivery Type">
+		                    	<h:outputText value="#{previousO.delivery}" />
+		                    </h:column>
+		                    
+		                     <h:column headerText = "Multiple Pregnancy">
+		                    	<h:outputText value="#{previousO.multiple}" />
+		                    </h:column>
+		                    
+						</h:dataTable>
+						
+						
+					</div>				
+				</c:when>
+				<c:otherwise>
+					<div align="center">
+						<h2 style="font-size: 175%; font-weight: bold;">
+							<br /> #{user.getUserNameForID(sessionScope['pid'])} <br />
+							is not an Obstetrics Patient <br />
+						</h2>
+												
+					</div>
+				</c:otherwise>
+			</c:choose>
+
 		</ui:define>
-			
-		<c:otherwise>
-		
-		</c:otherwise>
 
 
 		<ui:define name="pageScripts"></ui:define>
