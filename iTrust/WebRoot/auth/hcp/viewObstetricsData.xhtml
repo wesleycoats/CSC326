@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core">
+<f:view
+	beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
+
+<h:body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageStyle"></ui:define>
+		<ui:define name="pageTitle">View Obstetrics Report</ui:define>
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/hcp/menu.xhtml" />
+		</ui:define>
+
+		<c:if test="#{obstetrics_controller.isObstetricsPatient()}">
+			<ui:define name="mainContent">
+				<div align="center">
+					<h:message for="" class="iTrustError" />
+					<br />
+					<h2 style="font-size: 175%; font-weight: bold;">
+						Obstetrics Report For <br />
+						<br /> #{user.getUserNameForID(sessionScope['pid'])}
+					</h2>
+					<br />
+				</div>
+			</ui:define>
+			
+		</c:if>
+		<c:otherwise>
+		
+		</c:otherwise>
+
+
+		<ui:define name="pageScripts"></ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

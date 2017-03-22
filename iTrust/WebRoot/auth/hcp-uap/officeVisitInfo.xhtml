@@ -78,6 +78,11 @@
 							<ui:include src="/auth/hcp-uap/manageImmunizations.xhtml"></ui:include>
 						</div>
 					</c:if>
+					<c:if test="#{office_visit_form.isObstetricsOfficeVisit()}">
+						<div class="tab-panel" id="content-obstetrics">
+							<ui:include src="/auth/hcp-uap/obstetricsOfficeVisit.xhtml"></ui:include>
+						</div>
+					</c:if>
 				</div>
 			</div>
 

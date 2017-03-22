@@ -36,6 +36,13 @@ public class OfficeVisitForm {
 	private Integer householdSmokingStatus;
 	private Integer patientSmokingStatus;
 
+	public boolean isObstetricsOfficeVisit() {
+		if (apptTypeID == null) {
+			return false;
+		}
+		return apptTypeID == 7;
+	}
+	
 	public Long getVisitID() {
 		return visitID;
 	}
@@ -278,6 +285,7 @@ public class OfficeVisitForm {
 	 * Constructor for OfficeVisitForm for testing purpses.
 	 */
 	public OfficeVisitForm(OfficeVisitController ovc) {
+		this.apptTypeID = (long) -1;
 		try {
 			controller = (ovc == null) ? new OfficeVisitController() : ovc;
 			ov = controller.getSelectedVisit();
