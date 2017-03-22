@@ -7,7 +7,10 @@
 	xmlns:f="http://java.sun.com/jsf/core">
 <f:view
 	beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
-
+<f:metadata>
+    <f:event type="preRenderView" listener="#{obstetrics_controller.logViewObstetrics()}"/>
+    <f:event type="preRenderView" listener="#{obstetrics_controller.generateOBList()}" />
+</f:metadata>
 <h:body>
 	<ui:composition template="/iTrust_template.xhtml">
 		<ui:define name="pageStyle"></ui:define>
@@ -16,20 +19,41 @@
 			<ui:include src="/auth/hcp/menu.xhtml" />
 		</ui:define>
 
-		<c:if test="#{obstetrics_controller.isObstetricsPatient()}">
-			<ui:define name="mainContent">
-				<div align="center">
-					<h:message for="" class="iTrustError" />
-					<br />
-					<h2 style="font-size: 175%; font-weight: bold;">
-						Obstetrics Report For <br />
-						<br /> #{user.getUserNameForID(sessionScope['pid'])}
-					</h2>
-					<br />
-				</div>
-			</ui:define>
+		<ui:define name="mainContent">
+			<div align="center">
+				<h:message for="" class="iTrustError" />
+				<br />
+				<h2 style="font-size: 175%; font-weight: bold;">
+					Obstetrics Report For <br />
+					<br /> #{user.getUserNameForID(sessionScope['pid'])}
+				</h2>
+				<br />
+				<h:dataTable value="#{obstetrics_controller.obList}" var="o">
+				
+                    <h:column>
+                    <f:facet name="patientMID">patientMID</f:facet>
+                    #{o.patientMID}
+                    </h:column>
+                    
+                    <h:column>
+                    <f:facet name="dateCreated">dateCreated</f:facet>
+                    #{o.dateCreated}
+                    </h:column>
+                    
+                    <h:column>
+                    <f:facet name="lmp">LMP</f:facet>
+                    #{o.lmp}
+                    </h:column>
+                    
+                    <h:column>
+                    <f:facet name="edd">EDD</f:facet>
+                    #{o.edd}
+                    </h:column>
+				
+				</h:dataTable>
+			</div>
+		</ui:define>
 			
-		</c:if>
 		<c:otherwise>
 		
 		</c:otherwise>

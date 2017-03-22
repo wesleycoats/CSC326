@@ -413,6 +413,16 @@ CREATE TABLE officeVisit
 	FOREIGN KEY (apptTypeID) REFERENCES appointmenttype(apptType_id)
 )  ENGINE=MyISAM;
 
+CREATE TABLE obstetrics
+(
+    patientMID BIGINT(20) UNSIGNED NOT NULL,
+    dateCreated DATETIME DEFAULT NOW(),
+    lmp DATETIME NOT NULL,
+    edd DATETIME NOT NULL,
+    PRIMARY KEY (patientMID, dateCreated)
+    
+) ENGINE=MyISAM;
+
 CREATE TABLE obstetricsVisit
 (
 	visitID BIGINT(20) UNSIGNED,
