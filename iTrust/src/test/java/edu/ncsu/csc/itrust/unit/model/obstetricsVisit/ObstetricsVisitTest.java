@@ -53,4 +53,17 @@ public class ObstetricsVisitTest extends TestCase {
 		test.setEDD(randDate);
 		Assert.assertEquals(randDate, test.getEDD());	
 	}
+	
+	@Test
+	public void testOtherConstructor() {
+		test = new ObstetricsVisit(3l, 2l, LocalDateTime.of(2017, 3, 12, 2, 40));
+		Assert.assertEquals("2017-12-17T02:40", test.getEDD().toString());
+		//System.out.println("" + test.getWeeksPegnant());
+		/**I'm not sure how to test weeks pregnant without causing it to fail
+		 * in a week, but it does seem to return the correct value.
+		 * At least, up to having the last peroid between now and Jan first
+		 * of last year. (I hardcoded the assumption that last year was a 
+		 * leap-year)
+		 **/
+	}
 }

@@ -100,12 +100,8 @@ public class ObstetricsVisitMySQL implements Serializable {
 		}
 
 	}
-
-	public boolean add(ObstetricsVisit ov) throws DBException {
-		return addReturnGeneratedId(ov) >= 0;
-	}
 	
-	public long addReturnGeneratedId(ObstetricsVisit ov) throws DBException {
+	public boolean addObstetricsVisit(ObstetricsVisit ov) throws DBException {
 		Connection conn = null;
 		PreparedStatement pstring = null;
 		try {
@@ -113,20 +109,17 @@ public class ObstetricsVisitMySQL implements Serializable {
 		} catch (FormValidationException e1) {
 			throw new DBException(new SQLException(e1.getMessage()));
 		}
-		long generatedId = -1;
+		
 		try {
 			conn = ds.getConnection();
 			pstring = ovLoader.loadParameters(conn, pstring, ov, true);
 			int results = pstring.executeUpdate();
-			if (results != 0) {
-				generatedId = ov.getVisitID();
-			}
+			return results != 0;
 		} catch (SQLException e) {
 			throw new DBException(e);
 		} finally {
 			DBUtil.closeConnection(conn, pstring);
 		}
-		return generatedId;
 	}
 
 	public List<ObstetricsVisit> getAll() throws DBException {
@@ -154,7 +147,7 @@ public class ObstetricsVisitMySQL implements Serializable {
 		}
 	}
 
-	public ObstetricsVisit getByID(long id) throws DBException {
+	public ObstetricsVisit getByVisitID(long id) throws DBException {
 		ObstetricsVisit ret = null;
 		Connection conn = null;
 		PreparedStatement pstring = null;
