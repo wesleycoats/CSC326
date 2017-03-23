@@ -92,7 +92,6 @@ public class ObstetricsController extends iTrustController {
 				stmt.setLong(1, id);
 				final ResultSet results = stmt.executeQuery();
 				if (results.next()) {
-					System.out.println("hello");
 					bean = personnelLoader.loadSingle(results);
 				}
 				results.close();
@@ -104,7 +103,6 @@ public class ObstetricsController extends iTrustController {
 		if (bean != null && bean.getSpecialty().equalsIgnoreCase("OB/GYN"))
 			ret = true;
 		
-		System.out.println(bean != null);
 		return ret;
 	}
 	
