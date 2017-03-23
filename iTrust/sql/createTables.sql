@@ -416,7 +416,7 @@ CREATE TABLE officeVisit
 CREATE TABLE obstetrics
 (
     patientMID BIGINT(20) UNSIGNED NOT NULL,
-    dateCreated DATETIME DEFAULT NOW(),
+    dateCreated DATETIME,
     lmp DATETIME NOT NULL,
     edd DATETIME NOT NULL,
     PRIMARY KEY (patientMID, dateCreated)
@@ -444,7 +444,6 @@ CREATE TABLE pregnancies
 	weightGain FLOAT,
 	deliveryType enum("vaginal delivery", "vaginal delivery vacuum assist", "vaginal delivery forceps assist", "caesarean section", "miscarriage"),
 	numChildren INT(3),
-	pregnancyID BIGINT(20) UNSIGNED,
 	PRIMARY KEY (patientMID, yearOfConception),
 	FOREIGN KEY (patientMID) REFERENCES patients(MID)
 ) ENGINE=MyISAM;

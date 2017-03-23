@@ -10,6 +10,7 @@
 <f:metadata>
     <f:event type="preRenderView" listener="#{obstetrics_controller.logViewObstetrics()}"/>
     <f:event type="preRenderView" listener="#{obstetrics_controller.generateOBList()}" />
+    <f:event type="preRenderView" listener="#{obstetrics_controller.generatePregList()}" />
 </f:metadata>
 
 
@@ -54,7 +55,7 @@
 						<br />
 						
 						<h:dataTable var="previousO" 
-						value="#{obstetrics_controller.getobList()}" border="1" width="100%">
+						value="#{obstetrics_controller.getpregList()}" border="1" width="100%">
 							
 		                    <h:column headerText = "Year of Conception">
 		                    	<h:outputText value="#{previousO.yearOfConception}" />
@@ -88,7 +89,10 @@
 
 			<c:if test="#{obstetrics_controller.isOBGYN()}">
 				<h2 style="font-size: 175%; font-weight: bold;">
-				You are an OB/GYN
+				<h:inputText id="LMP" value="#{obstetrics_controller.lmp}"/>
+                <h:commandButton style="font-size: 100%; font-weight: bold;" id="newObstetricsButton"
+                        value="Click Here to Create a New Initial Obstetrics Visit" action="#{obstetrics_controller.createInitialObstetrics()}" />
+
 				</h2>
 			</c:if>
 
