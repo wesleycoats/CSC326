@@ -12,7 +12,10 @@ import java.sql.*;
 import edu.ncsu.csc.itrust.action.EventLoggingAction;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsData;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.PersonnelLoader;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 
 @ManagedBean(name = "obstetrics_controller")
@@ -20,6 +23,7 @@ import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 public class ObstetricsController extends iTrustController {
 	
 	private ObstetricsData[] obList;
+	private transient final PersonnelLoader personnelLoader;
 	
 	public void generateOBList(){
 		List<ObstetricsData> retList = new ArrayList<ObstetricsData>();
@@ -51,6 +55,8 @@ public class ObstetricsController extends iTrustController {
 		System.out.println(retList.size());
 	}
 	
+
+	
 	public ObstetricsData[] getobList(){
 		return this.obList;
 	}
@@ -61,6 +67,7 @@ public class ObstetricsController extends iTrustController {
 
 	public ObstetricsController() throws DBException {
 		super();
+		personnelLoader = new PersonnelLoader();
 	}
 	
 	public boolean isObstetricsPatient() {
@@ -68,6 +75,39 @@ public class ObstetricsController extends iTrustController {
 		//I'm not 100% sure how to do that at the moment.
 		return true;
 	}
+	
+	
+	public boolean isOBGYN() {
+		boolean ret = false;
+		
+		PersonnelBean bean = null;
+
+		Long id = getSessionUtils().getSessionLoggedInMIDLong();
+		if (id != null) {
+				DAOFactory factory = DAOFactory.getProductionInstance();
+				Connection conn = null;
+			try {
+				conn = factory.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM personnel WHERE MID = ?");
+				stmt.setLong(1, id);
+				final ResultSet results = stmt.executeQuery();
+				if (results.next()) {
+					System.out.println("hello");
+					bean = personnelLoader.loadSingle(results);
+				}
+				results.close();
+			} catch (SQLException e) {
+				System.out.println("oops");
+			}
+		}
+		
+		if (bean != null && bean.getSpecialty().equalsIgnoreCase("OB/GYN"))
+			ret = true;
+		
+		System.out.println(bean != null);
+		return ret;
+	}
+	
 	
 	public void logViewObstetrics() {
 		Long id = getSessionUtils().getCurrentPatientMIDLong();

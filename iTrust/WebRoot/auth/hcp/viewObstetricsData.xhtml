@@ -23,10 +23,9 @@
 		</ui:define>
 
 		<ui:define name="mainContent">
-				
-			<c:choose>
-				<c:when test="#{obstetrics_controller.isObstetricsPatient()}">
-					<div align="center">
+		
+			<c:if test="#{obstetrics_controller.isObstetricsPatient()}">
+				<div align="center">
 						<h2 style="font-size: 175%; font-weight: bold;">
 							Obstetrics Report For <br />
 							#{user.getUserNameForID(sessionScope['pid'])}
@@ -82,20 +81,16 @@
 		                    </h:column>
 		                    
 						</h:dataTable>
-						
-						
-					</div>				
-				</c:when>
-				<c:otherwise>
-					<div align="center">
-						<h2 style="font-size: 175%; font-weight: bold;">
-							<br /> #{user.getUserNameForID(sessionScope['pid'])} <br />
-							is not an Obstetrics Patient <br />
-						</h2>
-												
-					</div>
-				</c:otherwise>
-			</c:choose>
+				</div>
+			</c:if>
+				
+
+
+			<c:if test="#{obstetrics_controller.isOBGYN()}">
+				<h2 style="font-size: 175%; font-weight: bold;">
+				You are an OB/GYN
+				</h2>
+			</c:if>
 
 		</ui:define>
 
