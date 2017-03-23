@@ -416,7 +416,7 @@ CREATE TABLE officeVisit
 CREATE TABLE obstetrics
 (
     patientMID BIGINT(20) UNSIGNED NOT NULL,
-    dateCreated DATETIME DEFAULT NOW(),
+    dateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
     lmp DATETIME NOT NULL,
     edd DATETIME NOT NULL,
     PRIMARY KEY (patientMID, dateCreated)
