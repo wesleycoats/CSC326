@@ -25,7 +25,7 @@ public class UltrasoundTest {
 	private double efw = 6.7;
 	
 	private LocalDateTime date;
-	private String dateStr = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+	private String dateStr = "24/3/2017";
 	private String path = "iTrust/image/ultrasound/honest.jpg";
 
 	@Test
@@ -65,5 +65,20 @@ public class UltrasoundTest {
 		us.setFilePath(path);
 		assertEquals(path, us.getFilePath());
 	}
-
+	
+	@Test
+	public void testDate() {
+		us = new Ultrasound();
+		
+		assertFalse(us.setDateString(""));
+		assertFalse(us.setDateString("24"));
+		assertFalse(us.setDateString("24/3"));
+		assertFalse(us.setDateString("243"));
+		assertFalse(us.setDateString("24/3/"));
+		assertFalse(us.setDateString("243/2017"));
+		
+		assertTrue(us.setDateString(dateStr));
+		assertEquals(dateStr, us.getDateString());
+		
+	}
 }

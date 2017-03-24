@@ -142,11 +142,33 @@ public class Ultrasound {
 	}
 	
 	/**
+	 * Sets the date from a String of the format dd/MM/yyyy
+	 * @param s
+	 * @return
+	 */
+	public boolean setDateString(String s) {
+		String slots[] = s.split("/");
+		if (slots.length != 3)
+			return false;
+		int day = Integer.parseInt(slots[0]);
+		int month = Integer.parseInt(slots[1]);
+		int year = Integer.parseInt(slots[2]);
+		
+		date = LocalDateTime.of(year, month, day, 0, 0);
+		return true;
+	}
+	
+	/**
 	 * Returns a String representation of the Date, in the format dd/MM/yyyy
 	 * @return
 	 */
 	public String getDateString() {
-		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		return date.format(format);
+		String ret = "" + date.getDayOfMonth();
+		ret = ret + "/";
+		ret = ret + date.getMonthValue();
+		ret = ret + "/";
+		ret = ret + date.getYear();
+		return ret;
+	
 	}
 }
