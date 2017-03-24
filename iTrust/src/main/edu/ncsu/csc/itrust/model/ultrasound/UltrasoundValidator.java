@@ -17,6 +17,8 @@ public class UltrasoundValidator extends POJOValidator<Ultrasound>  {
 		ErrorList errorList = new ErrorList();
 		if (obj.getMID() == -1)
 			errorList.addIfNotNull("Patient MID has not been assigned to this Ultrasound");
+		else if (obj.getMID() < 0)
+			errorList.addIfNotNull("Patient has an invalid MID");
 		
 		if (obj.getCRL() <= 0)
 			errorList.addIfNotNull("Crown Rump Length cannot be negative");
@@ -33,10 +35,10 @@ public class UltrasoundValidator extends POJOValidator<Ultrasound>  {
 		if (obj.getHL() <= 0)
 			errorList.addIfNotNull("Humerus Length cannnot be negative");
 		if (obj.getEFW() <= 0)
-			errorList.addIfNotNull("Esstimated Fetal Weight cannot be negative");
+			errorList.addIfNotNull("Estimated Fetal Weight cannot be negative");
 		
 		// If an image was uploaded, make sure it has a valid filepath and extension
-		if (obj.getFilePath() != null) {
+		if (obj.getFilePath() != "") {
 			String path = obj.getFilePath();
 			if (!path.endsWith(".jpg") && !path.endsWith(".pdf") && !path.endsWith(".png"))
 				errorList.addIfNotNull("Invalid file extension on the ultrasound image");

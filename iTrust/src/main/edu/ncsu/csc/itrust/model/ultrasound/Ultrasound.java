@@ -137,25 +137,16 @@ public class Ultrasound {
 		date = d;
 	}
 	
-	/**
-	 * Sets the date from a String of the format YYYY/MM/DD
-	 * @param d
-	 */
-	public void setDateFromString(String d) {
-		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/mm/dd");
-		date = LocalDateTime.parse(d, format);
-	}
-	
 	public LocalDateTime getDate() {
 		return date;
 	}
 	
 	/**
-	 * Returns a String representation of the Date, in the format YYYY/MM/DD
+	 * Returns a String representation of the Date, in the format dd/MM/yyyy
 	 * @return
 	 */
 	public String getDateString() {
-		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/mm/dd");
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return date.format(format);
 	}
 }
