@@ -7,5 +7,24 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
+	<f:view
+		beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
+		
+	<h:body>
+		<ui:composition template="/iTrust_template.xhtml">
+			<ui:define name="pageStyle"></ui:define>
+			<ui:define name="pageTitle">Edit Obstetrics Office Visit</ui:define>
+			<ui:define name="leftMenu">
+				<ui:include src="/auth/hcp/menu.xhtml" />
+			</ui:define>
+	
+			<ui:define name="mainContent">
+				<h2 align="center" style="font-size: 175%; font-weight: bold;">
+					Editing Obstetrics Office Visit for <br />
+					#{user.getUserNameForID(sessionScope['pid'])}
+				</h2>
+			</ui:define>
+		</ui:composition>
+	</h:body>
 
 </html>
