@@ -1,10 +1,10 @@
-package edu.ncsu.csc.itrust.model.pregnancies;
+package edu.ncsu.csc.itrust.unit.model.pregnancies;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
-
 import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.pregnancies.Pregnancies;
+import edu.ncsu.csc.itrust.model.pregnancies.PregnanciesValidator;
 
 public class PregnanciesValidatorTest {
 	

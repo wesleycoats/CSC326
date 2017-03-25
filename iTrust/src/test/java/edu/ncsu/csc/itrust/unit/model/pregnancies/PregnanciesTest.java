@@ -1,8 +1,8 @@
-package edu.ncsu.csc.itrust.model.pregnancies;
+package edu.ncsu.csc.itrust.unit.model.pregnancies;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
+import edu.ncsu.csc.itrust.model.pregnancies.Pregnancies;
 
 public class PregnanciesTest {
 	private Pregnancies p;
