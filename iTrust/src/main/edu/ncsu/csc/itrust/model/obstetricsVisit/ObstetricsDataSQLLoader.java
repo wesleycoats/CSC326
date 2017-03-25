@@ -54,7 +54,7 @@ public class ObstetricsDataSQLLoader implements SQLLoader<ObstetricsData>{
 			ps.setTimestamp(2, ts0);
 			Timestamp ts1 = Timestamp.valueOf(ov.getLmp());
 			ps.setTimestamp(3, ts1);
-			Timestamp ts2 = Timestamp.valueOf(ov.getEDD());
+			Timestamp ts2 = Timestamp.valueOf(ov.getEdd());
 			ps.setTimestamp(4, ts2);
 		} else {
 			long id = ov.getPatientMID();
@@ -68,7 +68,7 @@ public class ObstetricsDataSQLLoader implements SQLLoader<ObstetricsData>{
 			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
 			Timestamp ts1 = Timestamp.valueOf(ov.getLmp());
 			ps.setTimestamp(1, ts1);
-			Timestamp ts2 = Timestamp.valueOf(ov.getEDD());
+			Timestamp ts2 = Timestamp.valueOf(ov.getEdd());
 			ps.setTimestamp(2, ts2);
 		}
 		return ps;

@@ -46,11 +46,15 @@ public class ObstetricsData {
 
 	public void setLmp(LocalDateTime date) {
 		this.lmp = date;
-		this.edd = date.plusDays(280l);
+		this.setEdd(date);
 	}
 
-	public LocalDateTime getEDD() {
+	public LocalDateTime getEdd() {
 		return edd;
+	}
+	
+	public void setEdd(LocalDateTime lmpDate) {
+		this.edd = lmpDate.plusDays(280l);
 	}
 	
 	public LocalDateTime getDateCreated() {
