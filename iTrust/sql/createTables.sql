@@ -451,6 +451,22 @@ CREATE TABLE pregnancies
 	FOREIGN KEY (patientMID) REFERENCES patients(MID)
 ) ENGINE=MyISAM;
 
+CREATE TABLE ultrasound
+(
+	patientMID BIGINT(20) UNSIGNED NOT NULL,
+	CrownRumpLen FLOAT(10) UNSIGNED,
+	BiparietalDia FLOAT(10) UNSIGNED,
+	HeadCirc FLOAT(10) UNSIGNED,
+	FemurLen FLOAT(10) UNSIGNED,
+	OccipitofrontalDia FLOAT(10) UNSIGNED,
+	abdominalCirc FLOAT(10) UNSIGNED,
+	humerusLen FLOAT(10) UNSIGNED,
+	estimatedFetalWeight FLOAT(10) UNSIGNED,
+	ultrasoundDate VARCHAR(11) NOT NULL,
+	imagePath VARCHAR(25),
+	FOREIGN KEY (patientMID) REFERENCES patients(MID)
+) ENGINE=MyISAM;
+
 CREATE TABLE labProcedure (
 	labProcedureID 		BIGINT(20)		UNSIGNED NOT NULL AUTO_INCREMENT,
 	labTechnicianID		BIGINT(20)		UNSIGNED NOT NULL,

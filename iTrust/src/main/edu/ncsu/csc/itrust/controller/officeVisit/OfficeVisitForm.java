@@ -1,17 +1,27 @@
 package edu.ncsu.csc.itrust.controller.officeVisit;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import edu.ncsu.csc.itrust.model.ValidationFormat;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.PersonnelLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name = "office_visit_form")
 @ViewScoped
@@ -35,6 +45,8 @@ public class OfficeVisitForm {
 	private Integer ldl;
 	private Integer householdSmokingStatus;
 	private Integer patientSmokingStatus;
+	private transient final PersonnelLoader personnelLoader;
+	private SessionUtils sessionUtils;
 
 	public boolean isObstetricsOfficeVisit() {
 		if (apptTypeID == null) {
@@ -286,6 +298,8 @@ public class OfficeVisitForm {
 	 */
 	public OfficeVisitForm(OfficeVisitController ovc) {
 		this.apptTypeID = (long) -1;
+		sessionUtils = SessionUtils.getInstance();
+		personnelLoader = new PersonnelLoader();
 		try {
 			controller = (ovc == null) ? new OfficeVisitController() : ovc;
 			ov = controller.getSelectedVisit();
@@ -327,11 +341,130 @@ public class OfficeVisitForm {
 		}
 	}
 	
+	public boolean isOBGYN() {
+		boolean ret = false;
+		
+		PersonnelBean bean = null;
+		Long id = sessionUtils.getSessionLoggedInMIDLong();
+		
+		if (id != null) {
+				DAOFactory factory = DAOFactory.getProductionInstance();
+				Connection conn = null;
+			try {
+				conn = factory.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM personnel WHERE MID = ?");
+				stmt.setLong(1, id);
+				final ResultSet results = stmt.executeQuery();
+				if (results.next()) {
+					bean = personnelLoader.loadSingle(results);
+				}
+				results.close();
+			} catch (SQLException e) {
+				System.out.println("oops");
+			}
+		}
+		
+		if (bean != null && bean.getSpecialty().equalsIgnoreCase("OB/GYN"))
+			ret = true;
+		
+		return ret;
+	}
+	
 	/**
 	 * Called when user clicks on the submit button in officeVisitInfo.xhtml. Takes data from form
 	 * and sends to OfficeVisitMySQLLoader.java for storage and validation
 	 */
-	public void submit() {
+	public void submit() { 
+		
+		if (apptTypeID == 7 && isOBGYN()) { //OBGYN is trying to create an obstetrics office visit
+			ov.setApptTypeID(apptTypeID);
+			ov.setDate(date);
+			ov.setLocationID(locationID);
+			ov.setNotes(notes);
+			ov.setSendBill(sendBill);
+			ov.setPatientMID(patientMID);
+			
+			if (isOfficeVisitCreated()) {
+				controller.edit(ov);
+				controller.logTransaction(TransactionType.OFFICE_VISIT_EDIT, ov.getVisitID().toString());
+			} else {
+				long pid = -1;
+				
+				FacesContext ctx = FacesContext.getCurrentInstance();
+
+				String patientID = "";
+				
+				if (ctx.getExternalContext().getRequest() instanceof HttpServletRequest) {
+					HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
+					HttpSession httpSession = req.getSession(false);
+					patientID = (String) httpSession.getAttribute("pid");
+				}
+				if (ValidationFormat.NPMID.getRegex().matcher(patientID).matches()) {
+					pid = Long.parseLong(patientID);
+				}
+				
+				ov.setPatientMID(pid);
+				ov.setVisitID(null);
+				long generatedVisitId = controller.addReturnGeneratedId(ov);
+				setVisitID(generatedVisitId);
+				ov.setVisitID(generatedVisitId);
+				controller.logTransaction(TransactionType.OFFICE_VISIT_CREATE, ov.getVisitID().toString());
+				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("officeVisitId", generatedVisitId);
+				try {
+					FacesContext.getCurrentInstance().getExternalContext().redirect("obstetricsOfficeVisit.xhtml");
+				} catch (IOException e) {
+					// Do nothing
+				}
+			}
+		}
+		else if (apptTypeID == 7) { //A non OBGYN HCP is trying to create an office visit.
+			try {
+				ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+				
+				if (ctx != null) {
+					ctx.redirect("/iTrust/auth/hcp-uap/viewOfficeVisit.xhtml");
+				}
+			} catch (Exception e) {
+				// Do nothing
+			}
+
+		}
+		else { //Any non obstetrics Office visit
+			ov.setApptTypeID(apptTypeID);
+			ov.setDate(date);
+			ov.setLocationID(locationID);
+			ov.setNotes(notes);
+			ov.setSendBill(sendBill);
+			ov.setPatientMID(patientMID);
+			
+			if (isOfficeVisitCreated()) {
+				controller.edit(ov);
+				controller.logTransaction(TransactionType.OFFICE_VISIT_EDIT, ov.getVisitID().toString());
+			} else {
+				long pid = -1;
+				
+				FacesContext ctx = FacesContext.getCurrentInstance();
+
+				String patientID = "";
+				
+				if (ctx.getExternalContext().getRequest() instanceof HttpServletRequest) {
+					HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
+					HttpSession httpSession = req.getSession(false);
+					patientID = (String) httpSession.getAttribute("pid");
+				}
+				if (ValidationFormat.NPMID.getRegex().matcher(patientID).matches()) {
+					pid = Long.parseLong(patientID);
+				}
+				
+				ov.setPatientMID(pid);
+				ov.setVisitID(null);
+				long generatedVisitId = controller.addReturnGeneratedId(ov);
+				setVisitID(generatedVisitId);
+				ov.setVisitID(generatedVisitId);
+				controller.logTransaction(TransactionType.OFFICE_VISIT_CREATE, ov.getVisitID().toString());
+				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("officeVisitId", generatedVisitId);
+			}
+		}
 		ov.setApptTypeID(apptTypeID);
 		ov.setDate(date);
 		ov.setLocationID(locationID);

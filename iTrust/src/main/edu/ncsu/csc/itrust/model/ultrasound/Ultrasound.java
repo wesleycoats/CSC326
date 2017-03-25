@@ -1,11 +1,16 @@
 package edu.ncsu.csc.itrust.model.ultrasound;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Contains the relevant information for an Ultrasound visit, alongwith the local pathname to where
  * an image of the Ultrasound was stored.
  * @author bmhogan
  */
 public class Ultrasound {
+	private long MID; 
+	private LocalDateTime date;
 	private double CRL;
 	private double BPD;
 	private double HC;
@@ -20,7 +25,9 @@ public class Ultrasound {
 		clearFields();
 	}
 	
-	public Ultrasound(double CRL, double BPD, double HC, double FL, double OFD, double AC, double HL, double EFW) {
+	public Ultrasound(long MID, LocalDateTime date, double CRL, double BPD, double HC, double FL, double OFD, double AC, double HL, double EFW) {
+		this.MID = MID;
+		this.date = date;
 		this.CRL = CRL;
 		this.BPD = BPD;
 		this.HC = HC;
@@ -33,6 +40,8 @@ public class Ultrasound {
 	}
 	
 	private void clearFields() {
+		MID = -1;
+		date = null;
 		CRL = Double.MIN_NORMAL;
 		BPD = Double.MIN_NORMAL;
 		HC = Double.MIN_NORMAL;
@@ -44,6 +53,14 @@ public class Ultrasound {
 		imageFilePath = "";
 	}
 	
+	public long getMID() {
+		return MID;
+	}
+
+	public void setMID(long mID) {
+		MID = mID;
+	}
+
 	public void setFilePath(String filePath) {
 		this.imageFilePath = filePath;
 	}
@@ -116,5 +133,42 @@ public class Ultrasound {
 		EFW = eFW;
 	}
 	
+	public void setDate(LocalDateTime d) {
+		date = d;
+	}
 	
+	public LocalDateTime getDate() {
+		return date;
+	}
+	
+	/**
+	 * Sets the date from a String of the format dd/MM/yyyy
+	 * @param s
+	 * @return
+	 */
+	public boolean setDateString(String s) {
+		String slots[] = s.split("/");
+		if (slots.length != 3)
+			return false;
+		int day = Integer.parseInt(slots[0]);
+		int month = Integer.parseInt(slots[1]);
+		int year = Integer.parseInt(slots[2]);
+		
+		date = LocalDateTime.of(year, month, day, 0, 0);
+		return true;
+	}
+	
+	/**
+	 * Returns a String representation of the Date, in the format dd/MM/yyyy
+	 * @return
+	 */
+	public String getDateString() {
+		String ret = "" + date.getDayOfMonth();
+		ret = ret + "/";
+		ret = ret + date.getMonthValue();
+		ret = ret + "/";
+		ret = ret + date.getYear();
+		return ret;
+	
+	}
 }

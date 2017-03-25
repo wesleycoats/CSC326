@@ -88,12 +88,13 @@
 
 
 			<c:if test="#{obstetrics_controller.isOBGYN()}">
-				<h2 style="font-size: 175%; font-weight: bold;">
-				<h:inputText id="LMP" value="#{obstetrics_controller.lmp}"/>
-                <h:commandButton style="font-size: 100%; font-weight: bold;" id="newObstetricsButton"
-                        value="Click Here to Create a New Initial Obstetrics Visit" action="#{obstetrics_controller.createInitialObstetrics()}" />
-
-				</h2>
+				<h:form>
+					<h2 style="font-size: 175%; font-weight: bold;">
+					<h:inputText id="LMP" value="#{obstetrics_controller.lmp}"/>
+	                <h:commandButton style="font-size: 100%; font-weight: bold;" id="newObstetricsButton"
+	                        value="Click Here to Create a New Initial Obstetrics Visit" action="#{obstetrics_controller.createInitialObstetrics()}" />
+					</h2>
+				</h:form>
 			</c:if>
 
 		</ui:define>
