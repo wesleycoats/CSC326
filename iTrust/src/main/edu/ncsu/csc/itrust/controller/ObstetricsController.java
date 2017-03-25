@@ -1,5 +1,6 @@
 package edu.ncsu.csc.itrust.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -58,8 +59,10 @@ public class ObstetricsController extends iTrustController {
 				e.printStackTrace();
 			}
 		}
-		pregList = new Pregnancies[retList.size()];
-		pregList = retList.toArray(pregList);
+		if(retList != null && retList.size() != 0) {
+			pregList = new Pregnancies[retList.size()];
+			pregList = retList.toArray(pregList);
+		}
 	}
 
 
@@ -133,8 +136,9 @@ public class ObstetricsController extends iTrustController {
 		LocalDateTime date = null;
 		System.out.println("clicked");
 		Long id = getSessionUtils().getCurrentPatientMIDLong();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.US);
-		date = LocalDateTime.parse(lmp, formatter);
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.US);
+		date = LocalDate.parse(lmp, formatter).atStartOfDay();
 		if(date != null){
 			ObstetricsData newEntry = new ObstetricsData(id, date, LocalDateTime.now());
 			try {

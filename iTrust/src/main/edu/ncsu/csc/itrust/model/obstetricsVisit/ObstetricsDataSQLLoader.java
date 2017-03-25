@@ -33,9 +33,8 @@ public class ObstetricsDataSQLLoader implements SQLLoader<ObstetricsData>{
 	public ObstetricsData loadSingle(ResultSet rs) throws SQLException {
 		ObstetricsData retVisit = new ObstetricsData();
 		retVisit.setPatientMID(Long.parseLong(rs.getString("patientMID")));
-		retVisit.setLmp(rs.getTimestamp("lmp").toLocalDateTime());
 		retVisit.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-		
+		retVisit.setLmp(rs.getTimestamp("lmp").toLocalDateTime());
 		return retVisit;
 	}
 	
@@ -47,25 +46,31 @@ public class ObstetricsDataSQLLoader implements SQLLoader<ObstetricsData>{
 			throws SQLException {
 		String stmt = "";
 		if (newInstance) {
-			stmt = "INSERT INTO ObstetricsData(visitID, patientMID, lmp, edd, weeksPregnant) "
-					+ "VALUES (?, ?, ?, ?, ?);";
-
+			stmt = "INSERT INTO ObstetricsData(patientMID, dateCreated, lmp, edd) "
+					+ "VALUES (?, ?, ?, ?);";
+			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
+			ps.setLong(1, ov.getPatientMID());
+			Timestamp ts0 = Timestamp.valueOf(ov.getDateCreated());
+			ps.setTimestamp(2, ts0);
+			Timestamp ts1 = Timestamp.valueOf(ov.getLmp());
+			ps.setTimestamp(3, ts1);
+			Timestamp ts2 = Timestamp.valueOf(ov.getEDD());
+			ps.setTimestamp(4, ts2);
 		} else {
+			long id = ov.getPatientMID();
 			Timestamp date = Timestamp.valueOf(ov.getDateCreated());
 			stmt = "UPDATE ObstetricsData SET "
 					+ "patientMID=?, "
 					+ "lmp=?, "
 					+ "edd=?, "
-					+ "WHERE dateCreated=" + date + ";";
+					+ "WHERE dateCreated=" + date
+					+ "AND patientMID=" + id + ";";
+			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
+			Timestamp ts1 = Timestamp.valueOf(ov.getLmp());
+			ps.setTimestamp(1, ts1);
+			Timestamp ts2 = Timestamp.valueOf(ov.getEDD());
+			ps.setTimestamp(2, ts2);
 		}
-		ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
-		ps.setLong(1, ov.getPatientMID());
-		
-		Timestamp ts1 = Timestamp.valueOf(ov.getLmp());
-		ps.setTimestamp(2, ts1);
-		Timestamp ts2 = Timestamp.valueOf(ov.getEDD());
-		ps.setTimestamp(3, ts2);
-		
 		return ps;
 	}
 }
