@@ -46,7 +46,7 @@ public class ObstetricsDataSQLLoader implements SQLLoader<ObstetricsData>{
 			throws SQLException {
 		String stmt = "";
 		if (newInstance) {
-			stmt = "INSERT INTO ObstetricsData(patientMID, dateCreated, lmp, edd) "
+			stmt = "INSERT INTO obstetrics(patientMID, dateCreated, lmp, edd) "
 					+ "VALUES (?, ?, ?, ?);";
 			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
 			ps.setLong(1, ov.getPatientMID());
@@ -59,7 +59,7 @@ public class ObstetricsDataSQLLoader implements SQLLoader<ObstetricsData>{
 		} else {
 			long id = ov.getPatientMID();
 			Timestamp date = Timestamp.valueOf(ov.getDateCreated());
-			stmt = "UPDATE ObstetricsData SET "
+			stmt = "UPDATE obstetrics SET "
 					+ "patientMID=?, "
 					+ "lmp=?, "
 					+ "edd=?, "
