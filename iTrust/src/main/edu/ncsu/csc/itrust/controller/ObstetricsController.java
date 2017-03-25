@@ -15,20 +15,22 @@ import edu.ncsu.csc.itrust.action.EventLoggingAction;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsData;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsDataMySQL;
-import edu.ncsu.csc.itrust.model.obstetricsVisit.PregnancyData;
 import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.PersonnelLoader;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.model.pregnancies.Pregnancies;
+import edu.ncsu.csc.itrust.model.pregnancies.PregnanciesMySQL;
 
 @ManagedBean(name = "obstetrics_controller")
 @SessionScoped
 public class ObstetricsController extends iTrustController {
 	
 	private ObstetricsData[] obList;
-	private PregnancyData[] pregList;
+	private Pregnancies[] pregList;
 	private String lmp = "YYYY-MM-DD";
 	private ObstetricsDataMySQL odsql = new ObstetricsDataMySQL();
+	private PregnanciesMySQL psql = new PregnanciesMySQL();
 	private transient final PersonnelLoader personnelLoader;
 	
 	public void generateOBList(){
@@ -47,34 +49,16 @@ public class ObstetricsController extends iTrustController {
 	}
 	
 	public void generatePregList(){
-		List<PregnancyData> retList = new ArrayList<PregnancyData>();
+		List<Pregnancies> retList = null;
 		Long id = getSessionUtils().getCurrentPatientMIDLong();
 		if(id != null) {
-			DAOFactory factory = DAOFactory.getProductionInstance();
-			Connection conn = null;
 			try {
-				conn = factory.getConnection();
-				PreparedStatement ps;
-				ps = conn.prepareStatement("SELECT * FROM pregnancies WHERE patientMID = ?");
-				ps.setLong(1, id.longValue());
-				ResultSet rs = ps.executeQuery();
-				while( rs.next() ){
-					long pmid = rs.getLong("patientMID");
-					int yearOfConception = rs.getInt("yearOfConception");
-					int weeksPregnant = rs.getInt("weeksPregnant");
-					double hoursInLabor = rs.getDouble("hoursInLabor");
-					double weightGain = rs.getDouble("weightGain");
-					String deliveryType = rs.getString("deliveryType");
-					int numChildren = rs.getInt("numChildren");
-					PregnancyData pd = new PregnancyData(pmid, yearOfConception, weeksPregnant, hoursInLabor, weightGain, deliveryType, numChildren);
-					retList.add(pd);
-				}
-			} catch (SQLException e) {
+				retList = psql.getByPatientID(id);
+			} catch (DBException e) {
 				e.printStackTrace();
 			}
-
 		}
-		pregList = new PregnancyData[retList.size()];
+		pregList = new Pregnancies[retList.size()];
 		pregList = retList.toArray(pregList);
 	}
 
@@ -88,11 +72,11 @@ public class ObstetricsController extends iTrustController {
 		this.obList = obList;
 	}
 	
-	public PregnancyData[] getpregList(){
+	public Pregnancies[] getpregList(){
 		return this.pregList;
 	}
 	
-	public void setpregList(PregnancyData[] pregList){
+	public void setpregList(Pregnancies[] pregList){
 		this.pregList = pregList;
 	}
 	
