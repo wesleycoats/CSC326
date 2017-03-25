@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,9 +33,12 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit>{
 		ObstetricsVisit retVisit = new ObstetricsVisit();
 		retVisit.setVisitID(Long.parseLong(rs.getString("visitID")));
 		retVisit.setPatientMID(Long.parseLong(rs.getString("patientMID")));
-		retVisit.setLMP(rs.getTimestamp("lmp").toLocalDateTime());
-		retVisit.setEDD(rs.getTimestamp("edd").toLocalDateTime());
 		retVisit.setWeeksPregnant(getIntOrNull(rs, "weeksPregnant"));
+		retVisit.setWeight(getFloatOrNull(rs, "weight"));
+		retVisit.setBloodPressure(getIntOrNull(rs, "bloodPressure"));
+		retVisit.setFetalHeartRate(getIntOrNull(rs, "fetalHeartRate"));
+		retVisit.setPregnancies(getIntOrNull(rs, "pregnancies"));
+		retVisit.setPlacentaObserved(Boolean.parseBoolean(rs.getString("placentaObserved")));
 		
 		return retVisit;
 	}
@@ -48,27 +50,33 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit>{
 	public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, ObstetricsVisit ov, boolean newInstance)
 			throws SQLException {
 		String stmt = "";
+		int i = 1;
 		if (newInstance) {
-			stmt = "INSERT INTO obstetricsVisit(visitID, patientMID, lmp, edd, weeksPregnant) "
-					+ "VALUES (?, ?, ?, ?, ?);";
-
+			stmt = "INSERT INTO obstetricsVisit(visitID, patientMID, weeksPregnant, weight, "
+					+ "bloodPressure, fetalHeartRate, pregnancies, placentaObserved) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+			ps.setLong(i++, ov.getVisitID());
 		} else {
 			long id = ov.getVisitID();
 			stmt = "UPDATE obstetricsVisit SET "
 					+ "patientMID=?, "
-					+ "lmp=?, "
-					+ "edd=?, "
 					+ "weeksPregnant=?, "
+					+ "weight=?, "
+					+ "bloodPressure=?, "
+					+ "fetalHeartRate=?, "
+					+ "pregnancies=?, "
+					+ "placentaObserved=?, "
 					+ "WHERE visitID=" + id + ";";
 		}
 		ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
-		ps.setLong(1, ov.getPatientMID());
 		
-		Timestamp ts1 = Timestamp.valueOf(ov.getLMP());
-		ps.setTimestamp(2, ts1);
-		Timestamp ts2 = Timestamp.valueOf(ov.getEDD());
-		ps.setTimestamp(3, ts2);
-		setIntOrNull(ps, 4, ov.getWeeksPegnant());
+		ps.setLong(i++, ov.getPatientMID());
+		setIntOrNull(ps, i++, ov.getWeeksPegnant());
+		setFloatOrNull(ps, i++, ov.getWeight());
+		setIntOrNull(ps, i++, ov.getBloodPressure());
+		setIntOrNull(ps, i++, ov.getFetalHeartRate());
+		setIntOrNull(ps, i++, ov.getPregnancies());
+		ps.setBoolean(i++, ov.getPlacentaObserved());
 		
 		return ps;
 	}
@@ -92,6 +100,24 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit>{
 	}
 	
 	/**
+	 * Get the float value if initialized in DB, otherwise get null.
+	 * 
+	 * @param rs 
+	 * 		ResultSet object
+	 * @param field
+	 * 		name of DB attribute 
+	 * @return Float value or null
+	 * @throws SQLException when field doesn't exist in the result set
+	 */
+	public Float getFloatOrNull(ResultSet rs, String field) throws SQLException {
+		Float ret = rs.getFloat(field);
+		if (rs.wasNull()) {
+			ret = null;
+		}
+		return ret;
+	}
+	
+	/**
 	 * Set integer placeholder in statement to a value or null
 	 * 
 	 * @param ps
@@ -108,6 +134,26 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit>{
 			ps.setNull(index, java.sql.Types.INTEGER);
 		} else {
 			ps.setInt(index, value);
+		}
+	}
+	
+	/**
+	 * Set float placeholder in statement to a value or null
+	 * 
+	 * @param ps
+	 * 		PreparedStatement object
+	 * @param index
+	 * 		Index of placeholder in the prepared statement
+	 * @param value
+	 * 		Value to set to placeholder, the value may be null 
+	 * @throws SQLException
+	 * 		When placeholder is invalid
+	 */
+	public void setFloatOrNull(PreparedStatement ps, int index, Float value) throws SQLException {
+		if (value == null) {
+			ps.setNull(index, java.sql.Types.FLOAT);
+		} else {
+			ps.setFloat(index, value);
 		}
 	}
 }
