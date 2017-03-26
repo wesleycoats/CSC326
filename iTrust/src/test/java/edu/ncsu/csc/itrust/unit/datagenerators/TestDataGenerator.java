@@ -174,6 +174,16 @@ public class TestDataGenerator {
 	public void hcp7() throws FileNotFoundException, SQLException, IOException {
 		new DBBuilder(factory).executeSQLFile(DIR + "/hcp7.sql");
 	}
+	
+	/**
+	 * Adds 3 Ultrasounds objects to the databasefor testing purposes
+	 * @throws FileNotFoundException
+	 * @throws SQLException
+	 * @throws IOException
+	 */
+	public void ultrasound() throws FileNotFoundException, SQLException, IOException {
+		new DBBuilder(factory).executeSQLFile(DIR + "/ultrasound.sql");
+	}
 
 	/**
 	 * Adds HCP Curious George for testing purposes.

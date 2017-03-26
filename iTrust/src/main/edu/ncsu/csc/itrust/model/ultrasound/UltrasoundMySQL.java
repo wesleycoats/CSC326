@@ -64,7 +64,7 @@ public class UltrasoundMySQL implements Serializable {
 		ResultSet results = null;
 		try {
 			conn = ds.getConnection();
-			pstring = conn.prepareStatement("SELECT * FROM obstetricsVisit");
+			pstring = conn.prepareStatement("SELECT * FROM ultrasound");
 			results = pstring.executeQuery();
 			final List<Ultrasound> visitList = loader.loadList(results);
 			return visitList;
@@ -96,7 +96,7 @@ public class UltrasoundMySQL implements Serializable {
 		if (ValidationFormat.NPMID.getRegex().matcher(Long.toString(MID)).matches()) {
 			try {
 				conn = ds.getConnection();
-				pstring = conn.prepareStatement("SELECT * FROM obstetricsVisit WHERE patientMID=?");
+				pstring = conn.prepareStatement("SELECT * FROM ultrasound WHERE patientMID=?");
 
 				pstring.setLong(1, MID);
 
@@ -137,7 +137,7 @@ public class UltrasoundMySQL implements Serializable {
 		if (ValidationFormat.NPMID.getRegex().matcher(Long.toString(MID)).matches()) {
 			try {
 				conn = ds.getConnection();
-				pstring = conn.prepareStatement("SELECT * FROM obstetricsVisit WHERE patientMID=? AND ultrasoundDate=?");
+				pstring = conn.prepareStatement("SELECT * FROM ultrasound WHERE patientMID=? AND ultrasoundDate=?");
 
 				pstring.setLong(1, MID);
 				pstring.setString(2, date);

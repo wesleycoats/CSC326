@@ -88,3 +88,4 @@ DELETE FROM medicalProcedure;
 ALTER TABLE medicalProcedure AUTO_INCREMENT = 0;
 
 DELETE FROM obstetricsVisit;
+DELETE FROM ultrasound;
