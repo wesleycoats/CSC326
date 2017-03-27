@@ -76,8 +76,8 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 					+ "abdominalCirc=?, "
 					+ "humerusLen=?, "
 					+ "estimatedFetalWeight=?, "
-					+ "imagePath=?, "
-					+ "WHERE patientMID=? AND ultrasoundDate=?;";
+					+ "imagePath=? "
+					+ "WHERE patientMID=? AND ultrasoundDate=?";
 			// Now set the values
 			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
 			ps.setDouble(1, us.getCRL());
