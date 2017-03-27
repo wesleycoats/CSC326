@@ -23,6 +23,39 @@
 					Editing Obstetrics Office Visit for <br />
 					#{user.getUserNameForID(sessionScope['pid'])}
 				</h2>
+				
+				<h:form>
+					<div class="form-group">
+						<h:outputLabel for="obovweight">Weight:</h:outputLabel>
+						<h:inputTextarea value="#{obstetrics_office_visit_form.weight}" id="obovweight"
+							cols="10" rows="1" class="form-control inline"></h:inputTextarea>
+					</div>
+
+					<div class="form-group">
+						<h:outputLabel for="obovbp">Blood Pressure:</h:outputLabel>
+						<h:inputTextarea value="#{obstetrics_office_visit_form.bloodPressure}" id="obovbp"
+							cols="10" rows="1" class="form-control inline"></h:inputTextarea>
+					</div>
+					
+					<div class="form-group">
+						<h:outputLabel for="obovfetalhr">Fetal Heart Rate:</h:outputLabel>
+						<h:inputTextarea value="#{obstetrics_office_visit_form.fetalHR}" id="obovfetalhr"
+							cols="10" rows="1" class="form-control inline"></h:inputTextarea>
+					</div>
+					
+					<div class="form-group">
+						<h:outputLabel for="obovmulti">Multiple or Single:</h:outputLabel>
+						<h:inputTextarea value="#{obstetrics_office_visit_form.multiple}" id="obovmulti"
+							cols="10" rows="1" class="form-control inline"></h:inputTextarea>
+					</div>
+					
+					<div class="form-group  form-button-group">
+						<h:commandButton id="submitVisitButton" value="Save"
+							action="#{obstetrics_office_visit_form.submit}" />
+						<h:commandButton id="cancelVisitButton" value="Cancel"
+							action="#{navigation_controller.baseOfficeVisit}" immediate="true" />
+					</div>
+				</h:form>
 			</ui:define>
 		</ui:composition>
 	</h:body>
