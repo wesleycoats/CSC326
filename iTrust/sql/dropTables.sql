@@ -53,6 +53,7 @@ DROP TABLE IF EXISTS transactionfailureattempts;
 DROP TABLE IF EXISTS transactionlog;
 DROP TABLE IF EXISTS userprefs;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS ultrasound;
 DROP TABLE IF EXISTS WardRoomCheckout;
 DROP TABLE IF EXISTS WardRooms;
 DROP TABLE IF EXISTS Wards;

@@ -132,7 +132,17 @@ public class UltrasoundMySQLTest extends TestCase {
     		// It has the same MID and date as newUS
     		Ultrasound former = usList.get(0);
     		assertTrue(sql.update(newUS));
-    		//TODO
+    		
+    		// The first Ultrasound in the datbase is the one that should have been updated
+    		usList = sql.getAll();
+    		Ultrasound updated = usList.get(0);
+    		
+    		// Now make sure former and later have the same MID and date but different fields
+    		assertEquals(former.getMID(), updated.getMID());
+    		assertEquals(former.getDateString(), updated.getDateString());
+    		assertEquals(45.0, updated.getCRL(), 0.005);
+    		
+    		assertNotEquals(former.getCRL(), updated.getCRL());
     	} catch (Exception e) {
     		fail();
     	}
