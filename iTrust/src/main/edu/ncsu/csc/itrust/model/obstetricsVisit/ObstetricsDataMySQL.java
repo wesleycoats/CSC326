@@ -110,31 +110,6 @@ public class ObstetricsDataMySQL implements Serializable {
 		}
 	}
 
-	public List<ObstetricsData> getAll() throws DBException {
-		Connection conn = null;
-		PreparedStatement pstring = null;
-		ResultSet results = null;
-		try {
-			conn = ds.getConnection();
-			pstring = conn.prepareStatement("SELECT * FROM obstetrics ORDER BY dateCreated DESC");
-			results = pstring.executeQuery();
-			final List<ObstetricsData> visitList = ovLoader.loadList(results);
-			return visitList;
-		} catch (SQLException e) {
-			throw new DBException(e);
-		} finally {
-			try {
-				if (results != null) {
-					results.close();
-				}
-			} catch (SQLException e) {
-				throw new DBException(e);
-			} finally {
-				DBUtil.closeConnection(conn, pstring);
-			}
-		}
-	}
-
 	public boolean update(ObstetricsData ov) throws DBException {
 		boolean retval = false;
 		Connection conn = null;

@@ -58,10 +58,4 @@ public class ObstetricsDataMySQLTest extends TestCase {
 		List<ObstetricsData> list102 = ovsql.getVisitsForPatient(102L);
 		assertEquals(0, list102.size());
 	}
-	
-	@Test
-	public void testGetAll() throws Exception {
-		List<ObstetricsData> list = ovsql.getAll();
-		assertEquals(2, list.size());
-	}
 }

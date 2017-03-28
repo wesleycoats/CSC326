@@ -145,40 +145,6 @@ public class ObstetricsVisitMySQL implements Serializable {
 		}
 	}
 
-	public ObstetricsVisit getByVisitID(long id) throws DBException {
-		ObstetricsVisit ret = null;
-		Connection conn = null;
-		PreparedStatement pstring = null;
-		ResultSet results = null;
-		List<ObstetricsVisit> visitList = null;
-		try {
-			conn = ds.getConnection();
-			pstring = conn.prepareStatement("SELECT * FROM obstetricsVisit WHERE visitID=?");
-			pstring.setLong(1, id);
-			results = pstring.executeQuery();
-			
-			/* May update with loader instead */
-			visitList = ovLoader.loadList(results);
-			if (visitList.size() > 0) {
-				ret = visitList.get(0);
-			}
-		} catch (SQLException e) {
-			throw new DBException(e);
-		} finally {
-			try {
-				if (results != null) {
-					results.close();
-				}
-			} catch (SQLException e) {
-				throw new DBException(e);
-			} finally {
-
-				DBUtil.closeConnection(conn, pstring);
-			}
-		}
-		return ret;
-	}
-
 	public boolean update(ObstetricsVisit ov) throws DBException {
 		boolean retval = false;
 		Connection conn = null;
@@ -203,7 +169,7 @@ public class ObstetricsVisitMySQL implements Serializable {
 		return retval;
 	}
 
-	private LocalDate getDateOfVisit(final Long visitID) {
+	public LocalDate getDateOfVisit(final Long visitID) {
 		Connection conn = null;
 		PreparedStatement pstring = null;
 		ResultSet results = null;
