@@ -25,8 +25,6 @@ public class ObstetricsVisitValidatorTest extends TestCase {
 		ov.setPatientMID(2l);
 		ov.setVisitID(3l);
 		ov.setWeeksPregnant(4);
-		ov.setEDD(LocalDateTime.of(2017, 12, 20, 16, 41));
-		ov.setLMP(LocalDateTime.of(2017, 03, 20, 16, 41));
     	try{ 
     		ovv.validate(ov);
     	} catch( FormValidationException e){
@@ -52,8 +50,6 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     	ov = new ObstetricsVisit();
     	ov.setPatientMID(2l);
 		ov.setWeeksPregnant(4);
-		ov.setEDD(LocalDateTime.of(2017, 12, 20, 16, 41));
-		ov.setLMP(LocalDateTime.of(2017, 03, 20, 16, 41));
 		try{ 
     		ovv.validate(ov);
     	} catch( FormValidationException e){
@@ -69,8 +65,6 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     	ov.setPatientMID(2l);
     	ov.setVisitID(-3l);
 		ov.setWeeksPregnant(4);
-		ov.setEDD(LocalDateTime.of(2017, 12, 20, 16, 41));
-		ov.setLMP(LocalDateTime.of(2017, 03, 20, 16, 41));
 		try{ 
     		ovv.validate(ov);
     	} catch( FormValidationException e){
@@ -85,25 +79,6 @@ public class ObstetricsVisitValidatorTest extends TestCase {
 		ov.setPatientMID(2l);
 		ov.setVisitID(3l);
 		ov.setWeeksPregnant(-4);
-		ov.setEDD(LocalDateTime.of(2017, 12, 20, 16, 41));
-		ov.setLMP(LocalDateTime.of(2017, 03, 20, 16, 41));
-		try{ 
-    		ovv.validate(ov);
-    	} catch( FormValidationException e){
-    		Assert.assertTrue(true);
-    		return;
-    	}
-    	Assert.fail();
-    }
-    
-    @Test
-    public void testValidationFutureLMP(){
-    	ov = new ObstetricsVisit();
-    	ov.setPatientMID(2l);
-    	ov.setVisitID(-3l);
-		ov.setWeeksPregnant(4);
-		ov.setEDD(LocalDateTime.of(2017, 12, 20, 16, 41));
-		ov.setLMP(LocalDateTime.of(2089, 03, 20, 16, 41));
 		try{ 
     		ovv.validate(ov);
     	} catch( FormValidationException e){
@@ -117,10 +92,8 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     public void testValidationLongPregnancy(){
     	ov = new ObstetricsVisit();
     	ov.setPatientMID(2l);
-    	ov.setVisitID(-3l);
+    	ov.setVisitID(3l);
 		ov.setWeeksPregnant(53);
-		ov.setEDD(LocalDateTime.of(2017, 12, 20, 16, 41));
-		ov.setLMP(LocalDateTime.of(2017, 03, 20, 16, 41));
 		try{ 
     		ovv.validate(ov);
     	} catch( FormValidationException e){

@@ -74,9 +74,7 @@ public class ObstetricsVisitMySQL implements Serializable {
 			try {
 				conn = ds.getConnection();
 				pstring = conn.prepareStatement("SELECT * FROM obstetricsVisit WHERE patientMID=?");
-
 				pstring.setLong(1, patientID);
-
 				results = pstring.executeQuery();
 
 				final List<ObstetricsVisit> visitList = ovLoader.loadList(results);
@@ -156,11 +154,9 @@ public class ObstetricsVisitMySQL implements Serializable {
 		try {
 			conn = ds.getConnection();
 			pstring = conn.prepareStatement("SELECT * FROM obstetricsVisit WHERE visitID=?");
-
 			pstring.setLong(1, id);
-
 			results = pstring.executeQuery();
-
+			
 			/* May update with loader instead */
 			visitList = ovLoader.loadList(results);
 			if (visitList.size() > 0) {
@@ -234,11 +230,9 @@ public class ObstetricsVisitMySQL implements Serializable {
 				DBUtil.closeConnection(conn, pstring);
 			}
 		}
-
 		if (dateOfVisit == null) {
 			return null;
 		}
-
 		return dateOfVisit.toLocalDate();
 	}
 	

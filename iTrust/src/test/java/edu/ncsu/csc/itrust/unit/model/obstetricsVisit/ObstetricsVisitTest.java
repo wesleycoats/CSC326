@@ -1,69 +1,40 @@
 package edu.ncsu.csc.itrust.unit.model.obstetricsVisit;
 
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
-import java.time.LocalDateTime;
-
-import junit.framework.TestCase;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsVisit;
 
-public class ObstetricsVisitTest extends TestCase {
-	private ObstetricsVisit test;
+public class ObstetricsVisitTest {
+	private ObstetricsVisit ov;
 
-	@Override
-	protected void setUp() throws Exception {
-		test = new ObstetricsVisit();
+	private static final long ID = 1l;
+	private static final long MID = 102l;
+	private static final float WEIGHT = 185.23f;
+	private static final int BLOOD_PRESSURE = 52;
+	private static final int FETAL_HEART_RATE = 73;
+	private static final int PREGNANCIES = 8;
+	private static final boolean PLACENTA_OBSERVED = true;
+	private static final int WEEKS_PREGNANT = 3;
+	
+	@Test
+	public void testObstetricsData() {
+		ov = new ObstetricsVisit();
+		ov.setVisitID(ID);
+		ov.setPatientMID(MID);
+		ov.setWeight(WEIGHT);
+		ov.setBloodPressure(BLOOD_PRESSURE);
+		ov.setFetalHeartRate(FETAL_HEART_RATE);
+		ov.setPregnancies(PREGNANCIES);
+		ov.setPlacentaObserved(PLACENTA_OBSERVED);
+		ov.setWeeksPregnant(WEEKS_PREGNANT);
 		
-	}
-	
-	@Test
-	public void testVisitID() {
-		long fakeID = 123524839l;
-		test.setVisitID(fakeID);
-		String input = Long.toString(fakeID);
-		Assert.assertEquals(input , Long.toString(test.getVisitID()));		
-	}
-	
-	@Test
-	public void testPatientMID() {
-		long fakeID = 999992l;
-		test.setPatientMID(fakeID);
-		String input = Long.toString(fakeID);
-		Assert.assertEquals(input , Long.toString(test.getPatientMID()));		
-	}
-
-	@Test
-	public void testWeeksPregnant() {
-		int weeks = 23;
-		test.setWeeksPregnant(weeks);
-		Assert.assertEquals(weeks, test.getWeeksPegnant());		
-	}
-
-	@Test
-	public void testLMP() {
-		LocalDateTime randDate = LocalDateTime.of(2017, 03, 20, 16, 41);
-		test.setLMP(randDate);
-		Assert.assertEquals(randDate, test.getLMP());		
-	}
-	
-
-	@Test
-	public void testEDD() {
-		LocalDateTime randDate = LocalDateTime.of(2018, 12, 25, 2, 40);
-		test.setEDD(randDate);
-		Assert.assertEquals(randDate, test.getEDD());	
-	}
-	
-	@Test
-	public void testOtherConstructor() {
-		test = new ObstetricsVisit(3l, 2l, LocalDateTime.of(2017, 3, 12, 2, 40));
-		Assert.assertEquals("2017-12-17T02:40", test.getEDD().toString());
-		//System.out.println("" + test.getWeeksPegnant());
-		/**I'm not sure how to test weeks pregnant without causing it to fail
-		 * in a week, but it does seem to return the correct value.
-		 * At least, up to having the last peroid between now and Jan first
-		 * of last year. (I hardcoded the assumption that last year was a 
-		 * leap-year)
-		 **/
+		assertEquals("1", ov.getVisitID().toString());
+		assertEquals("102", ov.getPatientMID().toString());
+		assertEquals("185.23", ov.getWeight().toString());
+		assertEquals("52", ov.getBloodPressure().toString());
+		assertEquals("73", ov.getFetalHeartRate().toString());
+		assertEquals("8", ov.getPregnancies().toString());
+		assertTrue(ov.getPlacentaObserved());
+		assertEquals(3, ov.getWeeksPegnant());
 	}
 }

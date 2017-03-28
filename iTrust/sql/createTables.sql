@@ -427,9 +427,12 @@ CREATE TABLE obstetricsVisit
 (
 	visitID BIGINT(20) UNSIGNED,
 	patientMID BIGINT(20) UNSIGNED NOT NULL,
-	lmp DATETIME NOT NULL,
-	edd DATETIME NOT NULL,
 	weeksPregnant INT(10) UNSIGNED,
+	weight FLOAT,
+	bloodPressure INT(3),
+	fetalHeartRate INT(3),
+	pregnancies INT(2),
+	placentaObserved BOOLEAN,
 	PRIMARY KEY (visitID),
 	FOREIGN KEY(visitID) REFERENCES officeVisit(visitID),
 	FOREIGN KEY (patientMID) REFERENCES patients(MID)

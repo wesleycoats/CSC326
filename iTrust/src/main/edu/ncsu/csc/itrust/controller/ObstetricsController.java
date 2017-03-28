@@ -2,7 +2,6 @@ package edu.ncsu.csc.itrust.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,88 +11,58 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import edu.ncsu.csc.itrust.action.EventLoggingAction;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsData;
-import edu.ncsu.csc.itrust.model.obstetricsVisit.PregnancyData;
+import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsDataMySQL;
 import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.PersonnelLoader;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
-import edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.model.pregnancies.Pregnancies;
+import edu.ncsu.csc.itrust.model.pregnancies.PregnanciesMySQL;
 
 @ManagedBean(name = "obstetrics_controller")
 @SessionScoped
 public class ObstetricsController extends iTrustController {
 	
 	private ObstetricsData[] obList;
-	private PregnancyData[] pregList;
+	private Pregnancies[] pregList;
 	private String lmp = "YYYY-MM-DD";
+	private ObstetricsDataMySQL odsql = new ObstetricsDataMySQL();
+	private PregnanciesMySQL psql = new PregnanciesMySQL();
 	private transient final PersonnelLoader personnelLoader;
 	
 	public void generateOBList(){
 		List<ObstetricsData> retList = new ArrayList<ObstetricsData>();
 		Long id = getSessionUtils().getCurrentPatientMIDLong();
 		if (id != null) {
-			DAOFactory factory = DAOFactory.getProductionInstance();
-			Connection conn = null;
 			try {
-				conn = factory.getConnection();
-				PreparedStatement ps;
-				ps = conn.prepareStatement("SELECT * FROM obstetrics WHERE patientMID = ?");
-				ps.setLong(1, id.longValue());
-				ResultSet rs = ps.executeQuery();
-				while( rs.next() ){
-					long pmid = rs.getLong("patientMID");
-					String dateCreated = rs.getString("dateCreated");
-					String lmp = rs.getString("lmp");
-					String edd = rs.getString("edd");
-					ObstetricsData od = new ObstetricsData(pmid, dateCreated, lmp, edd);
-					retList.add(od);
-				}
-			} catch (SQLException e) {
+				retList = odsql.getAll();
+			} catch (DBException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
 		obList = new ObstetricsData[retList.size()];
 		obList = retList.toArray(obList);
 	}
 	
 	public void generatePregList(){
-		List<PregnancyData> retList = new ArrayList<PregnancyData>();
+		List<Pregnancies> retList = null;
 		Long id = getSessionUtils().getCurrentPatientMIDLong();
 		if(id != null) {
-			DAOFactory factory = DAOFactory.getProductionInstance();
-			Connection conn = null;
 			try {
-				conn = factory.getConnection();
-				PreparedStatement ps;
-				ps = conn.prepareStatement("SELECT * FROM pregnancies WHERE patientMID = ?");
-				ps.setLong(1, id.longValue());
-				ResultSet rs = ps.executeQuery();
-				while( rs.next() ){
-					long pmid = rs.getLong("patientMID");
-					int yearOfConception = rs.getInt("yearOfConception");
-					int weeksPregnant = rs.getInt("weeksPregnant");
-					double hoursInLabor = rs.getDouble("hoursInLabor");
-					double weightGain = rs.getDouble("weightGain");
-					String deliveryType = rs.getString("deliveryType");
-					int numChildren = rs.getInt("numChildren");
-					PregnancyData pd = new PregnancyData(pmid, yearOfConception, weeksPregnant, hoursInLabor, weightGain, deliveryType, numChildren);
-					retList.add(pd);
-				}
-			} catch (SQLException e) {
+				retList = psql.getByPatientID(id);
+			} catch (DBException e) {
 				e.printStackTrace();
 			}
-
 		}
-		pregList = new PregnancyData[retList.size()];
-		pregList = retList.toArray(pregList);
+		if(retList != null && retList.size() != 0) {
+			pregList = new Pregnancies[retList.size()];
+			pregList = retList.toArray(pregList);
+		}
 	}
 
 
@@ -106,11 +75,11 @@ public class ObstetricsController extends iTrustController {
 		this.obList = obList;
 	}
 	
-	public PregnancyData[] getpregList(){
+	public Pregnancies[] getpregList(){
 		return this.pregList;
 	}
 	
-	public void setpregList(PregnancyData[] pregList){
+	public void setpregList(Pregnancies[] pregList){
 		this.pregList = pregList;
 	}
 	
@@ -141,8 +110,8 @@ public class ObstetricsController extends iTrustController {
 
 		Long id = getSessionUtils().getSessionLoggedInMIDLong();
 		if (id != null) {
-				DAOFactory factory = DAOFactory.getProductionInstance();
-				Connection conn = null;
+			DAOFactory factory = DAOFactory.getProductionInstance();
+			Connection conn = null;
 			try {
 				conn = factory.getConnection();
 				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM personnel WHERE MID = ?");
@@ -164,41 +133,19 @@ public class ObstetricsController extends iTrustController {
 	}
 	
 	public void createInitialObstetrics() {
+		LocalDateTime date = null;
 		System.out.println("clicked");
 		Long id = getSessionUtils().getCurrentPatientMIDLong();
-		DateFormat dtf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-		java.util.Date date = null;
-		try {
-			date = dtf.parse(lmp);
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.US);
+		date = LocalDate.parse(lmp, formatter).atStartOfDay();
 		if(date != null){
-			LocalDate dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			LocalDate eddLocal = dateLocal.plusDays(280);
-			java.util.Date edd = Date.from(eddLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
-			Date sqlDate = new Date(date.getTime());
-			Date sqlEddDate = new Date(edd.getTime());
-			DAOFactory factory = DAOFactory.getProductionInstance();
-			Connection conn = null;
+			ObstetricsData newEntry = new ObstetricsData(id, date, LocalDateTime.now());
 			try {
-				conn = factory.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("INSERT INTO obstetrics (patientMID, dateCreated, lmp, edd) VALUES (?, ?, ?, ?)");
-				stmt.setLong(1, id.longValue());
-				stmt.setDate(2, new Date(new java.util.Date().getTime()));
-				stmt.setDate(3, sqlDate);
-				stmt.setDate(4, sqlEddDate);
-			} catch (SQLException e) {
+				this.odsql.addObstetricsData(newEntry);
+			} catch (DBException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} finally {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				logCreateObstetrics();
 			}
 		}
 	}

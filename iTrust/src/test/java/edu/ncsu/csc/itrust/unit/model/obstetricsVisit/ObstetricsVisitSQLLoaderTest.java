@@ -65,6 +65,12 @@ public class ObstetricsVisitSQLLoaderTest extends TestCase {
 	}
 	
 	@Test
+	public void testGetFloatOrNull() throws Exception {
+		Assert.assertEquals(MOCK_FLOAT_VALUE, ovloader.getFloatOrNull(mockFloatValResultSet, MOCK_COLUMN_NAME));
+		Assert.assertEquals(null, ovloader.getFloatOrNull(mockFloatNullResultSet, MOCK_COLUMN_NAME));
+	}
+	
+	@Test
 	public void testSetIntOrNull() throws Exception {
 		try {
 			ovloader.setIntOrNull(mockPreparedStatement, MOCK_COLUMN_INDEX, MOCK_INT_VALUE);
@@ -79,4 +85,18 @@ public class ObstetricsVisitSQLLoaderTest extends TestCase {
 		}
 	}
 	
+	@Test
+	public void testSetFloatOrNull() throws Exception {
+		try {
+			ovloader.setFloatOrNull(mockPreparedStatement, MOCK_COLUMN_INDEX, MOCK_FLOAT_VALUE);
+		} catch (NullPointerException e) {
+			fail();
+		}
+		
+		try {
+			ovloader.setFloatOrNull(mockPreparedStatement, MOCK_COLUMN_INDEX, null);
+		} catch (NullPointerException e) {
+			fail();
+		}
+	}
 }
