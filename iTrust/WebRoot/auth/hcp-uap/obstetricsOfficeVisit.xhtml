@@ -56,7 +56,13 @@
 							action="#{navigation_controller.baseOfficeVisit}" immediate="true" />
 					</div>
 				</h:form>
-			</ui:define>
+				<h:form enctype="multipart/form-data">
+				    <h:inputFile value="#{obstetrics_office_visit_form.imageFile}">
+					   <f:ajax listener="#{obstetrics_office_visit_form.save}" />
+				    </h:inputFile>
+			    </h:form>
+
+		</ui:define>
 		</ui:composition>
 	</h:body>
 
