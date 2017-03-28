@@ -78,7 +78,7 @@ public class ObstetricsVisitMySQL implements Serializable {
 				results = pstring.executeQuery();
 
 				final List<ObstetricsVisit> visitList = ovLoader.loadList(results);
-				return visitList;
+				return this.sortByDate(visitList);
 			} catch (SQLException e) {
 				throw new DBException(e);
 			} finally {
@@ -129,7 +129,7 @@ public class ObstetricsVisitMySQL implements Serializable {
 			pstring = conn.prepareStatement("SELECT * FROM obstetricsVisit");
 			results = pstring.executeQuery();
 			final List<ObstetricsVisit> visitList = ovLoader.loadList(results);
-			return visitList;
+			return this.sortByDate(visitList);
 		} catch (SQLException e) {
 			throw new DBException(e);
 		} finally {
@@ -203,7 +203,7 @@ public class ObstetricsVisitMySQL implements Serializable {
 		return retval;
 	}
 
-	public LocalDate getDateOfVisit(final Long visitID) {
+	private LocalDate getDateOfVisit(final Long visitID) {
 		Connection conn = null;
 		PreparedStatement pstring = null;
 		ResultSet results = null;
@@ -236,7 +236,7 @@ public class ObstetricsVisitMySQL implements Serializable {
 		return dateOfVisit.toLocalDate();
 	}
 	
-	public List<ObstetricsVisit> sortByDate(List<ObstetricsVisit> unsorted) {
+	private List<ObstetricsVisit> sortByDate(List<ObstetricsVisit> unsorted) {
 		List<ObstetricsVisit> sorted = new LinkedList<ObstetricsVisit>();
 		for(int i = 0; i < unsorted.size(); i++) {
 			ObstetricsVisit nextToAdd = unsorted.get(i);
