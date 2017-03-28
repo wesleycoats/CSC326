@@ -10,6 +10,10 @@
 	<f:view
 		beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
 		
+	<f:metadata>
+    	<f:event type="preRenderView" listener="#{obstetrics_office_visit_form.getVisitDate()}"/>
+    </f:metadata>
+		
 	<h:body>
 		<ui:composition template="/iTrust_template.xhtml">
 			<ui:define name="pageStyle"></ui:define>
@@ -21,10 +25,17 @@
 			<ui:define name="mainContent">
 				<h2 align="center" style="font-size: 175%; font-weight: bold;">
 					Editing Obstetrics Office Visit for <br />
-					#{user.getUserNameForID(sessionScope['pid'])}
+					#{user.getUserNameForID(sessionScope['pid'])} <br />
+					on #{obstetrics_office_visit_form.getDateString()}
 				</h2>
 				
 				<h:form>
+					<div class="form-group">
+						<h:outputLabel for="obovlmp">Last Menstrual Period:</h:outputLabel>
+						<h:inputTextarea value="#{obstetrics_office_visit_form.lastMenstrualPeriod}" id="obovlmp"
+							cols="10" rows="1" class="form-control inline"></h:inputTextarea>
+					</div>				
+				
 					<div class="form-group">
 						<h:outputLabel for="obovweight">Weight:</h:outputLabel>
 						<h:inputTextarea value="#{obstetrics_office_visit_form.weight}" id="obovweight"
@@ -56,14 +67,9 @@
 							action="#{navigation_controller.baseOfficeVisit}" immediate="true" />
 					</div>
 				</h:form>
-				<h:form enctype="multipart/form-data">
-				    <h:inputFile value="#{obstetrics_office_visit_form.imageFile}">
-					   <f:ajax listener="#{obstetrics_office_visit_form.save}" />
-				    </h:inputFile>
-			    </h:form>
-
-		</ui:define>
+			</ui:define>
 		</ui:composition>
 	</h:body>
 
 </html>
+
