@@ -135,6 +135,7 @@ public class UltrasoundMySQLTest extends TestCase {
     		
     		// The first Ultrasound in the datbase is the one that should have been updated
     		usList = sql.getAll();
+    		assertEquals(3, usList.size()); // Make sure that a new Ultrasound wasn't added
     		Ultrasound updated = usList.get(0);
     		
     		// Now make sure former and later have the same MID and date but different fields
