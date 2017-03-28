@@ -8,8 +8,7 @@ Feature: Document or edit information for an Obstetrics Visit
 
 #UC 94 [S1][S2][S3]	
 Scenario Outline: Entering valid obstetrics visit information
-	Given I log in as Dr Seuss
-	And Dr Sesuss is specialized for OB/GYN
+	Given I log in as Gandalf Stormcrow
 	And I search for Sporty Spice by MID and select Sporty Spice
 	And I go to enter Obstetrics visit information
 	And I enter <WeeksPreggo>, <Weight>, <BloodPressure>, <FHR>, <numChildren>, <Placenta>
@@ -28,8 +27,7 @@ Scenario Outline: Entering valid obstetrics visit information
 	| 2           |  303.3 | 30 	       | 205 | 4           | True     |
 	
 Scenario Outline: Entering invalid obstetrics visit information
-	Given I log in as Dr Seuss
-	And Dr Sesuss is specialized for OB/GYN
+	Given I log in as Gandalf Stormcrow
 	And I search for Sporty Spice by MID and select Sporty Spice
 	And I go to enter Obstetrics visit information
 	And I enter <WeeksPreggo>, <Weight>, <BloodPressure>, <FHR>, <numChildren>, <Placenta>
@@ -47,24 +45,21 @@ Scenario Outline: Entering invalid obstetrics visit information
 	
 	
 Scenario: Scheduling a future Childbirth appointments
-	Given I log in as Dr Seuss
-	And Dr Seuss is specialized for OB/GYN
+	Given I log in as Gandalf Stormcrow
 	And I search for Sporty Spice by MID and select Sporty Spice
 	And Sporty Spice is 42 weeks pregnant
 	Then the next appointment that is scheduled is a Childbirth Visit
 	
 	
 Scenario: Scheduling a future Obstetrics appointment
-	Given I log in as Dr Seuss
-	And Dr Seuss is specialized for OB/GYN
+	Given I log in as Gandalf Stormcrow
 	And I search for Sporty Spice by MID and select Sporty Spice
 	And Sporty Spice is 41 weeks pregnant
 	Then the next appointment that is scheduled is another Obstetrics Visit
 	
 	
 Scenario Outline: Dr. Seuss gives an ultrasound
-	Given I log in as Dr Seuss
-	And Dr Seuss is specialized for OB/GYN
+	Given I log in as Gandalf Stormcrow
 	And I search for Sporty Spice by MID and select Sporty Spice
 	And I choose to give an ultrasound
 	When I enter the following information: <CRL>, <BPD>, <HC>, <FL>, <OFD>, <AC>, <HL>, <EFW>
@@ -79,8 +74,7 @@ Scenario Outline: Dr. Seuss gives an ultrasound
 	
 
 Scenario Outline: Dr. Seuss records incorrect Ultrasound data
-	Given I log in as Dr Seuss
-	And Dr Seuss is specialized for OB/GYN
+	Given I log in as Gandalf Stormcrow
 	And I search for Sporty Spice by MID and select Sporty Spice
 	And I choose to give an ultrasound
 	When I enter the following information: <CRL>, <BPD>, <HC>, <FL>, <OFD>, <AC>, <HL>, <EFW>
