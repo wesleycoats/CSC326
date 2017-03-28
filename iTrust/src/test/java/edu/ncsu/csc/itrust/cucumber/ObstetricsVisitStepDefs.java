@@ -50,6 +50,14 @@ public class ObstetricsVisitStepDefs {
 	
 	@When("I search for Sporty Spice by MID and select Sporty Spice")
 	public void search_and_select_sporty_spice() {
+		// Navigate to select patient for office visit page
+		driver.findElement(By.partialLinkText("viewOfficeVisit.xhtml")).click();
+		Assert.assertTrue(driver.getCurrentUrl().contains("viewOfficeVisit.xhtml"));
+		// Select Sporty Spice as the patient
+		driver.findElement(By.id("searchBox")).sendKeys("Sporty Spice");
+		driver.findElement(By.name("UID_PATIENTID")).sendKeys("Sporty Spice");
+		driver.findElement(By.xpath("//input[@value='Sporty Spice']")).submit();
+		// Now choose to make an Obstetrics visit
 		//TODO
 	}
 	
