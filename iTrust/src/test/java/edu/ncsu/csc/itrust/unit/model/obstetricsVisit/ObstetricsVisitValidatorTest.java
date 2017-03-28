@@ -1,6 +1,5 @@
 package edu.ncsu.csc.itrust.unit.model.obstetricsVisit;
 
-import java.time.LocalDateTime;
 import org.junit.Assert;
 import org.junit.Test;
 

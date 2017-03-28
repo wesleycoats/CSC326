@@ -68,7 +68,7 @@ public class ObstetricsDataMySQL implements Serializable {
 		if (ValidationFormat.NPMID.getRegex().matcher(Long.toString(patientID)).matches()) {
 			try {
 				conn = ds.getConnection();
-				pstring = conn.prepareStatement("SELECT * FROM obstetrics WHERE patientMID=?");
+				pstring = conn.prepareStatement("SELECT * FROM obstetrics WHERE patientMID=?  ORDER BY dateCreated DESC");
 				pstring.setLong(1, patientID);
 				results = pstring.executeQuery();
 
@@ -116,7 +116,7 @@ public class ObstetricsDataMySQL implements Serializable {
 		ResultSet results = null;
 		try {
 			conn = ds.getConnection();
-			pstring = conn.prepareStatement("SELECT * FROM obstetrics");
+			pstring = conn.prepareStatement("SELECT * FROM obstetrics ORDER BY dateCreated DESC");
 			results = pstring.executeQuery();
 			final List<ObstetricsData> visitList = ovLoader.loadList(results);
 			return visitList;
@@ -161,12 +161,6 @@ public class ObstetricsDataMySQL implements Serializable {
 			unsorted = this.getVisitsForPatient(patientMID);
 			if(unsorted.size() > 0) {
 				date = unsorted.get(0).getDateCreated();
-			}
-			for(int i = 0; i < unsorted.size(); i++) {
-				ObstetricsData next = unsorted.get(i);
-				if(next.getDateCreated().isAfter(date)) {
-					date = next.getDateCreated();
-				}
 			}
 		} catch (DBException e) {
 			// TODO Auto-generated catch block

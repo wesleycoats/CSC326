@@ -39,7 +39,7 @@ public class ObstetricsController extends iTrustController {
 		Long id = getSessionUtils().getCurrentPatientMIDLong();
 		if (id != null) {
 			try {
-				retList = odsql.getAll();
+				retList = odsql.getVisitsForPatient(id);
 			} catch (DBException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
