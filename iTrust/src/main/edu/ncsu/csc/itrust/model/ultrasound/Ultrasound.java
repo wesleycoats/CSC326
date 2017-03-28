@@ -163,12 +163,8 @@ public class Ultrasound {
 	 * @return
 	 */
 	public String getDateString() {
-		String ret = "" + date.getDayOfMonth();
-		ret = ret + "/";
-		ret = ret + date.getMonthValue();
-		ret = ret + "/";
-		ret = ret + date.getYear();
-		return ret;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return date.format(formatter);
 	
 	}
 }

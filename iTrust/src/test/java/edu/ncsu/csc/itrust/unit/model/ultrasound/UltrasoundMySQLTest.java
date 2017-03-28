@@ -113,7 +113,7 @@ public class UltrasoundMySQLTest extends TestCase {
     		Ultrasound four = usList.get(3);
     		assertEquals(5L, four.getMID());
     		assertEquals(d, four.getDate());
-    		assertEquals("23/3/2017", four.getDateString());
+    		assertEquals("23/03/2017", four.getDateString());
     	} catch (Exception e) {
     		fail();
     	}

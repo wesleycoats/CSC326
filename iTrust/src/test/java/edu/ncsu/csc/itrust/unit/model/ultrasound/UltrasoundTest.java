@@ -7,12 +7,13 @@ import java.time.format.DateTimeFormatter;
 import org.junit.Test;
 
 import edu.ncsu.csc.itrust.model.ultrasound.Ultrasound;
+import junit.framework.TestCase;
 
 /**
  * Tests the ultrasound class
  * @author bmhogan
  */
-public class UltrasoundTest {
+public class UltrasoundTest extends TestCase {
 	private Ultrasound us;
 	private long mid = 10;
 	private double crl = 2.2;
@@ -25,8 +26,16 @@ public class UltrasoundTest {
 	private double efw = 6.7;
 	
 	private LocalDateTime date;
-	private String dateStr = "24/3/2017";
+	private String dateStr;
 	private String path = "iTrust/image/ultrasound/honest.jpg";
+	
+	@Override
+	protected void setUp() throws Exception {
+		
+		super.setUp();
+		this.dateStr = "24/03/2017";
+		
+	}
 
 	@Test
 	public void testUltrasound() {
@@ -46,6 +55,8 @@ public class UltrasoundTest {
 		
 
 		date = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		dateStr = date.format(formatter);
 		us = new Ultrasound(mid, date, crl, bpd, hc, fl, ofd, ac, hl, efw);
 		
 		assertEquals(mid, us.getMID());
