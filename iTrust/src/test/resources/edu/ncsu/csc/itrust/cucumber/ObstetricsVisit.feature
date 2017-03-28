@@ -1,5 +1,5 @@
 #Author wrcoats
-		bmhogan
+#		bmhogan
 
 Feature: Document or edit information for an Obstetrics Visit
 	As a HCP
@@ -71,14 +71,14 @@ Scenario Outline: Dr. Seuss gives an ultrasound
 	And submit the ultrasound data
 	Then no error message is shown and the data is saved to the database
 	
-	Example:
+	Examples:
 	| CRL | BPD | HC  | FL | OFD | AC | HL  | EFW |
 	| 3.4 | 2.2 | 1.1 | 2  | 2.2 | 4  | 3.3 | 2.3 |
 	| 3.4 | 5.4 | 1.1 | 2  | 2.2 | 4  | 3.3 | 2.3 |
 	| 3.4 | 2.2 | 0.3 | 4  | 6.2 | 4  | 3.3 | 7.3 |
 	
 
-Scenario: Dr. Seuss records incorrect Ultrasound data
+Scenario Outline: Dr. Seuss records incorrect Ultrasound data
 	Given I log in as Dr Seuss
 	And Dr Seuss is specialized for OB/GYN
 	And I search for Sporty Spice by MID and select Sporty Spice
@@ -87,7 +87,7 @@ Scenario: Dr. Seuss records incorrect Ultrasound data
 	And submit the ultrasound data
 	Then an error message is shown and the data is not saved to the database
 	
-	Example:
+	Examples:
 	| CRL | BPD | HC  | FL | OFD | AC | HL  | EFW |
 	| -3  | 2.2 | 1.1 | 2  | 2.2 | 4  | 3.3 | 2.3 |
 	| 3.4 | -5  | 1.1 | 2  | 2.2 | 4  | 3.3 | 2.3 |
