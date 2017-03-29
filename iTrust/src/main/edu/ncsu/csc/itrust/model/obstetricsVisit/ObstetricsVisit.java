@@ -142,7 +142,7 @@ public class ObstetricsVisit {
 		LocalDateTime officeVisit = null;
 		try {
 			ObstetricsVisitMySQL ovsql = new ObstetricsVisitMySQL();
-			officeVisit = ovsql.getDateOfVisit(visitID).atStartOfDay();
+			officeVisit = ovsql.getDateOfVisit(visitID);
 		} catch (DBException e) {
 			e.printStackTrace();
 		}

@@ -178,7 +178,7 @@ public class ObstetricsVisitMySQL implements Serializable {
 	public LocalDateTime getMostRecentVisitForPatient(long patientMID) {
 		ObstetricsVisit visit = null;
 		try {
-			visit = this.sortByDate(this.getVisitsForPatient(patientMID)).get(0);
+			visit = this.getVisitsForPatient(patientMID).get(0);
 		} catch (DBException e) {
 			e.printStackTrace();
 		}
