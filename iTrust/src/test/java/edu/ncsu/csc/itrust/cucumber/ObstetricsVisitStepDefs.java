@@ -96,13 +96,13 @@ public class ObstetricsVisitStepDefs {
 		// Send weeksPreggo
 		//TODO
 		// Now send the  weight
-		driver.findElementById("j_idt20:obovweight").sendKeys(weight);
+		driver.findElementById("obinfo:obovweight").sendKeys(weight);
 		// Send the blood pressure
-		driver.findElementById("j_idt20:obovbp").sendKeys(bloodPressure);
+		driver.findElementById("obinfo:obovbp").sendKeys(bloodPressure);
 		// Send FHR
-		driver.findElementById("j_idt20:obovfetalhr").sendKeys(FHR);
+		driver.findElementById("obinfo:obovfetalhr").sendKeys(FHR);
 		// Send numChildren
-		driver.findElementById("j_idt20:obovmulti").sendKeys(numChildren);
+		driver.findElementById("obinfo:obovmulti").sendKeys(numChildren);
 		// Send placenta
 		//TODO
 	}
@@ -112,7 +112,7 @@ public class ObstetricsVisitStepDefs {
 		Assert.assertTrue(driver.getCurrentUrl().contains("obstetricsOfficeVisit")); // make sure on the right page still
 		
 		// Find the submit button and hit it
-		driver.findElementById("j_idt20:submitVisitButton").click();
+		driver.findElementById("obinfo:submitVisitButton").click();
 	}
 	
 	//TODO change 42 to number var
