@@ -46,7 +46,7 @@ public class ObstetricsVisitValidator extends POJOValidator<ObstetricsVisit> {
 
 		if (obj.getWeeksPegnant() < 0) {
 			errorList.addIfNotNull("Weeks Pregnant: Invalid Weeks Pregnant");
-		} else if (obj.getWeeksPegnant() > 42) {
+		} else if (obj.getWeeksPegnant() > 52) {
 			errorList.addIfNotNull("Weeks Pregnant: You set a world record! Patient should not be pregnant for over a year.");
 		}
 		

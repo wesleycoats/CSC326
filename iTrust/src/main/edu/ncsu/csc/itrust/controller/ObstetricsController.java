@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.sql.DataSource;
 
 import java.sql.*;
 
@@ -22,6 +23,7 @@ import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.model.pregnancies.Pregnancies;
 import edu.ncsu.csc.itrust.model.pregnancies.PregnanciesMySQL;
+import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name = "obstetrics_controller")
 @SessionScoped
@@ -30,13 +32,31 @@ public class ObstetricsController extends iTrustController {
 	private ObstetricsData[] obList;
 	private Pregnancies[] pregList;
 	private String lmp = "YYYY-MM-DD";
-	private ObstetricsDataMySQL odsql = new ObstetricsDataMySQL();
-	private PregnanciesMySQL psql = new PregnanciesMySQL();
+	private ObstetricsDataMySQL odsql;
+	private PregnanciesMySQL psql;
 	private transient final PersonnelLoader personnelLoader;
+	private SessionUtils sessionUtils;
+	
+
+	public ObstetricsController() throws DBException {
+		super();
+		personnelLoader = new PersonnelLoader();
+		odsql = new ObstetricsDataMySQL();
+		psql = new PregnanciesMySQL();
+		sessionUtils = SessionUtils.getInstance();
+	}
+	
+	public ObstetricsController(DataSource ds, SessionUtils sessionUtils) {
+		super();
+		personnelLoader = new PersonnelLoader();
+		odsql = new ObstetricsDataMySQL(ds);
+		psql = new PregnanciesMySQL(ds);
+		this.sessionUtils = sessionUtils;
+	}
 	
 	public void generateOBList(){
 		List<ObstetricsData> retList = new ArrayList<ObstetricsData>();
-		Long id = getSessionUtils().getCurrentPatientMIDLong();
+		Long id = sessionUtils.getCurrentPatientMIDLong();
 		if (id != null) {
 			try {
 				retList = odsql.getVisitsForPatient(id);
@@ -51,7 +71,7 @@ public class ObstetricsController extends iTrustController {
 	
 	public void generatePregList(){
 		List<Pregnancies> retList = null;
-		Long id = getSessionUtils().getCurrentPatientMIDLong();
+		Long id = sessionUtils.getCurrentPatientMIDLong();
 		if(id != null) {
 			try {
 				retList = psql.getByPatientID(id);
@@ -90,11 +110,6 @@ public class ObstetricsController extends iTrustController {
 	public void setlmp(String lmp){
 		this.lmp = lmp;
 	}
-
-	public ObstetricsController() throws DBException {
-		super();
-		personnelLoader = new PersonnelLoader();
-	}
 	
 	public boolean isObstetricsPatient() {
 		//Here is where we need to determine if the patient is an obstetrics patient.
@@ -108,7 +123,7 @@ public class ObstetricsController extends iTrustController {
 		
 		PersonnelBean bean = null;
 
-		Long id = getSessionUtils().getSessionLoggedInMIDLong();
+		Long id = sessionUtils.getSessionLoggedInMIDLong();
 		if (id != null) {
 			DAOFactory factory = DAOFactory.getProductionInstance();
 			Connection conn = null;
@@ -135,7 +150,7 @@ public class ObstetricsController extends iTrustController {
 	public void createInitialObstetrics() {
 		LocalDateTime date = null;
 		System.out.println("clicked");
-		Long id = getSessionUtils().getCurrentPatientMIDLong();
+		Long id = sessionUtils.getCurrentPatientMIDLong();
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.US);
 		date = LocalDate.parse(lmp, formatter).atStartOfDay();
@@ -151,27 +166,36 @@ public class ObstetricsController extends iTrustController {
 	}
 	
 	
-	public void logViewObstetrics() {
-		Long id = getSessionUtils().getCurrentPatientMIDLong();
+	public boolean logViewObstetrics() {
+		boolean logged = true;
+		Long id = sessionUtils.getCurrentPatientMIDLong();
 		if (id != null) {
 			EventLoggingAction logAction = new EventLoggingAction(DAOFactory.getProductionInstance());
 			try {
 				logAction.logEvent(TransactionType.VIEW_INITIAL_OBSTETRICS_RECORD, getSessionUtils().getSessionLoggedInMIDLong(), id, "EDD");
 			} catch (DBException e) {
-				//Couldn't log
+				logged = false;
 			}
+		} else {
+			logged = false;
 		}
+		return logged;
 	}
 	
-	public void logCreateObstetrics() {
-		Long id = getSessionUtils().getCurrentPatientMIDLong();
+	public boolean logCreateObstetrics() {
+		boolean logged = true;
+		Long id = sessionUtils.getCurrentPatientMIDLong();
 		if (id != null) {
+			System.out.println(id);
 			EventLoggingAction logAction = new EventLoggingAction(DAOFactory.getProductionInstance());
 			try {
 				logAction.logEvent(TransactionType.CREATE_INITIAL_OBSTETRICS_RECORD, getSessionUtils().getSessionLoggedInMIDLong(), id, "EDD");
 			} catch (DBException e) {
-				//Couldn't log
+				logged = false;
 			}
+		} else {
+			logged = false;
 		}
+		return logged;
 	}
 }
