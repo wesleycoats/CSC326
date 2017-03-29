@@ -4,7 +4,9 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -16,9 +18,10 @@ public class ObstetricsVisitStepDefs {
 	@Given("I log in as Gandalf Stormcrow")
 	public void login_as_gandalf_stormcrow() {
 		driver = new HtmlUnitDriver();
-		driver.navigate().to("http://localhost:8080/iTrust/");
-		WebElement user = driver.findElement(By.name("j_username"));
-		WebElement pass = driver.findElement(By.name("j_password"));
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		driver.get("http://localhost:8080/iTrust/");
+		WebElement user = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("j_username")));
+		WebElement pass = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("j_password")));
 		user.sendKeys("9000000003");
 		pass.sendKeys("pw");
 		pass.submit();
