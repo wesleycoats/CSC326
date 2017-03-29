@@ -22,15 +22,12 @@ import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsData;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsDataMySQL;
 import edu.ncsu.csc.itrust.model.pregnancies.Pregnancies;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 import junit.framework.TestCase;
 
 public class ObstetricsControllerTest extends TestCase {
 	
-	private static final long DEFAULT_PATIENT_MID = 1L;
-	private static final LocalDateTime LMP = LocalDateTime.of(2017, 03, 20, 0, 0);
-	private static final LocalDateTime DATE_CREATED = LocalDateTime.of(2017, 03, 28, 0, 0);
-
 	@Spy private ObstetricsController oc;
 	@Spy private SessionUtils sessionUtils;
 	
@@ -46,11 +43,12 @@ public class ObstetricsControllerTest extends TestCase {
 	public void setUp() throws Exception {
 		ds = ConverterDAO.getDataSource();
 		mockSessionUtils = Mockito.mock(SessionUtils.class);
-		oc = Mockito.spy(new ObstetricsController(ds, mockSessionUtils));
+		oc = Mockito.spy(new ObstetricsController(ds, mockSessionUtils, TestDAOFactory.getTestInstance()));
 		Mockito.doNothing().when(oc).printFacesMessage(Matchers.any(FacesMessage.Severity.class), Mockito.anyString(),
 				Mockito.anyString(), Mockito.anyString());
 		// remove when these modules are built and can be called
 		gen = new TestDataGenerator();
+		gen.uc93();
 
 		// Setup test ObstetricsData
 		//testOD = new ObstetricsData(DEFAULT_PATIENT_MID, LMP, DATE_CREATED);
@@ -64,7 +62,7 @@ public class ObstetricsControllerTest extends TestCase {
 
 	@Test
 	public void testNulls() throws DBException {
-		oc = Mockito.spy(new ObstetricsController(ds, SessionUtils.getInstance()));
+		oc = Mockito.spy(new ObstetricsController(ds, SessionUtils.getInstance(), TestDAOFactory.getTestInstance()));
 		oc.generateOBList();
 		oc.generatePregList();
 		Assert.assertEquals(0, oc.getobList().length);
@@ -77,6 +75,36 @@ public class ObstetricsControllerTest extends TestCase {
 	
 	@Test
 	public void testNonNullValues() {
-		Mockito.doReturn(Long.toString(DEFAULT_PATIENT_MID)).when(mockSessionUtils).getCurrentPatientMID();
+		Mockito.doReturn("101").when(mockSessionUtils).getCurrentPatientMID();
+		oc.generateOBList();
+		oc.generatePregList();
+		Assert.assertEquals(1, oc.getobList().length);
+		Assert.assertEquals(1, oc.getpregList().length);
+		
+		oc.setlmp("2017-01-25");
+		oc.createInitialObstetrics();
+		oc.generateOBList();
+		Assert.assertEquals(2, oc.getobList().length);
+		
+		Assert.assertFalse(oc.isOBGYN());
+		
+		Assert.assertTrue(oc.logCreateObstetrics());
+		Assert.assertTrue(oc.logViewObstetrics());
+	}
+	
+	@Test
+	public void testGettersSetters() {
+		ObstetricsData[] odList = new ObstetricsData[0];
+		oc.setobList(odList);
+		Assert.assertEquals(0, oc.getobList().length);
+		
+		Pregnancies[] pList = new Pregnancies[0];
+		oc.setpregList(pList);
+		Assert.assertEquals(0, oc.getpregList().length);
+		
+		String lmp = "2017-12-25";
+		oc.setlmp(lmp);
+		Assert.assertEquals(lmp, oc.getlmp());
+	
 	}
 }

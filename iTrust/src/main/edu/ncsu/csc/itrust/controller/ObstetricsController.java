@@ -36,18 +36,21 @@ public class ObstetricsController extends iTrustController {
 	private PregnanciesMySQL psql;
 	private transient final PersonnelLoader personnelLoader;
 	private SessionUtils sessionUtils;
+	DAOFactory factory;
 	
 
 	public ObstetricsController() throws DBException {
 		super();
+		factory = DAOFactory.getProductionInstance();
 		personnelLoader = new PersonnelLoader();
 		odsql = new ObstetricsDataMySQL();
 		psql = new PregnanciesMySQL();
 		sessionUtils = SessionUtils.getInstance();
 	}
 	
-	public ObstetricsController(DataSource ds, SessionUtils sessionUtils) {
+	public ObstetricsController(DataSource ds, SessionUtils sessionUtils, DAOFactory dao) {
 		super();
+		factory = dao;
 		personnelLoader = new PersonnelLoader();
 		odsql = new ObstetricsDataMySQL(ds);
 		psql = new PregnanciesMySQL(ds);
@@ -73,6 +76,7 @@ public class ObstetricsController extends iTrustController {
 		List<Pregnancies> retList = null;
 		Long id = sessionUtils.getCurrentPatientMIDLong();
 		if(id != null) {
+			System.out.println(id);
 			try {
 				retList = psql.getByPatientID(id);
 			} catch (DBException e) {
@@ -125,7 +129,6 @@ public class ObstetricsController extends iTrustController {
 
 		Long id = sessionUtils.getSessionLoggedInMIDLong();
 		if (id != null) {
-			DAOFactory factory = DAOFactory.getProductionInstance();
 			Connection conn = null;
 			try {
 				conn = factory.getConnection();
@@ -170,9 +173,9 @@ public class ObstetricsController extends iTrustController {
 		boolean logged = true;
 		Long id = sessionUtils.getCurrentPatientMIDLong();
 		if (id != null) {
-			EventLoggingAction logAction = new EventLoggingAction(DAOFactory.getProductionInstance());
+			EventLoggingAction logAction = new EventLoggingAction(factory);
 			try {
-				logAction.logEvent(TransactionType.VIEW_INITIAL_OBSTETRICS_RECORD, getSessionUtils().getSessionLoggedInMIDLong(), id, "EDD");
+				logAction.logEvent(TransactionType.VIEW_INITIAL_OBSTETRICS_RECORD, sessionUtils.getSessionLoggedInMIDLong(), id, "EDD");
 			} catch (DBException e) {
 				logged = false;
 			}
@@ -187,9 +190,9 @@ public class ObstetricsController extends iTrustController {
 		Long id = sessionUtils.getCurrentPatientMIDLong();
 		if (id != null) {
 			System.out.println(id);
-			EventLoggingAction logAction = new EventLoggingAction(DAOFactory.getProductionInstance());
+			EventLoggingAction logAction = new EventLoggingAction(factory);
 			try {
-				logAction.logEvent(TransactionType.CREATE_INITIAL_OBSTETRICS_RECORD, getSessionUtils().getSessionLoggedInMIDLong(), id, "EDD");
+				logAction.logEvent(TransactionType.CREATE_INITIAL_OBSTETRICS_RECORD, sessionUtils.getSessionLoggedInMIDLong(), id, "EDD");
 			} catch (DBException e) {
 				logged = false;
 			}
