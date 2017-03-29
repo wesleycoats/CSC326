@@ -55,7 +55,6 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit>{
 			stmt = "INSERT INTO obstetricsVisit(visitID, patientMID, weeksPregnant, weight, "
 					+ "bloodPressure, fetalHeartRate, pregnancies, placentaObserved) "
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
 			ps.setLong(i++, ov.getVisitID());
 		} else {
 			long id = ov.getVisitID();
@@ -68,8 +67,9 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit>{
 					+ "pregnancies=?, "
 					+ "placentaObserved=?, "
 					+ "WHERE visitID=" + id + ";";
-			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
-		}		
+		}
+		ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
+		
 		ps.setLong(i++, ov.getPatientMID());
 		setIntOrNull(ps, i++, ov.getWeeksPegnant());
 		setFloatOrNull(ps, i++, ov.getWeight());
