@@ -109,25 +109,6 @@ public class ObstetricsDataMySQL implements Serializable {
 			DBUtil.closeConnection(conn, pstring);
 		}
 	}
-
-	public boolean update(ObstetricsData ov) throws DBException {
-		boolean retval = false;
-		Connection conn = null;
-		PreparedStatement pstring = null;
-		int results;
-
-		try {
-			conn = ds.getConnection();
-			pstring = ovLoader.loadParameters(conn, pstring, ov, false);
-			results = pstring.executeUpdate();
-			retval = (results > 0);
-		} catch (SQLException e) {
-			throw new DBException(e);
-		} finally {
-			DBUtil.closeConnection(conn, pstring);
-		}
-		return retval;
-	}
 	
 	public LocalDateTime getLmpDate(long patientMID) {
 		LocalDateTime date = null;

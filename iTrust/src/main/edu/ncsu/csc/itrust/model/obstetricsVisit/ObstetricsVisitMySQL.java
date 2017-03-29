@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -120,60 +121,11 @@ public class ObstetricsVisitMySQL implements Serializable {
 		}
 	}
 
-	public List<ObstetricsVisit> getAll() throws DBException {
+	public LocalDateTime getDateOfVisit(final Long visitID) {
 		Connection conn = null;
 		PreparedStatement pstring = null;
 		ResultSet results = null;
-		try {
-			conn = ds.getConnection();
-			pstring = conn.prepareStatement("SELECT * FROM obstetricsVisit");
-			results = pstring.executeQuery();
-			final List<ObstetricsVisit> visitList = ovLoader.loadList(results);
-			return this.sortByDate(visitList);
-		} catch (SQLException e) {
-			throw new DBException(e);
-		} finally {
-			try {
-				if (results != null) {
-					results.close();
-				}
-			} catch (SQLException e) {
-				throw new DBException(e);
-			} finally {
-				DBUtil.closeConnection(conn, pstring);
-			}
-		}
-	}
-
-	public boolean update(ObstetricsVisit ov) throws DBException {
-		boolean retval = false;
-		Connection conn = null;
-		PreparedStatement pstring = null;
-		try {
-			validator.validate(ov);
-		} catch (FormValidationException e1) {
-			throw new DBException(new SQLException(e1.getMessage()));
-		}
-		int results;
-
-		try {
-			conn = ds.getConnection();
-			pstring = ovLoader.loadParameters(conn, pstring, ov, false);
-			results = pstring.executeUpdate();
-			retval = (results > 0);
-		} catch (SQLException e) {
-			throw new DBException(e);
-		} finally {
-			DBUtil.closeConnection(conn, pstring);
-		}
-		return retval;
-	}
-
-	public LocalDate getDateOfVisit(final Long visitID) {
-		Connection conn = null;
-		PreparedStatement pstring = null;
-		ResultSet results = null;
-		java.sql.Date dateOfVisit = null;
+		LocalDateTime dateOfVisit = null;
 		try {
 			conn = ds.getConnection();
 			pstring = conn.prepareStatement("SELECT visitDate FROM officeVisit WHERE visitID=?");
@@ -182,7 +134,7 @@ public class ObstetricsVisitMySQL implements Serializable {
 			if (!results.next()) {
 				return null;
 			}
-			dateOfVisit = results.getDate("visitDate");
+			dateOfVisit = results.getTimestamp("visitDate").toLocalDateTime();
 		} catch (SQLException e) {
 			return null;
 		} finally {
@@ -199,7 +151,7 @@ public class ObstetricsVisitMySQL implements Serializable {
 		if (dateOfVisit == null) {
 			return null;
 		}
-		return dateOfVisit.toLocalDate();
+		return dateOfVisit;
 	}
 	
 	private List<ObstetricsVisit> sortByDate(List<ObstetricsVisit> unsorted) {
@@ -211,8 +163,8 @@ public class ObstetricsVisitMySQL implements Serializable {
 					sorted.add(unsorted.get(i));
 					break;
 				} else {
-					LocalDate d1 = getDateOfVisit(sorted.get(j).getVisitID());
-					LocalDate d2 = getDateOfVisit(nextToAdd.getVisitID());
+					LocalDateTime d1 = getDateOfVisit(sorted.get(j).getVisitID());
+					LocalDateTime d2 = getDateOfVisit(nextToAdd.getVisitID());
 					if(d1.isAfter(d2)) {
 						sorted.add(i, nextToAdd);
 						break;
@@ -221,5 +173,15 @@ public class ObstetricsVisitMySQL implements Serializable {
 			}
 		}
 		return sorted;
+	}
+	
+	public LocalDateTime getMostRecentVisitForPatient(long patientMID) {
+		ObstetricsVisit visit = null;
+		try {
+			visit = this.sortByDate(this.getVisitsForPatient(patientMID)).get(0);
+		} catch (DBException e) {
+			e.printStackTrace();
+		}
+		return this.getDateOfVisit(visit.getVisitID());
 	}
 }
