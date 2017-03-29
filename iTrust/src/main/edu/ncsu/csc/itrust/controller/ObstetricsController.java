@@ -162,8 +162,7 @@ public class ObstetricsController extends iTrustController {
 			try {
 				this.odsql.addObstetricsData(newEntry);
 			} catch (DBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//Do Nothing
 			}
 		}
 	}

@@ -408,7 +408,7 @@ public class OfficeVisitForm {
 				long generatedVisitId = controller.addReturnGeneratedId(ov);
 				setVisitID(generatedVisitId);
 				ov.setVisitID(generatedVisitId);
-				controller.logTransaction(TransactionType.OFFICE_VISIT_CREATE, ov.getVisitID().toString());
+				controller.logTransaction(TransactionType.CREATE_OBSTETRICS_OV, ov.getVisitID().toString());
 				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("officeVisitId", generatedVisitId);
 				try {
 					FacesContext.getCurrentInstance().getExternalContext().redirect("obstetricsOfficeVisit.xhtml");

@@ -1,4 +1,6 @@
 package edu.ncsu.csc.itrust.controller;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -6,7 +8,11 @@ import java.time.temporal.ChronoUnit;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsDataMySQL;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsVisit;
+import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsVisitMySQL;
+import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name = "obstetrics_office_visit_form")
 @ViewScoped
@@ -19,48 +25,82 @@ public class ObstetricsOfficeVisitForm {
 	private LocalDateTime expectedDeliveryDate;
 	private LocalDateTime date;
 	private Long apptTypeID;
-	private Float weight;
-	private String bloodPressure;
-	private long fetalHR;
-	private String multiple;
+	private float weight;
+	private int bloodPressure;
+	private int fetalHR;
+	private int pregnancies;
+	private ObstetricsVisitMySQL mySQL;
 	private ObstetricsVisit obstetricsOV;
+	private ObstetricsDataMySQL sql;
+	
+	
+	public Integer getPregnancies() {
+		return pregnancies;
+	}
+
+	public void setPregnancies(Integer pregnancies) {
+		this.pregnancies = pregnancies;
+	}
 	
 	public ObstetricsOfficeVisitForm() {
 		this.obstetricsOV = new ObstetricsVisit();
 		this.expectedDeliveryDate = LocalDateTime.now();
+		this.patientMID = SessionUtils.getInstance().getCurrentPatientMIDLong().longValue();
+		try {
+			this.mySQL = new ObstetricsVisitMySQL();
+		} catch (DBException e1) {
+			//Do nothing
+		}
+		
+		try {
+			this.sql = new ObstetricsDataMySQL();
+			this.lastMenstrualPeriod = this.sql.getLmpDate(patientMID);
+		} catch (DBException e) {
+			//Do nothing
+		}
 	}
 	
 	public void getVisitDate() {
-		//We need to get the date of the visit from the database
-		//The line below is a place holder and sets a specific date.
-		this.date = LocalDateTime.parse("2017-03-03T10:15:30");
+		Long pid = Long.parseLong(SessionUtils.getInstance().getSessionPID());
+		this.date = this.mySQL.getDateOfVisit(pid);
+		this.lastMenstrualPeriod = sql.getLmpDate(pid);
+		
+		if (this.date == null) {
+			this.date = LocalDateTime.now();
+		}
+		if (this.lastMenstrualPeriod == null) {
+			this.lastMenstrualPeriod = LocalDateTime.now();
+		}
+		
+//		System.out.println(this.date.toLocalDate().toString() + "     " + this.lastMenstrualPeriod.toLocalDate().toString());
 	}
 
-	public long getVisitID() {
+
+	public Long getVisitID() {
 		return visitID;
 	}
 
-	public void setVisitID(long visitID) {
+	public void setVisitID(Long visitID) {
 		this.visitID = visitID;
 	}
 
-	public long getPatientMID() {
+	public Long getPatientMID() {
 		return patientMID;
 	}
 
-	public void setPatientMID(long patientMID) {
+	public void setPatientMID(Long patientMID) {
 		this.patientMID = patientMID;
 	}
 
-	public long getWeeksPregnant() {
+	public Long getWeeksPregnant() {
 		return weeksPregnant;
 	}
 
-	public void setWeeksPregnant(long weeksPregnant) {
+	public void setWeeksPregnant(Long weeksPregnant) {
 		this.weeksPregnant = weeksPregnant;
 	}
 
-	public String getLastMenstrualPeriod() {
+	public String getLastMenstrualPeriodString() {
 		if (lastMenstrualPeriod != null) {
 			return lastMenstrualPeriod.toLocalDate().toString();
 		}
@@ -69,6 +109,10 @@ public class ObstetricsOfficeVisitForm {
 		}
 	}
 
+	public LocalDateTime getLastMenstrualPeriod() {
+		return lastMenstrualPeriod;
+	}
+	
 	public void setLastMenstrualPeriod(LocalDateTime lastMenstrualPeriod) {
 		this.lastMenstrualPeriod = lastMenstrualPeriod;
 	}
@@ -109,29 +153,46 @@ public class ObstetricsOfficeVisitForm {
 		this.weight = weight;
 	}
 
-	public String getBloodPressure() {
+	public Integer getBloodPressure() {
 		return bloodPressure;
 	}
 
-	public void setBloodPressure(String bloodPressure) {
+	public void setBloodPressure(Integer bloodPressure) {
 		this.bloodPressure = bloodPressure;
 	}
 
-	public long getFetalHR() {
+	public Integer getFetalHR() {
 		return fetalHR;
 	}
 
-	public void setFetalHR(long fetalHR) {
+	public void setFetalHR(Integer fetalHR) {
 		this.fetalHR = fetalHR;
 	}
 
-	public String getMultiple() {
-		return multiple;
-	}
 
-	public void setMultiple(String multiple) {
-		this.multiple = multiple;
+	
+	public void save() {
+//		try( InputStream input = imageFile.getInputStream() ) {
+//			Files.copy(input, new File("C:/Users/Jacob/git/csc326-203-Project-01/iTrust/images/", imageFile.getSubmittedFileName()).toPath());			System.out.println(imageFile.getSubmittedFileName());
+//			System.out.println(imageFile.getSubmittedFileName());
+//			imageFile.write("/iTrust/images/" + imageFile.getSubmittedFileName());
+//		} catch (IOException e){
+//			e.printStackTrace();
+//			System.out.println(e.getMessage());
+			//not sure what to say, something like "file does not exist or couldn't be uploaded
+//		}
 	}
 	
-	
+	public void submit() {
+		this.obstetricsOV.setWeight(weight);
+		this.obstetricsOV.setBloodPressure(bloodPressure);
+		this.obstetricsOV.setFetalHeartRate(fetalHR);
+		this.obstetricsOV.setPregnancies(pregnancies);
+		
+		try {
+			this.mySQL.addObstetricsVisit(obstetricsOV);
+		} catch (DBException e) {
+			//Do Nothing
+		}
+	}
 }

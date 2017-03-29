@@ -119,8 +119,7 @@ public class ObstetricsDataMySQL implements Serializable {
 				date = unsorted.get(0).getDateCreated();
 			}
 		} catch (DBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//Do Nothing
 		}
 		return date;
 	}

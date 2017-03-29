@@ -29,35 +29,43 @@
 					on #{obstetrics_office_visit_form.getDateString()}
 				</h2>
 				
-				<h:form id="obinfo">
+				<h:form>
 					<div class="form-group">
-						<h:outputLabel for="obovlmp">Last Menstrual Period:</h:outputLabel>
-						<h:inputTextarea value="#{obstetrics_office_visit_form.lastMenstrualPeriod}" id="obovlmp"
-							cols="10" rows="1" class="form-control inline"></h:inputTextarea>
+						<h:outputLabel for="obovlmp">Last Menstrual Period:
+							#{obstetrics_office_visit_form.getLastMenstrualPeriodString()}
+						</h:outputLabel>
 					</div>				
 				
 					<div class="form-group">
 						<h:outputLabel for="obovweight">Weight:</h:outputLabel>
 						<h:inputTextarea value="#{obstetrics_office_visit_form.weight}" id="obovweight"
-							cols="10" rows="1" class="form-control inline"></h:inputTextarea>
+							cols="10" rows="1" class="form-control inline">
+							<f:convertNumber />
+						</h:inputTextarea>
 					</div>
 
 					<div class="form-group">
 						<h:outputLabel for="obovbp">Blood Pressure:</h:outputLabel>
 						<h:inputTextarea value="#{obstetrics_office_visit_form.bloodPressure}" id="obovbp"
-							cols="10" rows="1" class="form-control inline"></h:inputTextarea>
+							cols="10" rows="1" class="form-control inline">
+							<f:convertNumber />
+						</h:inputTextarea>
 					</div>
 					
 					<div class="form-group">
 						<h:outputLabel for="obovfetalhr">Fetal Heart Rate:</h:outputLabel>
 						<h:inputTextarea value="#{obstetrics_office_visit_form.fetalHR}" id="obovfetalhr"
-							cols="10" rows="1" class="form-control inline"></h:inputTextarea>
+							cols="10" rows="1" class="form-control inline">
+							<f:convertNumber />
+						</h:inputTextarea>
 					</div>
 					
 					<div class="form-group">
-						<h:outputLabel for="obovmulti">Multiple or Single:</h:outputLabel>
-						<h:inputTextarea value="#{obstetrics_office_visit_form.multiple}" id="obovmulti"
-							cols="10" rows="1" class="form-control inline"></h:inputTextarea>
+						<h:outputLabel for="obovpregnancies">Multiple or Single:</h:outputLabel>
+						<h:inputTextarea value="#{obstetrics_office_visit_form.pregnancies}" id="obovpregnancies"
+							cols="10" rows="1" class="form-control inline">
+							<f:convertNumber />
+						</h:inputTextarea>
 					</div>
 					
 					<div class="form-group  form-button-group">
