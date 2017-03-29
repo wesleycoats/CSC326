@@ -17,9 +17,7 @@ Scenario: Display obstetrics information
 Scenario: Enter invalid input for number of children in prior pregnancy
 	Given I log in as HCP 3
 	And I navigate to the Obstetrics Visit Patient locator page
-	When I search for MID 2 Andy Programmer
-	And select Andy Programmer
-	And an error message displays since they are not eligible for obstetrics
-	And I change Andy Programmer to be eligible for obstetrics
-	And enter 0 for number of children in a prior pregnancy
+	When I search for Person Random
+	And select Person Random
+	And enter -1 for number of children in a prior pregnancy
 	Then an error message displays
