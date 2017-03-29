@@ -29,7 +29,7 @@ public class ObstetricsVisitStepDefs {
 	}
 
 	
-	@When("I go to enter Obstetrics visit information")
+	@When("^I go to enter Obstetrics visit information$")
 	public void enter_obstetrics_visit() throws Exception {
 		Assert.assertTrue(driver.getCurrentUrl().contains("viewOfficeVisit.xhtml"));
 		driver.findElementById("newVisitButton").click(); // for some reason this doesn't do anything
@@ -51,7 +51,7 @@ public class ObstetricsVisitStepDefs {
 		Assert.assertTrue(driver.getCurrentUrl().contains("obstetricsOfficeVisit.xhtml"));
 	}
 	
-	@When("I go to enter Obstetrics visit information but am only able to create a visit")
+	@When("^I go to enter Obstetrics visit information but am only able to create a visit$")
 	public void create_obstetrics_visit_by_non_obgyn() {
 		Assert.assertTrue(driver.getCurrentUrl().contains("viewOfficeVisit.xhtml"));
 		driver.findElementById("newVisitButton").click(); // for some reason this doesn't do anything
