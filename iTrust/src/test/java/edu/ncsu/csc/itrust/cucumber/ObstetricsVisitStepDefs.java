@@ -48,6 +48,29 @@ public class ObstetricsVisitStepDefs {
 		Assert.assertTrue(driver.getCurrentUrl().contains("obstetricsOfficeVisit.xhtml"));
 	}
 	
+	@When("I go to enter Obstetrics visit information but am only able to create a visit")
+	public void create_obstetrics_visit_by_non_obgyn() {
+		Assert.assertTrue(driver.getCurrentUrl().contains("viewOfficeVisit.xhtml"));
+		driver.findElementById("newVisitButton").click(); // for some reason this doesn't do anything
+		// So navigate manually
+		driver.navigate().to("http://localhost:8080/iTrust/auth/hcp-uap/officeVisitInfo.xhtml");
+		Assert.assertTrue(driver.getCurrentUrl().contains("officeVisitInfo.xhtml"));
+		
+		// Find and fill in the Date field
+		WebElement dateButton = driver.findElementById("basic_ov_form:ovdate");
+		dateButton.sendKeys("3/28/2017 6:00 PM");
+		
+		// Find the office visit Type selector and choose Obstetrics
+		Select apptTypeSelector = new Select(driver.findElementById("basic_ov_form:ovApptType"));
+		apptTypeSelector.selectByVisibleText("Obstetrics");
+		
+		// Hit save
+		driver.findElementByName("basic_ov_form:submitVisitButton").click();
+		// Make sure that we are taken back to the page to view OfficeVisits for that patient, as we aren't allowed
+		// to enter information for Obstetrics visits
+		Assert.assertTrue(driver.getCurrentUrl().contains("viewOfficeVisit.xhtml"));
+	}
+	
 	@When("I search for Sporty Spice by MID and select Sporty Spice")
 	public void search_and_select_sporty_spice() {
 		Assert.assertEquals("iTrust - HCP Home", driver.getTitle());
@@ -61,14 +84,32 @@ public class ObstetricsVisitStepDefs {
 		// Now choose to make an Obstetrics visit
 	}
 	
-	@When("I enter <WeeksPreggo>, <Weight>, <BloodPressure>, <FHR>, <numChildren>, <Placenta>")
-	public void enter_obstetrics_information() {
+	@When("I enter (.+), (.+), (.+), (.+), (.+), (.+)")
+	public void enter_obstetrics_information(String weeksPreggo, String weight, String bloodPressure, String FHR, String numChildren, String placenta) {	
+		Assert.assertTrue(driver.getCurrentUrl().contains("obstetricsOfficeVisit")); // make sure on the right page
+		// LMP will be a constant throughout all of these tests since this functionality was tested in UC93
+		// TODO create LMP constant to pass
+		
+		// Send weeksPreggo
+		//TODO
+		// Now send the  weight
+		driver.findElementById("j_idt20:obovweight").sendKeys(weight);
+		// Send the blood pressure
+		driver.findElementById("j_idt20:obovbp").sendKeys(bloodPressure);
+		// Send FHR
+		driver.findElementById("j_idt20:obovfetalhr").sendKeys(FHR);
+		// Send numChildren
+		driver.findElementById("j_idt20:obovmulti").sendKeys(numChildren);
+		// Send placenta
 		//TODO
 	}
 	
 	@When("I submit the data")
 	public void submit_data() {
-		//TODO
+		Assert.assertTrue(driver.getCurrentUrl().contains("obstetricsOfficeVisit")); // make sure on the right page still
+		
+		// Find the submit button and hit it
+		driver.findElementById("j_idt20:submitVisitButton").click();
 	}
 	
 	//TODO change 42 to number var
