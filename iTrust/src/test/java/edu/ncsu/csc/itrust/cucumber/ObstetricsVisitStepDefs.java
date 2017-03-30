@@ -27,6 +27,19 @@ public class ObstetricsVisitStepDefs {
 		pass.submit();
 		Assert.assertEquals("iTrust - HCP Home", driver.getTitle());
 	}
+	
+	@Given("^I log into iTrust as Kelly Doctor")
+	public void login_as_kelly_dr() {
+		driver = new HtmlUnitDriver();
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		driver.get("http://localhost:8080/iTrust/");
+		WebElement user = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("j_username")));
+		WebElement pass = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("j_password")));
+		user.sendKeys("9000000001");
+		pass.sendKeys("pw");
+		pass.submit();
+		Assert.assertEquals("iTrust - Admin Home", driver.getTitle());
+	}
 
 	
 	@When("^I go to enter Obstetrics visit information$")
@@ -76,7 +89,7 @@ public class ObstetricsVisitStepDefs {
 	
 	@When("I search for Sporty Spice by MID and select Sporty Spice")
 	public void search_and_select_sporty_spice() {
-		Assert.assertEquals("iTrust - HCP Home", driver.getTitle());
+		Assert.assertTrue(driver.getTitle().contains("home"));
 		// Navigate to select patient for office visit page
 		driver.findElement(By.partialLinkText("Document Office Visit")).click();
 		Assert.assertTrue(driver.getCurrentUrl().contains("viewOfficeVisit.xhtml"));

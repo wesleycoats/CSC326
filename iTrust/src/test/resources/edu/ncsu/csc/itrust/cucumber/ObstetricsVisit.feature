@@ -94,6 +94,6 @@ Scenario Outline: Dr. Seuss records incorrect Ultrasound data
 
 
 Scenario: Non OB/GYN requested to make regular office visit
-	Given I log in as Kelly Doctor
+	Given I log into iTrust as Kelly Doctor
 	And I search for Sporty Spice by MID and select Sporty Spice
 	And I go to enter Obstetrics visit information but am only able to create a visit
