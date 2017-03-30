@@ -413,6 +413,61 @@ CREATE TABLE officeVisit
 	FOREIGN KEY (apptTypeID) REFERENCES appointmenttype(apptType_id)
 )  ENGINE=MyISAM;
 
+CREATE TABLE obstetrics
+(
+    patientMID BIGINT(20) UNSIGNED NOT NULL,
+    dateCreated DATETIME,
+    lmp DATETIME NOT NULL,
+    edd DATETIME NOT NULL,
+    PRIMARY KEY (patientMID, dateCreated)
+    
+) ENGINE=MyISAM;
+
+CREATE TABLE obstetricsVisit
+(
+	visitID BIGINT(20) UNSIGNED,
+	patientMID BIGINT(20) UNSIGNED NOT NULL,
+	weeksPregnant INT(10) UNSIGNED,
+	weight FLOAT,
+	bloodPressure INT(3),
+	fetalHeartRate INT(3),
+	pregnancies INT(2),
+	placentaObserved BOOLEAN,
+	PRIMARY KEY (visitID),
+	FOREIGN KEY(visitID) REFERENCES officeVisit(visitID),
+	FOREIGN KEY (patientMID) REFERENCES patients(MID)
+) ENGINE=MyISAM;
+
+CREATE TABLE pregnancies
+(
+	patientMID BIGINT(20) UNSIGNED NOT NULL,
+	yearOfConception INT(10) UNSIGNED,
+	weeksPregnant INT(10) UNSIGNED,
+	hoursInLabor FLOAT UNSIGNED,
+	weightGain FLOAT,
+	deliveryType enum("vaginal delivery", "vaginal delivery vacuum assist", "vaginal delivery forceps assist", "caesarean section", "miscarriage"),
+	numChildren INT(3),
+	PRIMARY KEY (patientMID, yearOfConception),
+	FOREIGN KEY (patientMID) REFERENCES patients(MID)
+) ENGINE=MyISAM;
+
+CREATE TABLE ultrasound
+(
+	patientMID BIGINT(20) UNSIGNED NOT NULL,
+	CrownRumpLen FLOAT(10) UNSIGNED,
+	BiparietalDia FLOAT(10) UNSIGNED,
+	HeadCirc FLOAT(10) UNSIGNED,
+	FemurLen FLOAT(10) UNSIGNED,
+	OccipitofrontalDia FLOAT(10) UNSIGNED,
+	abdominalCirc FLOAT(10) UNSIGNED,
+	humerusLen FLOAT(10) UNSIGNED,
+	estimatedFetalWeight FLOAT(10) UNSIGNED,
+	ultrasoundDate VARCHAR(11) NOT NULL,
+	imageFile LONGBLOB,
+	PRIMARY KEY(patientMID, ultrasoundDate),
+	FOREIGN KEY (patientMID) REFERENCES patients(MID)
+) ENGINE=MyISAM;
+
 CREATE TABLE labProcedure (
 	labProcedureID 		BIGINT(20)		UNSIGNED NOT NULL AUTO_INCREMENT,
 	labTechnicianID		BIGINT(20)		UNSIGNED NOT NULL,

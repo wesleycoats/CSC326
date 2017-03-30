@@ -5,11 +5,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import edu.ncsu.csc.itrust.exception.DBException;
-import edu.ncsu.csc.itrust.logger.TransactionLogger;
 import edu.ncsu.csc.itrust.model.old.beans.GroupReportBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
-import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.report.DemographicReportFilter;
 import edu.ncsu.csc.itrust.report.DemographicReportFilter.DemographicReportFilterType;
 import edu.ncsu.csc.itrust.report.MedicalReportFilter;

@@ -78,6 +78,9 @@
 							<ui:include src="/auth/hcp-uap/manageImmunizations.xhtml"></ui:include>
 						</div>
 					</c:if>
+					<c:if test="#{office_visit_form.isObstetricsOfficeVisit()}">
+						#{navigation_controller.obstetricsOfficeVisit()}
+					</c:if>
 				</div>
 			</div>
 

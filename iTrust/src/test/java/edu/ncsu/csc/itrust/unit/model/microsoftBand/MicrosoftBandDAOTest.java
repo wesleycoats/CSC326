@@ -9,10 +9,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.microsoftBand.MicrosoftBandBean;
 import edu.ncsu.csc.itrust.model.microsoftBand.MicrosoftBandDAO;
@@ -129,6 +127,8 @@ public class MicrosoftBandDAOTest extends TestCase{
 				microsoftDAO.editWorkout(mbb);
 			} else {
 				microsoftDAO.addNewWorkout(mbb);
+				mbb.setSteps(7);
+				microsoftDAO.editWorkout(mbb);
 			}
 			newBean = microsoftDAO.getByDateRange(d, d, 90L).get(0);
 		} catch (ITrustException e) {
@@ -147,6 +147,6 @@ public class MicrosoftBandDAOTest extends TestCase{
         Assert.assertEquals(70, newBean.getHRLowest());
         Assert.assertEquals(400, newBean.getMinUVExposure());
         Assert.assertEquals("hi", newBean.getID());
-        Assert.assertEquals(394, newBean.getSteps());
+        Assert.assertEquals(7, newBean.getSteps());
     }
 }

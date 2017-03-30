@@ -5,14 +5,12 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
 
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.loinccode.LOINCCode;
-import edu.ncsu.csc.itrust.model.loinccode.LOINCCodeData;
 import edu.ncsu.csc.itrust.model.loinccode.LOINCCodeMySQL;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import junit.framework.TestCase;

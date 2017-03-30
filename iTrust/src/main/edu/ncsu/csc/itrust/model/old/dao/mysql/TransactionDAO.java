@@ -86,12 +86,20 @@ public class TransactionDAO {
 		if (secondaryMID == null) {
 			secondaryMID = 0L;
 		}
+		
+		// default loggedInMID to 0 if it is null for some reason
+		if (loggedInMID == null)
+			loggedInMID = 0L;
+		
+		// Call longValue to get loggedInMID and secondaryMID in primitives
+		long loggedInMIDl = loggedInMID.longValue();
+		long secondaryMIDl = secondaryMID.longValue();
 
 		try (Connection conn = factory.getConnection();
 				PreparedStatement ps = conn.prepareStatement("INSERT INTO transactionlog(loggedInMID, secondaryMID, "
 						+ "transactionCode, addedInfo) VALUES(?,?,?,?)")) {
-			ps.setLong(1, loggedInMID);
-			ps.setLong(2, secondaryMID);
+			ps.setLong(1, loggedInMIDl);
+			ps.setLong(2, secondaryMIDl);
 			ps.setInt(3, type.getCode());
 			ps.setString(4, addedInfo);
 			ps.executeUpdate();

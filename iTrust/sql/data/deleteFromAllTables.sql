@@ -87,3 +87,8 @@ DELETE FROM users;
 DELETE FROM medicalProcedure;
 ALTER TABLE medicalProcedure AUTO_INCREMENT = 0;
 
+DELETE FROM obstetrics;
+DELETE FROM obstetricsVisit;
+DELETE FROM ultrasound;
+DELETE FROM fitbit;
+DELETE FROM microsoft;

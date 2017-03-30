@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+	<f:view
+		beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
+		
+	<f:metadata>
+    	<f:event type="preRenderView" listener="#{obstetrics_office_visit_form.getVisitDate()}"/>
+    </f:metadata>
+		
+	<h:body>
+		<ui:composition template="/iTrust_template.xhtml">
+			<ui:define name="pageStyle"></ui:define>
+			<ui:define name="pageTitle">Edit Obstetrics Office Visit</ui:define>
+			<ui:define name="leftMenu">
+				<ui:include src="/auth/hcp/menu.xhtml" />
+			</ui:define>
+	
+			<ui:define name="mainContent">
+				<h2 align="center" style="font-size: 175%; font-weight: bold;">
+					Editing Obstetrics Office Visit for <br />
+					#{user.getUserNameForID(sessionScope['pid'])} <br />
+					on #{obstetrics_office_visit_form.getDateString()}
+				</h2>
+				
+				<h:form>
+					<div class="form-group">
+						<h:outputLabel for="obovlmp">Last Menstrual Period:
+							#{obstetrics_office_visit_form.getLastMenstrualPeriodString()}
+						</h:outputLabel>
+					</div>				
+				
+					<div class="form-group">
+						<h:outputLabel for="obovweight">Weight:</h:outputLabel>
+						<h:inputTextarea value="#{obstetrics_office_visit_form.weight}" id="obovweight"
+							cols="10" rows="1" class="form-control inline">
+							<f:convertNumber />
+						</h:inputTextarea>
+					</div>
+
+					<div class="form-group">
+						<h:outputLabel for="obovbp">Blood Pressure:</h:outputLabel>
+						<h:inputTextarea value="#{obstetrics_office_visit_form.bloodPressure}" id="obovbp"
+							cols="10" rows="1" class="form-control inline">
+							<f:convertNumber />
+						</h:inputTextarea>
+					</div>
+					
+					<div class="form-group">
+						<h:outputLabel for="obovfetalhr">Fetal Heart Rate:</h:outputLabel>
+						<h:inputTextarea value="#{obstetrics_office_visit_form.fetalHR}" id="obovfetalhr"
+							cols="10" rows="1" class="form-control inline">
+							<f:convertNumber />
+						</h:inputTextarea>
+					</div>
+					
+					<div class="form-group">
+						<h:outputLabel for="obovpregnancies">Multiple or Single:</h:outputLabel>
+						<h:inputTextarea value="#{obstetrics_office_visit_form.pregnancies}" id="obovpregnancies"
+							cols="10" rows="1" class="form-control inline">
+							<f:convertNumber />
+						</h:inputTextarea>
+					</div>
+					
+					
+					<div class="form-group  form-button-group">
+						<h:commandButton id="submitVisitButton" value="Save"
+							action="#{obstetrics_office_visit_form.submit}" />
+						<h:commandButton id="cancelVisitButton" value="Cancel"
+							action="#{navigation_controller.baseOfficeVisit}" immediate="true" />
+					</div>
+				</h:form>
+				<h:form id="us">
+				
+				<div class="form-group">
+                        <h:outputLabel for="usCRL">CRL:</h:outputLabel>
+                        <h:inputTextarea value="#{obstetrics_office_visit_form.crownRumpLen}" id="usCRL"
+                            cols="10" rows="1" class="form-control inline">
+                        </h:inputTextarea>
+                </div>
+                
+                <div class="form-group">
+                        <h:outputLabel for="usBPD">BPD:</h:outputLabel>
+                        <h:inputTextarea value="#{obstetrics_office_visit_form.biparietalDia}" id="usBPD"
+                            cols="10" rows="1" class="form-control inline">
+                        </h:inputTextarea>
+                </div>
+                
+                <div class="form-group">
+                        <h:outputLabel for="usHC">HC:</h:outputLabel>
+                        <h:inputTextarea value="#{obstetrics_office_visit_form.headCirc}" id="usHC"
+                            cols="10" rows="1" class="form-control inline">
+                        </h:inputTextarea>
+                </div>
+                
+                <div class="form-group">
+                        <h:outputLabel for="usFL">FL:</h:outputLabel>
+                        <h:inputTextarea value="#{obstetrics_office_visit_form.femurLen}" id="usFL"
+                            cols="10" rows="1" class="form-control inline">
+                        </h:inputTextarea>
+                </div>
+                
+                <div class="form-group">
+                        <h:outputLabel for="usOFD">OFD:</h:outputLabel>
+                        <h:inputTextarea value="#{obstetrics_office_visit_form.occipotoFrontalDia}" id="usOFD"
+                            cols="10" rows="1" class="form-control inline">
+                        </h:inputTextarea>
+                </div>
+                
+                <div class="form-group">
+                        <h:outputLabel for="usAC">AC:</h:outputLabel>
+                        <h:inputTextarea value="#{obstetrics_office_visit_form.abdomincalCirc}" id="usAC"
+                            cols="10" rows="1" class="form-control inline">
+                        </h:inputTextarea>
+                </div>
+                
+                <div class="form-group">
+                        <h:outputLabel for="usHL">HL:</h:outputLabel>
+                        <h:inputTextarea value="#{obstetrics_office_visit_form.humerusLen}" id="usHL"
+                            cols="10" rows="1" class="form-control inline">
+                        </h:inputTextarea>
+                </div>
+                
+                <div class="form-group">
+                        <h:outputLabel for="usEFW">EFW:</h:outputLabel>
+                        <h:inputTextarea value="#{obstetrics_office_visit_form.estimatedFetalWeight}" id="usEFW"
+                            cols="10" rows="1" class="form-control inline">
+                        </h:inputTextarea>
+                </div>
+				
+				</h:form>
+				<h:form enctype="multipart/form-data" method="POST">
+                        <h:inputFile value="#{obstetrics_office_visit_form.uploadedFile}" />
+                        <h:commandButton value="Upload" action="#{obstetrics_office_visit_form.save}"/>
+                </h:form>
+			</ui:define>
+		</ui:composition>
+	</h:body>
+
+</html>
+
