@@ -51,25 +51,12 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit>{
 			throws SQLException {
 		String stmt = "";
 		int i = 1;
-		if (newInstance) {
-			stmt = "INSERT INTO obstetricsVisit(visitID, patientMID, weeksPregnant, weight, "
-					+ "bloodPressure, fetalHeartRate, pregnancies, placentaObserved) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
-			ps.setLong(i++, ov.getVisitID());
-		} else {
-			long id = ov.getVisitID();
-			stmt = "UPDATE obstetricsVisit SET "
-					+ "patientMID=?, "
-					+ "weeksPregnant=?, "
-					+ "weight=?, "
-					+ "bloodPressure=?, "
-					+ "fetalHeartRate=?, "
-					+ "pregnancies=?, "
-					+ "placentaObserved=?, "
-					+ "WHERE visitID=" + id + ";";
-			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
-		}		
+		stmt = "INSERT INTO obstetricsVisit(visitID, patientMID, weeksPregnant, weight, "
+				+ "bloodPressure, fetalHeartRate, pregnancies, placentaObserved) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+		ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
+		ps.setLong(i++, ov.getVisitID());
+	
 		ps.setLong(i++, ov.getPatientMID());
 		setIntOrNull(ps, i++, ov.getWeeksPegnant());
 		setFloatOrNull(ps, i++, ov.getWeight());

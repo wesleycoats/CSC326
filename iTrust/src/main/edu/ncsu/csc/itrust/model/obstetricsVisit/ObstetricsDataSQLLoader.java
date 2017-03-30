@@ -45,32 +45,17 @@ public class ObstetricsDataSQLLoader implements SQLLoader<ObstetricsData>{
 	public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, ObstetricsData ov, boolean newInstance)
 			throws SQLException {
 		String stmt = "";
-		if (newInstance) {
-			stmt = "INSERT INTO obstetrics(patientMID, dateCreated, lmp, edd) "
-					+ "VALUES (?, ?, ?, ?);";
-			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
-			ps.setLong(1, ov.getPatientMID());
-			Timestamp ts0 = Timestamp.valueOf(ov.getDateCreated());
-			ps.setTimestamp(2, ts0);
-			Timestamp ts1 = Timestamp.valueOf(ov.getLmp());
-			ps.setTimestamp(3, ts1);
-			Timestamp ts2 = Timestamp.valueOf(ov.getEdd());
-			ps.setTimestamp(4, ts2);
-		} else {
-			long id = ov.getPatientMID();
-			Timestamp date = Timestamp.valueOf(ov.getDateCreated());
-			stmt = "UPDATE obstetrics SET "
-					+ "patientMID=?, "
-					+ "lmp=?, "
-					+ "edd=?, "
-					+ "WHERE dateCreated=" + date
-					+ "AND patientMID=" + id + ";";
-			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
-			Timestamp ts1 = Timestamp.valueOf(ov.getLmp());
-			ps.setTimestamp(1, ts1);
-			Timestamp ts2 = Timestamp.valueOf(ov.getEdd());
-			ps.setTimestamp(2, ts2);
-		}
+		stmt = "INSERT INTO obstetrics(patientMID, dateCreated, lmp, edd) "
+				+ "VALUES (?, ?, ?, ?);";
+		ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
+		ps.setLong(1, ov.getPatientMID());
+		Timestamp ts0 = Timestamp.valueOf(ov.getDateCreated());
+		ps.setTimestamp(2, ts0);
+		Timestamp ts1 = Timestamp.valueOf(ov.getLmp());
+		ps.setTimestamp(3, ts1);
+		Timestamp ts2 = Timestamp.valueOf(ov.getEdd());
+		ps.setTimestamp(4, ts2);
+	
 		return ps;
 	}
 }
