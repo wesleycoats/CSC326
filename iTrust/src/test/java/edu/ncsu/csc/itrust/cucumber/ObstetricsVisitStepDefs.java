@@ -87,12 +87,10 @@ public class ObstetricsVisitStepDefs {
 		// Now choose to make an Obstetrics visit
 	}
 	
-	@When("I enter (.+), (.+), (.+), (.+), (.+), (.+)")
+	@When("^I enter (.+), (.+), (.+), (.+), (.+), (.+)")
 	public void enter_obstetrics_information(String weeksPreggo, String weight, String bloodPressure, String FHR, String numChildren, String placenta) {	
 		Assert.assertTrue(driver.getCurrentUrl().contains("obstetricsOfficeVisit")); // make sure on the right page
-		// LMP will be a constant throughout all of these tests since this functionality was tested in UC93
-		// TODO create LMP constant to pass
-		
+		Assert.assertEquals("http://localhost:8080/iTrust/auth/hcp-uap/obstetricsOfficeVisit.xhtml", driver.getCurrentUrl());
 		// Send weeksPreggo
 		//TODO
 		// Now send the  weight
@@ -102,7 +100,7 @@ public class ObstetricsVisitStepDefs {
 		// Send FHR
 		driver.findElementById("obinfo:obovfetalhr").sendKeys(FHR);
 		// Send numChildren
-		driver.findElementById("obinfo:obovmulti").sendKeys(numChildren);
+		driver.findElementById("obinfo:obovpregnancies").sendKeys(numChildren);
 		// Send placenta
 		//TODO
 	}
@@ -123,10 +121,27 @@ public class ObstetricsVisitStepDefs {
 	
 	@When("I choose to give an ultrasound")
 	public void give_ultrasound() {
-		//TODO
+		Assert.assertTrue(driver.getCurrentUrl().contains("viewOfficeVisit.xhtml"));
+		driver.findElementById("newVisitButton").click(); // for some reason this doesn't do anything
+		// So navigate manually
+		driver.navigate().to("http://localhost:8080/iTrust/auth/hcp-uap/officeVisitInfo.xhtml");
+		Assert.assertTrue(driver.getCurrentUrl().contains("officeVisitInfo.xhtml"));
+		
+		// Find and fill in the Date field
+		WebElement dateButton = driver.findElementById("basic_ov_form:ovdate");
+		dateButton.sendKeys("3/28/2017 6:00 PM");
+		
+		// Find the office visit Type selector and choose Obstetrics
+		Select apptTypeSelector = new Select(driver.findElementById("basic_ov_form:ovApptType"));
+		apptTypeSelector.selectByVisibleText("Ultrasound");
+		
+		// Hit save
+		driver.findElementByName("basic_ov_form:submitVisitButton").click();
+		// Make sure that we stay on the page to enter Ultrasound information
+		Assert.assertTrue(driver.getCurrentUrl().contains("officeVisitInfo.xhtml"));
 	}
 	
-	@When("I enter the following information: <CRL>, <BPD>, <HC>, <FL>, <OFD>, <AC>, <HL>, <EFW>")
+	@When("^I go to enter the following information: <CRL>, <BPD>, <HC>, <FL>, <OFD>, <AC>, <HL>, <EFW>")
 	public void enter_ultrasound_data() {
 		//TODO
 	}

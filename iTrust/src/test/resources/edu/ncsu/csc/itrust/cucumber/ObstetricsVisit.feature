@@ -62,7 +62,7 @@ Scenario Outline: Dr. Seuss gives an ultrasound
 	Given I log in as Gandalf Stormcrow
 	And I search for Sporty Spice by MID and select Sporty Spice
 	And I choose to give an ultrasound
-	When I enter the following information: <CRL>, <BPD>, <HC>, <FL>, <OFD>, <AC>, <HL>, <EFW>
+	When I go to enter the following information: <CRL>, <BPD>, <HC>, <FL>, <OFD>, <AC>, <HL>, <EFW>
 	And submit the ultrasound data
 	Then no error message is shown and the data is saved to the database
 	
@@ -77,7 +77,7 @@ Scenario Outline: Dr. Seuss records incorrect Ultrasound data
 	Given I log in as Gandalf Stormcrow
 	And I search for Sporty Spice by MID and select Sporty Spice
 	And I choose to give an ultrasound
-	When I enter the following information: <CRL>, <BPD>, <HC>, <FL>, <OFD>, <AC>, <HL>, <EFW>
+	When I go to enter the following information: <CRL>, <BPD>, <HC>, <FL>, <OFD>, <AC>, <HL>, <EFW>
 	And submit the ultrasound data
 	Then an error message is shown and the data is not saved to the database
 	
