@@ -463,7 +463,8 @@ CREATE TABLE ultrasound
 	humerusLen FLOAT(10) UNSIGNED,
 	estimatedFetalWeight FLOAT(10) UNSIGNED,
 	ultrasoundDate VARCHAR(11) NOT NULL,
-	imagePath VARCHAR(25),
+	imageFile LONGBLOB,
+	PRIMARY KEY(patientMID, ultrasoundDate),
 	FOREIGN KEY (patientMID) REFERENCES patients(MID)
 ) ENGINE=MyISAM;
 

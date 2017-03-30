@@ -1,11 +1,14 @@
 package edu.ncsu.csc.itrust.model.ultrasound;
 
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sql.rowset.serial.SerialBlob;
 
 import com.mysql.jdbc.Statement;
 
@@ -34,8 +37,10 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		us.setAC(Double.parseDouble(rs.getString("abdominalCirc")));
 		us.setHL(Double.parseDouble(rs.getString("humerusLen")));
 		us.setEFW(Double.parseDouble(rs.getString("estimatedFetalWeight")));
-		us.setFilePath(rs.getString("imagePath"));
-		
+		Blob blob = rs.getBlob("imageFile");
+		int blobLength = (int) blob.length();
+		us.setFile(blob.getBytes(1, blobLength));
+		blob.free();
 		// Now grab the date the ultrasound was taken
 		us.setDateString(rs.getString("ultrasoundDate"));
 		
@@ -49,7 +54,7 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		if (newInstance) {
 			stmt = "INSERT INTO ultrasound(patientMID, crownRumpLen, BiparietalDia, HeadCirc, FemurLen, "
 					+ "OccipitofrontalDia, abdominalCirc, humerusLen, estimatedFetalWeight, ultrasoundDate, "
-					+ "imagePath) "
+					+ "imageFile) "
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 			// Now set the values
 			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
@@ -63,7 +68,7 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 			ps.setDouble(8, us.getHL());
 			ps.setDouble(9, us.getEFW());
 			ps.setString(10, us.getDateString());
-			ps.setString(11, us.getFilePath());
+			ps.setBlob(11, new SerialBlob(us.getFile()));
 		} else {
 			long id = us.getMID();
 			String d = us.getDateString();
@@ -76,7 +81,7 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 					+ "abdominalCirc=?, "
 					+ "humerusLen=?, "
 					+ "estimatedFetalWeight=?, "
-					+ "imagePath=? "
+					+ "imageFile=? "
 					+ "WHERE patientMID=? AND ultrasoundDate=?";
 			// Now set the values
 			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
@@ -88,7 +93,7 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 			ps.setDouble(6, us.getAC());
 			ps.setDouble(7, us.getHL());
 			ps.setDouble(8, us.getEFW());
-			ps.setString(9, us.getFilePath());
+			ps.setBlob(9, new SerialBlob(us.getFile()));
 			ps.setLong(10, id);
 			ps.setString(11, d);
 		}

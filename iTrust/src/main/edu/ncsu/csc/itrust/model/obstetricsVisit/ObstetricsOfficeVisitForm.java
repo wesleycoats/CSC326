@@ -7,11 +7,16 @@ import java.time.temporal.ChronoUnit;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.servlet.http.Part;
+
+import org.apache.commons.io.IOUtils;
 
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsDataMySQL;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsVisit;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsVisitMySQL;
+import edu.ncsu.csc.itrust.model.ultrasound.Ultrasound;
+import edu.ncsu.csc.itrust.model.ultrasound.UltrasoundMySQL;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name = "obstetrics_office_visit_form")
@@ -33,6 +38,19 @@ public class ObstetricsOfficeVisitForm {
 	private ObstetricsVisit obstetricsOV;
 	private ObstetricsDataMySQL sql;
 	
+	/** Ultrasound fields */
+	private UltrasoundMySQL usSQL;
+	private Ultrasound ultrasound;
+	private double crownRumpLen;
+	private double biparietalDia;
+	private double headCirc;
+	private double femurLen;
+	private double occipotoFrontalDia;
+	private double abdomincalCirc;
+	private double humerusLen;
+	private double estimatedFetalWeight;
+	private Part uploadedFile;
+	
 	
 	public Integer getPregnancies() {
 		return pregnancies;
@@ -48,6 +66,7 @@ public class ObstetricsOfficeVisitForm {
 		this.patientMID = SessionUtils.getInstance().getCurrentPatientMIDLong().longValue();
 		try {
 			this.mySQL = new ObstetricsVisitMySQL();
+			this.usSQL = new UltrasoundMySQL();
 		} catch (DBException e1) {
 			//Do nothing
 		}
@@ -190,15 +209,32 @@ public class ObstetricsOfficeVisitForm {
 
 	
 	public void save() {
-//		try( InputStream input = imageFile.getInputStream() ) {
-//			Files.copy(input, new File("C:/Users/Jacob/git/csc326-203-Project-01/iTrust/images/", imageFile.getSubmittedFileName()).toPath());			System.out.println(imageFile.getSubmittedFileName());
-//			System.out.println(imageFile.getSubmittedFileName());
-//			imageFile.write("/iTrust/images/" + imageFile.getSubmittedFileName());
-//		} catch (IOException e){
-//			e.printStackTrace();
-//			System.out.println(e.getMessage());
-			//not sure what to say, something like "file does not exist or couldn't be uploaded
-//		}
+		System.out.println(uploadedFile);
+		System.out.println(crownRumpLen);
+		System.out.println(biparietalDia);
+		System.out.println(headCirc);
+		System.out.println(femurLen);
+		System.out.println(occipotoFrontalDia);
+		System.out.println(abdomincalCirc);
+		System.out.println(humerusLen);
+		System.out.println(estimatedFetalWeight);
+		if(uploadedFile != null){
+			try( InputStream input = uploadedFile.getInputStream() ) {
+				//TODO GET REAL VALUES TO UPDATE HERE ARE TEST VALUES
+				Ultrasound us = new Ultrasound(this.patientMID, this.date, 1.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 3.0);
+				us.setFile(IOUtils.toByteArray(input));
+				try {
+					this.usSQL.addUltrasound(us);
+				} catch (DBException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} catch (IOException e){
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+				//			not sure what to say, something like "file does not exist or couldn't be uploaded
+			}
+		}
 	}
 	
 	public void submit() {
@@ -206,11 +242,84 @@ public class ObstetricsOfficeVisitForm {
 		this.obstetricsOV.setBloodPressure(bloodPressure);
 		this.obstetricsOV.setFetalHeartRate(fetalHR);
 		this.obstetricsOV.setPregnancies(pregnancies);
+		save();
 		
 		try {
 			this.mySQL.addObstetricsVisit(obstetricsOV);
 		} catch (DBException e) {
 			//Do Nothing
 		}
+	}
+
+	public Part getUploadedFile() {
+		return uploadedFile;
+	}
+
+	public void setUploadedFile(Part uploadedFile) {
+		this.uploadedFile = uploadedFile;
+	}
+
+	public double getcrownRumpLen() {
+		return crownRumpLen;
+	}
+
+	public void setcrownRumpLen(double cRL) {
+		crownRumpLen = cRL;
+	}
+
+	public double getbiparietalDia() {
+		return biparietalDia;
+	}
+
+	public void setbiparietalDia(double bPD) {
+		biparietalDia = bPD;
+	}
+
+	public double getheadCirc() {
+		return headCirc;
+	}
+
+	public void setheadCirc(double hC) {
+		headCirc = hC;
+	}
+
+	public double getfemurLen() {
+		return femurLen;
+	}
+
+	public void setfemurLen(double fL) {
+		femurLen = fL;
+	}
+
+	public double getoccipotoFrontalDia() {
+		return occipotoFrontalDia;
+	}
+
+	public void setoccipotoFrontalDia(double oFD) {
+		occipotoFrontalDia = oFD;
+	}
+
+	public double getabdomincalCirc() {
+		return abdomincalCirc;
+	}
+
+	public void setabdomincalCirc(double aC) {
+		abdomincalCirc = aC;
+	}
+
+	public double gethumerusLen() {
+		return humerusLen;
+	}
+
+	public void sethumerusLen(double hL) {
+		humerusLen = hL;
+	}
+
+	public double getestimatedFetalWeight() {
+		return estimatedFetalWeight;
+	}
+
+	public void setestimatedFetalWeight(double eFW) {
+		estimatedFetalWeight = eFW;
 	}
 }

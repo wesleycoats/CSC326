@@ -38,13 +38,13 @@ public class UltrasoundValidator extends POJOValidator<Ultrasound>  {
 			errorList.addIfNotNull("Estimated Fetal Weight cannot be negative");
 		
 		// If an image was uploaded, make sure it has a valid filepath and extension
-		if (obj.getFilePath() != "") {
-			String path = obj.getFilePath();
-			if (!path.endsWith(".jpg") && !path.endsWith(".pdf") && !path.endsWith(".png"))
-				errorList.addIfNotNull("Invalid file extension on the ultrasound image");
-			if (!path.startsWith("iTrust/image/ultrasound/"))
-				errorList.addIfNotNull("Invalid file location for ultrasound image");
-		}
+//		if (obj.getFile() != null) {
+//			String path = obj.getFilePath();
+//			if (!path.endsWith(".jpg") && !path.endsWith(".pdf") && !path.endsWith(".png"))
+//				errorList.addIfNotNull("Invalid file extension on the ultrasound image");
+//			if (!path.startsWith("iTrust/image/ultrasound/"))
+//				errorList.addIfNotNull("Invalid file location for ultrasound image");
+//		}
 		
 		if (errorList.hasErrors()) {
 			throw new FormValidationException(errorList);

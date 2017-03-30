@@ -51,7 +51,7 @@ public class UltrasoundTest extends TestCase {
 		assertEquals(neg, us.getHL(), 0.005);
 		assertEquals(neg, us.getEFW(), 0.005);
 		assertNull(us.getDate());
-		assertEquals("", us.getFilePath());
+		assertEquals(null, us.getFile());
 		
 
 		date = LocalDateTime.now();
@@ -72,9 +72,10 @@ public class UltrasoundTest extends TestCase {
 		assertEquals(date, us.getDate());
 		assertEquals(dateStr, us.getDateString());
 		
-		assertEquals("", us.getFilePath());
-		us.setFilePath(path);
-		assertEquals(path, us.getFilePath());
+		assertEquals(null, us.getFile());
+		byte[] bytes = new byte[] {1, 2, 3};
+		us.setFile(bytes);
+		assertEquals(bytes, us.getFile());
 	}
 	
 	@Test

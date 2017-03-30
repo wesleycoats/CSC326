@@ -1,5 +1,6 @@
 package edu.ncsu.csc.itrust.model.ultrasound;
 
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -19,7 +20,7 @@ public class Ultrasound {
 	private double AC;
 	private double HL;
 	private double EFW;
-	private String imageFilePath;
+	private byte[] imageFile;
 	
 	public Ultrasound() {
 		clearFields();
@@ -36,7 +37,7 @@ public class Ultrasound {
 		this.AC = AC;
 		this.HL = HL;
 		this.EFW = EFW;
-		imageFilePath = "";
+		this.imageFile = null;
 	}
 	
 	private void clearFields() {
@@ -50,7 +51,7 @@ public class Ultrasound {
 		AC = Double.MIN_NORMAL;
 		HL = Double.MIN_NORMAL;
 		EFW = Double.MIN_NORMAL;
-		imageFilePath = "";
+		imageFile = null;
 	}
 	
 	public long getMID() {
@@ -61,12 +62,12 @@ public class Ultrasound {
 		MID = mID;
 	}
 
-	public void setFilePath(String filePath) {
-		this.imageFilePath = filePath;
+	public void setFile(byte[] image) {
+		this.imageFile = image;
 	}
 	
-	public String getFilePath() {
-		return imageFilePath;
+	public byte[] getFile() {
+		return this.imageFile;
 	}
 
 	public double getCRL() {

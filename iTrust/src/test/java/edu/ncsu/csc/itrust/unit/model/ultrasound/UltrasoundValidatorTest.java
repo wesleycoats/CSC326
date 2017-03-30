@@ -137,29 +137,29 @@ public class UltrasoundValidatorTest {
 		
 		// Now make sure that the filepath is validated correctly
 		us = new Ultrasound(Vmid, date, Vcrl, Vbpd, Vhc, Vfl, Vofd, Vac, Vhl, Vefw);
-		us.setFilePath(Vpath);
-		try {
-			validator.validate(us);
-		} catch (FormValidationException e) {
-			fail();
-		}
+//		us.setFilePath(Vpath);
+//		try {
+//			validator.validate(us);
+//		} catch (FormValidationException e) {
+//			fail();
+//		}
 		
-		us.setFilePath(INVpath1);
-		try {
-			validator.validate(us);
-			fail();
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Invalid file extension on the ultrasound image"));
-		}
+//		us.setFilePath(INVpath1);
+//		try {
+//			validator.validate(us);
+//			fail();
+//		} catch (FormValidationException e) {
+//			assertTrue(e.getMessage().contains("Invalid file extension on the ultrasound image"));
+//		}
 		
-		us.setFilePath(INVpath2);
-		try {
-			validator.validate(us);
-			fail();
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Invalid file location for ultrasound image"));
-		}
-		
+//		us.setFilePath(INVpath2);
+//		try {
+//			validator.validate(us);
+//			fail();
+//		} catch (FormValidationException e) {
+//			assertTrue(e.getMessage().contains("Invalid file location for ultrasound image"));
+//		}
+//		
 	}
 
 }

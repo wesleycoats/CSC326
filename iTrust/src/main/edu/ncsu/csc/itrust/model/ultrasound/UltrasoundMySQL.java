@@ -177,6 +177,7 @@ public class UltrasoundMySQL implements Serializable {
 		try {
 			validator.validate(us);
 		} catch (FormValidationException e) {
+			System.out.println(e.getMessage());
 			throw new DBException(new SQLException(e.getMessage()));
 		}
 		try {

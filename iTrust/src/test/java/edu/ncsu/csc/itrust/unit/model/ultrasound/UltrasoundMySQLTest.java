@@ -101,6 +101,7 @@ public class UltrasoundMySQLTest extends TestCase {
     public void testAdd() {
     	LocalDateTime d = LocalDateTime.of(2017, 03, 23, 0, 0);
     	Ultrasound newUS = new Ultrasound(5, d, 1, 1, 1, 1, 1, 1, 1, 1);
+    	newUS.setFile(new byte[] {1,2,3});
     	List<Ultrasound> usList;
     	
     	try {
@@ -115,6 +116,7 @@ public class UltrasoundMySQLTest extends TestCase {
     		assertEquals(d, four.getDate());
     		assertEquals("23/03/2017", four.getDateString());
     	} catch (Exception e) {
+    		e.printStackTrace();
     		fail();
     	}
     }
@@ -123,6 +125,7 @@ public class UltrasoundMySQLTest extends TestCase {
     public void testUpdate() {
     	LocalDateTime d = LocalDateTime.of(2015, 10, 22, 0, 0);
     	Ultrasound newUS = new Ultrasound(1, d, 45, 1, 1, 1, 1, 1, 1, 1);
+    	newUS.setFile(new byte[] {1,2,3});
     	List<Ultrasound> usList;
     	try {
     		usList = sql.getAll();
