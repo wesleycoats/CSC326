@@ -417,7 +417,54 @@ public class OfficeVisitForm {
 				}
 			}
 		}
-		else if (apptTypeID == 7) { //A non OBGYN HCP is trying to create an office visit.
+		else if (apptTypeID == 8 && isOBGYN()) {
+			// Here is the code we need to save the visit and redirect the user to the Child birth
+			// Office visit page. If the user is not an OB/GYN then the user will be redirected to the 
+			// view office visits page.
+			
+			ov.setApptTypeID(apptTypeID);
+			ov.setDate(date);
+			ov.setLocationID(locationID);
+			ov.setNotes(notes);
+			ov.setSendBill(sendBill);
+			ov.setPatientMID(patientMID);
+			
+			if (isOfficeVisitCreated()) {
+				controller.edit(ov);
+				controller.logTransaction(TransactionType.OFFICE_VISIT_EDIT, ov.getVisitID().toString());
+			} else {
+				long pid = -1;
+				
+				FacesContext ctx = FacesContext.getCurrentInstance();
+
+				String patientID = "";
+				
+				if (ctx.getExternalContext().getRequest() instanceof HttpServletRequest) {
+					HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
+					HttpSession httpSession = req.getSession(false);
+					patientID = (String) httpSession.getAttribute("pid");
+				}
+				if (ValidationFormat.NPMID.getRegex().matcher(patientID).matches()) {
+					pid = Long.parseLong(patientID);
+				}
+				
+				ov.setPatientMID(pid);
+				ov.setVisitID(null);
+				long generatedVisitId = controller.addReturnGeneratedId(ov);
+				setVisitID(generatedVisitId);
+				ov.setVisitID(generatedVisitId);
+				controller.logTransaction(TransactionType.CREATE_OBSTETRICS_OV, ov.getVisitID().toString());
+				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("officeVisitId", generatedVisitId);
+				try {
+					//Here is where we will redirect the user to the correct page. The page does not exist
+					//so currently it sends the user to obstetricsOfficeVisit.xhtml
+					FacesContext.getCurrentInstance().getExternalContext().redirect("obstetricsOfficeVisit.xhtml");
+				} catch (IOException e) {
+					// Do nothing
+				}
+			}
+		}
+		else if (apptTypeID == 7 || apptTypeID == 8) { //A non OBGYN HCP is trying to create an office visit.
 			try {
 				ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
 				

@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -99,7 +100,29 @@ public class ObstetricsOfficeVisitForm {
 	
 	public void getVisitDate() {
 		Long pid = Long.parseLong(SessionUtils.getInstance().getSessionPID());
-		this.date = this.mySQL.getDateOfVisit(pid);
+		Long sid = SessionUtils.getInstance().getCurrentOfficeVisitId();
+		this.obstetricsOV.setVisitID((long) -1);;
+		try {
+			List<ObstetricsVisit> list = mySQL.getVisitsForPatient(pid);
+			if (list == null) {
+				this.obstetricsOV.setVisitID(sid);
+			}
+			else {
+				for (int i = 0; i < list.size(); i++) {
+					if (list.get(i).getVisitID() == sid) {
+						this.obstetricsOV = list.get(i);
+						break;
+					}
+				}
+				if (this.obstetricsOV.getVisitID() == (long) -1) {
+					this.obstetricsOV.setVisitID(sid);
+				}
+			}
+		} catch (DBException e) {
+			//Do Nothing
+		}
+		
+		this.date = this.mySQL.getDateOfVisit(SessionUtils.getInstance().getCurrentOfficeVisitId());
 		this.lastMenstrualPeriod = sql.getLmpDate(pid);
 		
 		if (this.date == null) {
@@ -242,6 +265,7 @@ public class ObstetricsOfficeVisitForm {
 		this.obstetricsOV.setBloodPressure(bloodPressure);
 		this.obstetricsOV.setFetalHeartRate(fetalHR);
 		this.obstetricsOV.setPregnancies(pregnancies);
+		
 		save();
 		
 		try {
