@@ -50,6 +50,16 @@ public class ObstetricsVisitValidator extends POJOValidator<ObstetricsVisit> {
 			errorList.addIfNotNull("Weeks Pregnant: You set a world record! Patient should not be pregnant for over a year.");
 		}
 		
+		if (obj.getWeight() < 0) {
+			errorList.addIfNotNull("Patient weight cannot be negative");
+		}
+		if (obj.getBloodPressure() < 0)
+			errorList.addIfNotNull("Patient Blood Pressure cannot be negative");
+		if (obj.getFetalHeartRate() < 0)
+			errorList.addIfNotNull("Fetal Heart Rate cannot be negative");
+		if (obj.getPregnancies() < 0)
+			errorList.addIfNotNull("Patient cannot be having fewer than 0 children");
+		
 		if (errorList.hasErrors()) {
 			throw new FormValidationException(errorList);
 		}

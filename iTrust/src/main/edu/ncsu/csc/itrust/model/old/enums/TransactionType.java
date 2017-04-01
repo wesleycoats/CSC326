@@ -418,6 +418,7 @@ public enum TransactionType {
 	VIEW_REVIEWS(6101, "Patient viewed reviews for an HCP.", "viewed reviews", false),
 	/**SUBMIT_REVIEW*/
 	SUBMIT_REVIEW(6102, "Patient submitted a review for an HCP.", "submitted review", true),
+	CREATE_OBSTETRICS_OV_OLD(6400, "Create Obstetric Office Visit", "Create Obstetric Office Visit", true),
 	/**ADD_ALLERGY**/
 	ADD_ALLERGY(6700, "Add Allergy", "Add Allergy", true),
 	

@@ -13,6 +13,11 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     private ObstetricsVisit ov;
     private ObstetricsVisitValidator ovv;
     
+    private float weight = 134;
+    private int bp = 192;
+    private int fhr = 204;
+    private short children = 2;
+    
     @Override
     public void setUp(){
     	ov = new ObstetricsVisit();
@@ -21,6 +26,11 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     
     @Test
     public void testCorrectValidation(){
+    	ov.setWeight(weight);
+    	ov.setFetalHeartRate(fhr);
+    	ov.setBloodPressure(bp);
+    	ov.setPregnancies(children);
+    	
 		ov.setPatientMID(2l);
 		ov.setVisitID(3l);
 		ov.setWeeksPregnant(4);
@@ -47,6 +57,11 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     @Test
     public void testValidationNullVisitID(){
     	ov = new ObstetricsVisit();
+    	ov.setWeight(weight);
+    	ov.setFetalHeartRate(fhr);
+    	ov.setBloodPressure(bp);
+    	ov.setPregnancies(children);
+    	
     	ov.setPatientMID(2l);
 		ov.setWeeksPregnant(4);
 		try{ 
@@ -61,6 +76,11 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     @Test
     public void testValidationNegVisitID(){
     	ov = new ObstetricsVisit();
+    	ov.setWeight(weight);
+    	ov.setFetalHeartRate(fhr);
+    	ov.setBloodPressure(bp);
+    	ov.setPregnancies(children);
+    	
     	ov.setPatientMID(2l);
     	ov.setVisitID(-3l);
 		ov.setWeeksPregnant(4);
@@ -75,6 +95,11 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     
     @Test
     public void testNegWeeksPregnant(){
+    	ov.setWeight(weight);
+    	ov.setFetalHeartRate(fhr);
+    	ov.setBloodPressure(bp);
+    	ov.setPregnancies(children);
+    	
 		ov.setPatientMID(2l);
 		ov.setVisitID(3l);
 		ov.setWeeksPregnant(-4);
@@ -90,6 +115,11 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     @Test
     public void testValidationLongPregnancy(){
     	ov = new ObstetricsVisit();
+    	ov.setWeight(weight);
+    	ov.setFetalHeartRate(fhr);
+    	ov.setBloodPressure(bp);
+    	ov.setPregnancies(children);
+    	
     	ov.setPatientMID(2l);
     	ov.setVisitID(3l);
 		ov.setWeeksPregnant(53);
