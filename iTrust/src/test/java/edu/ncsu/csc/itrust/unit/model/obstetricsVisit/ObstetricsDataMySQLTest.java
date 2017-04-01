@@ -1,14 +1,11 @@
 package edu.ncsu.csc.itrust.unit.model.obstetricsVisit;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.junit.Test;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 

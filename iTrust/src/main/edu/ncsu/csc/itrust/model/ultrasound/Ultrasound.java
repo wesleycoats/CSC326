@@ -1,6 +1,5 @@
 package edu.ncsu.csc.itrust.model.ultrasound;
 
-import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

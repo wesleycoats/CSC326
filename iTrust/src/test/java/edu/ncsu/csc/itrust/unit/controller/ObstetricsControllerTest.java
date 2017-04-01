@@ -1,7 +1,5 @@
 package edu.ncsu.csc.itrust.unit.controller;
 
-import java.time.LocalDateTime;
-
 import javax.faces.application.FacesMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,7 +17,6 @@ import edu.ncsu.csc.itrust.controller.ObstetricsController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsData;
-import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsDataMySQL;
 import edu.ncsu.csc.itrust.model.pregnancies.Pregnancies;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
