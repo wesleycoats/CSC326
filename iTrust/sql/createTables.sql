@@ -432,7 +432,7 @@ CREATE TABLE childbirthDrugs
     drugRecordID BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     drugType enum('Pitocin', 'Nitrous oxide', 'Pethidine', 'Epidural anaesthesia', 'Magnesium sulfate'),
     dosage int UNSIGNED,
-    PRIMARY KEY (patientMID, visitID),
+    PRIMARY KEY (drugRecordID),
     FOREIGN KEY (patientMID) REFERENCES patients(MID),
     FOREIGN KEY (visitID) REFERENCES officeVisit(visitID)
 
