@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -30,10 +30,10 @@ public class ObstetricsOfficeVisitForm {
 	private LocalDateTime expectedDeliveryDate;
 	private LocalDateTime date;
 	private Long apptTypeID;
-	private float weight;
-	private int bloodPressure;
-	private int fetalHR;
-	private int pregnancies;
+	private Float weight;
+	private Integer bloodPressure;
+	private Integer fetalHR;
+	private Integer pregnancies;
 	private ObstetricsVisitMySQL mySQL;
 	private ObstetricsVisit obstetricsOV;
 	private ObstetricsDataMySQL sql;
@@ -61,6 +61,10 @@ public class ObstetricsOfficeVisitForm {
 	}
 	
 	public ObstetricsOfficeVisitForm() {
+		this.weight = (float) 0;
+		this.pregnancies = 0;
+		this.bloodPressure = 0;
+		this.fetalHR = 0;
 		this.obstetricsOV = new ObstetricsVisit();
 		this.expectedDeliveryDate = LocalDateTime.now();
 		this.patientMID = SessionUtils.getInstance().getCurrentPatientMIDLong().longValue();
@@ -99,9 +103,42 @@ public class ObstetricsOfficeVisitForm {
 	
 	public void getVisitDate() {
 		Long pid = Long.parseLong(SessionUtils.getInstance().getSessionPID());
-		this.date = this.mySQL.getDateOfVisit(pid);
-		this.lastMenstrualPeriod = sql.getLmpDate(pid);
+		Long sid = SessionUtils.getInstance().getCurrentOfficeVisitId();
+		this.obstetricsOV.setVisitID((long) -1);
+		this.obstetricsOV.setPatientMID(pid);
+		try {
+			List<ObstetricsVisit> list = mySQL.getVisitsForPatient(pid);
+			if (list == null || list.size() == 0) {
+				this.obstetricsOV.setVisitID(sid);
+			}
+			else {
+				for (int i = 0; i < list.size(); i++) {
+					if (list.get(i).getVisitID() == sid) {
+						this.obstetricsOV.setVisitID(list.get(i).getVisitID());
+						this.obstetricsOV = list.get(i);
+						break;
+					}
+				}
+				if (this.obstetricsOV.getVisitID() == (long) -1) {
+					this.obstetricsOV.setVisitID(sid);
+				}
+			}
+		} catch (DBException e) {
+			//Do Nothing
+		}
 		
+		
+		this.date = this.mySQL.getDateOfVisit(SessionUtils.getInstance().getCurrentOfficeVisitId());
+		this.lastMenstrualPeriod = sql.getLmpDate(pid);
+		this.patientMID = pid;
+		
+		if (this.obstetricsOV != null) {
+			this.setWeight(this.obstetricsOV.getWeight());
+			setBloodPressure(this.obstetricsOV.getBloodPressure());
+			this.fetalHR = this.obstetricsOV.getFetalHeartRate();
+			this.pregnancies = this.obstetricsOV.getPregnancies();
+		}
+		 
 		if (this.date == null) {
 			this.date = LocalDateTime.now();
 		}
@@ -209,7 +246,7 @@ public class ObstetricsOfficeVisitForm {
 
 	
 	public void save() {
-		System.out.println(uploadedFile);
+/*		System.out.println(uploadedFile);
 		System.out.println(crownRumpLen);
 		System.out.println(biparietalDia);
 		System.out.println(headCirc);
@@ -218,6 +255,7 @@ public class ObstetricsOfficeVisitForm {
 		System.out.println(abdomincalCirc);
 		System.out.println(humerusLen);
 		System.out.println(estimatedFetalWeight);
+		*/
 		if(uploadedFile != null){
 			try( InputStream input = uploadedFile.getInputStream() ) {
 				//TODO GET REAL VALUES TO UPDATE HERE ARE TEST VALUES
@@ -242,6 +280,8 @@ public class ObstetricsOfficeVisitForm {
 		this.obstetricsOV.setBloodPressure(bloodPressure);
 		this.obstetricsOV.setFetalHeartRate(fetalHR);
 		this.obstetricsOV.setPregnancies(pregnancies);
+		this.obstetricsOV.setWeeksPregnant();
+		
 		save();
 		
 		try {

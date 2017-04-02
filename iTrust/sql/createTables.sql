@@ -413,12 +413,53 @@ CREATE TABLE officeVisit
 	FOREIGN KEY (apptTypeID) REFERENCES appointmenttype(apptType_id)
 )  ENGINE=MyISAM;
 
+CREATE TABLE childbirthVisit
+(
+
+    visitID BIGINT(20) UNSIGNED,
+    patientMID BIGINT(20) UNSIGNED NOT NULL,
+    preferredDelivery enum('vaginal delivery', 'vaginal delivery vacuum assist', 'vaginal delivery forceps assist', 'caesarean section', 'miscarriage'),
+    scheduled BIT(1)
+
+
+)  Engine=MyISAM;
+
+CREATE TABLE childbirthDrugs
+(
+
+    patientMID BIGINT(20) UNSIGNED NOT NULL,
+    visitID BIGINT(20) UNSIGNED,
+    drugRecordID BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    drugType enum('Pitocin', 'Nitrous oxide', 'Pethidine', 'Epidural anaesthesia', 'Magnesium sulfate'),
+    dosage int UNSIGNED,
+    PRIMARY KEY (drugRecordID),
+    FOREIGN KEY (patientMID) REFERENCES patients(MID),
+    FOREIGN KEY (visitID) REFERENCES officeVisit(visitID)
+
+) Engine=MyISAM;
+
+CREATE TABLE childbirthChildren
+(
+
+    motherID BIGINT(20) UNSIGNED NOT NULL,
+    visitID BIGINT(20) UNSIGNED NOT NULL,
+    sex BIT(1),
+    actualDelivery enum('vaginal delivery', 'vaginal delivery vacuum assist', 'vaginal delivery forceps assist', 'caesarean section', 'miscarriage'),
+    dateOfBirth DATE NOT NULL,
+    PRIMARY KEY (motherID, visitID),
+    FOREIGN KEY (motherID) REFERENCES patients(MID),
+    FOREIGN KEY (visitID) REFERENCES officeVisit(visitID)
+
+) Engine=MyISAM;
+
+
 CREATE TABLE obstetrics
 (
     patientMID BIGINT(20) UNSIGNED NOT NULL,
     dateCreated DATETIME,
     lmp DATETIME NOT NULL,
     edd DATETIME NOT NULL,
+    
     PRIMARY KEY (patientMID, dateCreated)
     
 ) ENGINE=MyISAM;

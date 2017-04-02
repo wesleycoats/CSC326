@@ -11,6 +11,8 @@ public enum Role {
 	ER("er", "Personnel", 9L), 
 	/**HCP*/
 	HCP("hcp", "Personnel", 9L), 
+	/** OB/GYN*/
+	OBGYN("ob/gyn", "Personnel", 9L),
 	/**UAP*/
 	UAP("uap", "Personnel", 8L),
 	/**LT*/

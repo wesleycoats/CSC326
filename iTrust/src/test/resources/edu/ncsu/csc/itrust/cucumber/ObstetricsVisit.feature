@@ -1,5 +1,4 @@
-#Author wrcoats
-#		bmhogan
+#Author bmhogan
 
 Feature: Document or edit information for an Obstetrics Visit
 	As a HCP
@@ -8,12 +7,12 @@ Feature: Document or edit information for an Obstetrics Visit
 
 #UC 94 [S1][S2][S3]	
 Scenario Outline: Entering valid obstetrics visit information
-	Given I log in as Gandalf Stormcrow
-	And I search for Sporty Spice by MID and select Sporty Spice
-	And I go to enter Obstetrics visit information
-	And I enter <WeeksPreggo>, <Weight>, <BloodPressure>, <FHR>, <numChildren>, <Placenta>
+	Given Gandalf Stormcrow is an HCP with MID: 9000000003 and role of OB/GYN
+	When I log in as Gandalf Stormcrow
+	And I search for Person Random by MID and select Person Random
+	And I go to enter Obstetrics visit information and I enter <WeeksPreggo>, <Weight>, <BloodPressure>, <FHR>, <numChildren>, <Placenta>
 	And I submit the data
-	Then no error message is shown and the data is saved to the database
+	Then no error message is shown and the obstetrics data is saved to the database
 	
 	Examples:
 	| WeeksPreggo | Weight | BloodPressure | FHR | numChildren | Placenta |
@@ -27,16 +26,15 @@ Scenario Outline: Entering valid obstetrics visit information
 	| 2           |  303.3 | 30 	       | 205 | 4           | True     |
 	
 Scenario Outline: Entering invalid obstetrics visit information
-	Given I log in as Gandalf Stormcrow
-	And I search for Sporty Spice by MID and select Sporty Spice
-	And I go to enter Obstetrics visit information
-	And I enter <WeeksPreggo>, <Weight>, <BloodPressure>, <FHR>, <numChildren>, <Placenta>
+	Given Gandalf Stormcrow is an HCP with MID: 9000000003 and role of OB/GYN
+	When I log in as Gandalf Stormcrow
+	And I search for Person Random by MID and select Person Random
+	And I go to enter invalid Obstetrics visit information and I enter <WeeksPreggo>, <Weight>, <BloodPressure>, <FHR>, <numChildren>, <Placenta>
 	And I submit the data
-	Then an error message is shown and the data is not saved to the database
+	Then an error message is shown and the obstetrics data is not saved to the database
 	
 	Examples:
 	| WeeksPreggo | Weight | BloodPressure | FHR | numChildren | Placenta |
-	| 13          |  192.8 | 70 	       | 178 | 1           | null     |
 	| -1          |  192.8 | 70 	       | 178 | 1           | False    |
 	| 13          |  -1    | 70 	       | 178 | 1           | False    |
 	| 13          |  192.8 | -1  	       | 178 | 1           | False    |
@@ -44,27 +42,13 @@ Scenario Outline: Entering invalid obstetrics visit information
 	| 13          |  192.8 | 70 	       | 178 | -1          | False    |
 	
 	
-Scenario: Scheduling a future Childbirth appointments
-	Given I log in as Gandalf Stormcrow
-	And I search for Sporty Spice by MID and select Sporty Spice
-	And Sporty Spice is 42 weeks pregnant
-	Then the next appointment that is scheduled is a Childbirth Visit
-	
-	
-Scenario: Scheduling a future Obstetrics appointment
-	Given I log in as Gandalf Stormcrow
-	And I search for Sporty Spice by MID and select Sporty Spice
-	And Sporty Spice is 41 weeks pregnant
-	Then the next appointment that is scheduled is another Obstetrics Visit
-	
-	
 Scenario Outline: Dr. Seuss gives an ultrasound
-	Given I log in as Gandalf Stormcrow
-	And I search for Sporty Spice by MID and select Sporty Spice
-	And I choose to give an ultrasound
-	When I go to enter the following information: <CRL>, <BPD>, <HC>, <FL>, <OFD>, <AC>, <HL>, <EFW>
+	Given Gandalf Stormcrow is an HCP with MID: 9000000003 and role of OB/GYN
+	When I log in as Gandalf Stormcrow
+	And I search for Person Random by MID and select Person Random
+	And I choose to give an ultrasound and I enter the following information: <CRL>, <BPD>, <HC>, <FL>, <OFD>, <AC>, <HL>, <EFW>
 	And submit the ultrasound data
-	Then no error message is shown and the data is saved to the database
+	Then no error message is shown and the ultrasound data is saved to the database
 	
 	Examples:
 	| CRL | BPD | HC  | FL | OFD | AC | HL  | EFW |
@@ -74,12 +58,12 @@ Scenario Outline: Dr. Seuss gives an ultrasound
 	
 
 Scenario Outline: Dr. Seuss records incorrect Ultrasound data
-	Given I log in as Gandalf Stormcrow
-	And I search for Sporty Spice by MID and select Sporty Spice
-	And I choose to give an ultrasound
-	When I go to enter the following information: <CRL>, <BPD>, <HC>, <FL>, <OFD>, <AC>, <HL>, <EFW>
+	Given Gandalf Stormcrow is an HCP with MID: 9000000003 and role of OB/GYN
+	When I log in as Gandalf Stormcrow
+	And I search for Person Random by MID and select Person Random
+	And I choose to give an ultrasound and I enter the following invalid information: <CRL>, <BPD>, <HC>, <FL>, <OFD>, <AC>, <HL>, <EFW>
 	And submit the ultrasound data
-	Then an error message is shown and the data is not saved to the database
+	Then an error message is shown and the ultrasound data is not saved to the database
 	
 	Examples:
 	| CRL | BPD | HC  | FL | OFD | AC | HL  | EFW |
@@ -91,9 +75,3 @@ Scenario Outline: Dr. Seuss records incorrect Ultrasound data
 	| 3.4 | 2.2 | 1.1 | 4  | 6.2 | -4 | 3.3 | 7.3 |
 	| 3.4 | 2.2 | 1.1 | 4  | 6.2 | 4  | -3  | 7.3 |
 	| 3.4 | 2.2 | -1  | 4  | 6.2 | 4  | 3.3 | 0   |
-
-
-Scenario: Non OB/GYN requested to make regular office visit
-	Given I log into iTrust as Kelly Doctor
-	And I search for Sporty Spice by MID and select Sporty Spice
-	And I go to enter Obstetrics visit information but am only able to create a visit
