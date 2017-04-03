@@ -2,6 +2,7 @@ package edu.ncsu.csc.itrust.model.childbirthVisit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -107,10 +108,8 @@ public class ChildRecordForm {
 		this.dateOfBirth = dateOfBirth;
 	}
 	public String getTimeOfBirth() {
-		String time = timeOfBirth.toString();
-		if(time.length() > 4) {
-			time = time.substring(0, 5);
-		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+		String time = timeOfBirth.format(formatter);
 		return time;
 	}
 	public void setTimeOfBirth(LocalTime timeOfBirth) {

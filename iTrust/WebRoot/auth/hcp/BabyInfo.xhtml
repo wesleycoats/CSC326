@@ -28,41 +28,39 @@
 				<h:form>
 					<div class="form-group">
 						<h:outputLabel for="chrfirst">First Name:</h:outputLabel>
-						<h:inputTextarea value="#{child_record_form.getFirstName()}" id="chrfirst"
+						<h:inputTextarea value="#{child_record_form.firstName}" id="chrfirst"
 							cols="10" rows="1" class="form-control inline">
-							<f:convertNumber />
 						</h:inputTextarea>
 					</div>
 					
 					<div class="form-group">
 						<h:outputLabel for="chrlast">Last Name:</h:outputLabel>
-						<h:inputTextarea value="#{child_record_form.getLastName()}" id="chrlast"
+						<h:inputTextarea value="#{child_record_form.lastName}" id="chrlast"
 							cols="10" rows="1" class="form-control inline">
-							<f:convertNumber />
 						</h:inputTextarea>
 					</div>			
 					
 					<div class="form-group">
 						<h:outputLabel for="chrdate">Date of Birth:</h:outputLabel>
-						<h:inputTextarea value="#{child_record_form.getDateOfBirth()}" id="chrdate"
+						<h:inputTextarea value="#{child_record_form.dateOfBirth}" id="chrdate"
 							cols="10" rows="1" class="form-control inline">
-							<f:convertNumber />
+							<f:convertDateTime dateStyle="full" pattern="yyyy-mm-dd"/>
 						</h:inputTextarea>
 					</div>			
 				
 					<div class="form-group">
 						<h:outputLabel for="chrtime">Estimated Time of Delivery:</h:outputLabel>
-						<h:inputTextarea value="#{child_record_form.getTimeOfBirth()}" id="chrtime"
+						<h:inputTextarea value="#{child_record_form.timeOfBirth}" id="chrtime"
 							cols="10" rows="1" class="form-control inline">
-							<f:convertNumber />
+							<f:convertDateTime dateStyle="full" pattern="hh:mm a"/>
 						</h:inputTextarea>
 					</div>
 
 					<div class="form-group">
 						<h:outputLabel for="chrsex">Sex:  </h:outputLabel>
 						<h:selectOneMenu value="#{child_record_form.sex}">
-				   			<f:selectItem itemValue="Male" itemLabel="Male" />
-				   			<f:selectItem itemValue="Female" itemLabel="Female" />
+				   			<f:selectItem itemValue="true" itemLabel="Male" />
+				   			<f:selectItem itemValue="false" itemLabel="Female" />
 				   		</h:selectOneMenu>
 					</div>
 					
