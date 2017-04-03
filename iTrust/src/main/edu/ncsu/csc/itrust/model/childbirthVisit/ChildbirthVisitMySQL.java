@@ -150,7 +150,7 @@ public class ChildbirthVisitMySQL implements Serializable {
 
 	}
 	
-	private List<ChildbirthVisit> sortByDate(List<ChildbirthVisit> unsorted) {
+	private List<ChildbirthVisit> sortByDate(List<ChildbirthVisit> unsorted) throws DBException {
 		List<ChildbirthVisit> sorted = new LinkedList<ChildbirthVisit>();
 		for(int i = 0; i < unsorted.size(); i++) {
 			ChildbirthVisit nextToAdd = unsorted.get(i);
