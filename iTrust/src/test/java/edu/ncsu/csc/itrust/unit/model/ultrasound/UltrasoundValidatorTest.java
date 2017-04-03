@@ -3,7 +3,6 @@ package edu.ncsu.csc.itrust.unit.model.ultrasound;
 import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import org.junit.Test;
 
@@ -36,11 +35,6 @@ public class UltrasoundValidatorTest {
 	private double INVefw = -6.7;
 	
 	private LocalDateTime date;
-	private String dateStr = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-	
-	private String Vpath = "iTrust/image/ultrasound/honest.jpg";
-	private String INVpath1 = "iTrust/image/ultrasound/honest.ppr";
-	private String INVpath2 = "iTrust/ultrasound/honest.jpg";
 
 	@Test
 	public void testValidate() {
@@ -134,32 +128,6 @@ public class UltrasoundValidatorTest {
 		} catch (FormValidationException e) {
 			assertTrue(e.getMessage().contains("Estimated Fetal Weight cannot be negative"));
 		}
-		
-		// Now make sure that the filepath is validated correctly
-		us = new Ultrasound(Vmid, date, Vcrl, Vbpd, Vhc, Vfl, Vofd, Vac, Vhl, Vefw);
-//		us.setFilePath(Vpath);
-//		try {
-//			validator.validate(us);
-//		} catch (FormValidationException e) {
-//			fail();
-//		}
-		
-//		us.setFilePath(INVpath1);
-//		try {
-//			validator.validate(us);
-//			fail();
-//		} catch (FormValidationException e) {
-//			assertTrue(e.getMessage().contains("Invalid file extension on the ultrasound image"));
-//		}
-		
-//		us.setFilePath(INVpath2);
-//		try {
-//			validator.validate(us);
-//			fail();
-//		} catch (FormValidationException e) {
-//			assertTrue(e.getMessage().contains("Invalid file location for ultrasound image"));
-//		}
-//		
 	}
 
 }
