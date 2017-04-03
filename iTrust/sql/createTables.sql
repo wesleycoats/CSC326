@@ -420,6 +420,14 @@ CREATE TABLE childbirthVisit
     patientMID BIGINT(20) UNSIGNED NOT NULL,
     preferredDelivery enum('vaginal delivery', 'vaginal delivery vacuum assist', 'vaginal delivery forceps assist', 'caesarean section', 'miscarriage'),
     scheduled BIT(1)
+    pitocinDosage int UNSIGNED,
+    noDosage int UNSIGNED,
+    pethidineDosage int UNSIGNED,
+    eaDosage int UNSIGNED,
+    msDosage int UNSIGNED
+    
+    PRIMARY KEY (visitID)
+    FOREIGN KEY (visitID) REFERENCES officeVisit(visitID)
 
 
 )  Engine=MyISAM;
