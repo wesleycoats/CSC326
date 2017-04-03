@@ -456,9 +456,8 @@ public class OfficeVisitForm {
 				controller.logTransaction(TransactionType.CREATE_OBSTETRICS_OV, ov.getVisitID().toString());
 				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("officeVisitId", generatedVisitId);
 				try {
-					//Here is where we will redirect the user to the correct page. The page does not exist
-					//so currently it sends the user to obstetricsOfficeVisit.xhtml
-					FacesContext.getCurrentInstance().getExternalContext().redirect("obstetricsOfficeVisit.xhtml");
+					//Here is where we will redirect the user to the correct page. 
+					FacesContext.getCurrentInstance().getExternalContext().redirect("childBirthVisit.xhtml");
 				} catch (IOException e) {
 					// Do nothing
 				}

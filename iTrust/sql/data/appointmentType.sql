@@ -7,4 +7,4 @@ VALUES
 ('Ultrasound', '30', '500'),
 ('Consultation', '30', '1000'),
 ('Obstetrics', '30', '100'),
-('Child Birth', '600', '2000');
+('Child Birth', '60', '2000');
