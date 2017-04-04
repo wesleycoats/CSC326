@@ -113,6 +113,29 @@ public class ChildbirthVisitMySQL implements Serializable {
 			DBUtil.closeConnection(conn, pstring);
 		}
 	}
+	
+	public boolean updateChildbirthVisit(ChildbirthVisit cb) throws DBException {
+		
+		Connection conn = null;
+		PreparedStatement pstring = null;
+		try {
+			validator.validate(cb);
+		} catch(FormValidationException e){
+			throw new DBException(new SQLException(e.getMessage()));
+		}
+		
+		try {
+			conn = ds.getConnection();
+			pstring = cbLoader.loadParameters(conn, pstring, cb, false);
+			int results = pstring.executeUpdate();
+			return results != 0;
+		} catch(SQLException e) {
+			throw new DBException(e);
+		} finally {
+			DBUtil.closeConnection(conn, pstring);
+		}
+		
+	}
 
 
 	public LocalDateTime getDateOfVisit(Long visitID) throws DBException {

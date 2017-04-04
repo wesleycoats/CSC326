@@ -451,7 +451,6 @@ CREATE TABLE childbirthChildren
     sex BIT(1),
     actualDelivery enum('vaginal delivery', 'vaginal delivery vacuum assist', 'vaginal delivery forceps assist', 'caesarean section', 'miscarriage'),
     dateOfBirth DATETIME NOT NULL,
-    PRIMARY KEY (motherID, visitID),
     FOREIGN KEY (motherID) REFERENCES patients(MID),
     FOREIGN KEY (visitID) REFERENCES officeVisit(visitID)
 

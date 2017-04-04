@@ -17,7 +17,6 @@ import edu.ncsu.csc.itrust.webutils.SessionUtils;
 public class ChildBirthVisitForm {
 	
 	private String ovID;
-	private ChildbirthData data;
 	private Long patientMID;
 	private Long visitID;
 	private Long preferredDelivery;
@@ -59,7 +58,6 @@ public class ChildBirthVisitForm {
 		}
 		
 		if (ov != null) {
-			
 			return ov.getDate().toLocalDate().toString();
 		}
 		return "Date not Found.";	
@@ -116,7 +114,6 @@ public class ChildBirthVisitForm {
 	public void getVisitDate() {
 		this.patientMID = Long.parseLong(SessionUtils.getInstance().getSessionPID());
 		this.visitID = SessionUtils.getInstance().getCurrentOfficeVisitId();
-		this.ovID = visitID.toString();
 		
 		//After this we will need to get the information from a previously existing child birth
 		//office visit. For now I will assume that one does not exist.

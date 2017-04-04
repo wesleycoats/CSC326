@@ -7,6 +7,7 @@ import java.time.format.DateTimeParseException;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.action.AddPatientAction;
 import edu.ncsu.csc.itrust.exception.DBException;
@@ -35,12 +36,30 @@ public class ChildRecordForm {
 	private ChildRecord childRecord;
 	private ChildRecordMySQL childsql;
 	private PatientBean newBaby;
-	private PatientBean parent;
+	private Long motherMID;
+	private Long officeID;
 	private PatientDAO patientDAO;
 	private AddPatientAction addBaby;
 	
-	public ChildRecordForm(){
-		DAOFactory factory = DAOFactory.getProductionInstance();
+	private DAOFactory factory;
+	private SessionUtils session;
+	private String messege = "";
+	
+	public ChildRecordForm(DAOFactory dao, SessionUtils session, DataSource ds) {
+		this.factory = dao;
+		this.session = session;
+		this.childsql = new ChildRecordMySQL(ds);
+		setup();
+	}
+	
+	public ChildRecordForm() throws DBException{
+		this.factory = DAOFactory.getProductionInstance();
+		this.session = SessionUtils.getInstance();
+		this.childsql = new ChildRecordMySQL();
+		setup();
+	}
+	
+	private void setup() {
 		this.sex = true;
 		this.deliveryType = "";
 		this.dateTimeOfBirth = LocalDateTime.now();
@@ -49,18 +68,40 @@ public class ChildRecordForm {
 		this.timeOfBirth = dateTimeOfBirth.format(formatter);
 		this.firstName = "";
 		this.lastName = "";
-		
+		this.officeID = session.getCurrentOfficeVisitId();
 		try {
-			this.childsql = new ChildRecordMySQL();
-			this.addBaby = new AddPatientAction(factory, SessionUtils.getInstance().getSessionLoggedInMIDLong());
+			this.addBaby = new AddPatientAction(factory, session.getSessionLoggedInMIDLong());
 			this.patientDAO = factory.getPatientDAO();
-			this.parent = patientDAO.getPatient(SessionUtils.getInstance().getCurrentPatientMIDLong().longValue());
-			email = parent.getEmail();
+			PatientBean parent = patientDAO.getPatient(session.getCurrentPatientMIDLong().longValue());
+			if(parent != null) {
+				email = parent.getEmail();
+				this.motherMID = parent.getMID();
+			}
 			if(email == null) email = "";
 		} catch (DBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+
+	public String getMessege() {
+		return messege;
+	}
+	public void setMessege(String mess) {
+		this.messege = mess;
+	}
+	public Long getMotherMID() {
+		return motherMID;
+	}
+	public void setMotherMID(Long motherMID) {
+		this.motherMID = motherMID;
+	}
+	public Long getOfficeID() {
+		return officeID;
+	}
+	public void setOfficeID(Long officeID) {
+		this.officeID = officeID;
 	}
 	
 	public String getFirstName() {
@@ -123,35 +164,30 @@ public class ChildRecordForm {
 	}
 	
 	public void submit() {
-		Long id = SessionUtils.getInstance().getCurrentOfficeVisitId();
 		this.setDateTimeOfBirth();
 		childRecord = new ChildRecord(sex, deliveryType, dateTimeOfBirth, 
-				parent.getMID(), id);
+				motherMID, officeID);
 		newBaby = new PatientBean();
 		newBaby.setFirstName(firstName);
 		newBaby.setLastName(lastName);
 		newBaby.setEmail(email);
-		newBaby.setMotherMID("" + parent.getMID());
+		newBaby.setMotherMID("" + motherMID);
 		try {
-			long loggedIn = SessionUtils.getInstance().getSessionLoggedInMIDLong();
+			long loggedIn = motherMID;
 			addBaby.addDependentPatient(newBaby, loggedIn, loggedIn);
-		} catch (DBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (FormValidationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			messege = "Input not Valid.";
+		} catch (DBException e) {
+			messege = "Database is unhappy";
 		} catch (ITrustException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			messege = "oops! Something went wrong.";
 		}
 	
 		try {
 			childsql.addChildRedcord(childRecord);
+			messege = "Baby successfully added.";
 		} catch (DBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			messege = "Input not Valid.";
 		}
-		
 	}
 }
