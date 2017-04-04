@@ -457,7 +457,7 @@ public class OfficeVisitForm {
 				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("officeVisitId", generatedVisitId);
 				try {
 					//Here is where we will redirect the user to the correct page. 
-					FacesContext.getCurrentInstance().getExternalContext().redirect("childBirthVisit.xhtml");
+					FacesContext.getCurrentInstance().getExternalContext().redirect("childBirthInfo.xhtml");
 				} catch (IOException e) {
 					// Do nothing
 				}

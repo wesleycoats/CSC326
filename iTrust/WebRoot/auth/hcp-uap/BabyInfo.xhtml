@@ -7,25 +7,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
-	<f:view
-		beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
-		
-		
-	<h:body>
-		<ui:composition template="/iTrust_template.xhtml">
-			<ui:define name="pageStyle"></ui:define>
-			<ui:define name="pageTitle">Input Newborn Info</ui:define>
-			<ui:define name="leftMenu">
-				<ui:include src="/auth/hcp/menu.xhtml" />
-			</ui:define>
-	
-			<ui:define name="mainContent">
-				<h2 align="center" style="font-size: 175%; font-weight: bold;">
-					Inputting Newborn Info for Child of <br />
-					Patient: #{user.getUserNameForID(sessionScope['pid'])} <br />
-				</h2>
-				
-				<h:form>
+				<h:form id="baby_info">
 					<div class="form-group">
 						<h:outputLabel for="chrfirst">First Name:</h:outputLabel>
 						<h:inputTextarea value="#{child_record_form.firstName}" id="chrfirst"
@@ -80,9 +62,6 @@
 							action="#{navigation_controller.baseOfficeVisit}" immediate="true" />
 					</div>
 				</h:form>
-			</ui:define>
-		</ui:composition>
-	</h:body>
 
 </html>
 
