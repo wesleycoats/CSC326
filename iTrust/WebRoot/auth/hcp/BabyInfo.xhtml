@@ -20,6 +20,10 @@
 			</ui:define>
 	
 			<ui:define name="mainContent">
+				<h2 align="center" style="color: red; font-size: 175%;">
+					#{child_record_form.messege} <br />
+				</h2>
+			
 				<h2 align="center" style="font-size: 175%; font-weight: bold;">
 					Inputting Newborn Info for Child of <br />
 					Patient: #{user.getUserNameForID(sessionScope['pid'])} <br />
