@@ -1,6 +1,8 @@
 package edu.ncsu.csc.itrust.cucumber;
 import edu.ncsu.csc.itrust.model.childbirthVisit.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.Assert;
 
 import cucumber.api.java.en.Given;
@@ -15,6 +17,7 @@ public class ChildbirthVisitStepDefs {
 
 	private SharedPersonnel sharedPersonnel;
 	private SharedChildbirthVisit sharedChildbirthVisit;
+	private ChildRecord childRecord;
 	
 	
 	@Given("I log in as Kelly Doctor")
@@ -37,7 +40,7 @@ public class ChildbirthVisitStepDefs {
 	
 	@When("Princess Peach has a childbirth visit scheduled during an obstetrics visit")
 	public void princess_peach_has_childbirth_visit_scheduled() {
-		
+		Assert.assertNotNull(sharedChildbirthVisit.getChildbirthVisit().getVisitID());
 	}
 	
 	@When("I go to enter childbirth information and I enter (.+), (.+), (.+), (.+), (.+), (.+), (.+)")
@@ -63,12 +66,15 @@ public class ChildbirthVisitStepDefs {
 	
 	@When("Princess Peach has fraternal twins Toad and Toadette at 2:30 on May 17 of the current year")
 	public void princess_peach_has_twins() {
+		String dateWithTime = "2017-05-17 02:30";
+		LocalDateTime dob = LocalDateTime.parse(dateWithTime);
 		
+		childRecord.setDateOfBirth(dob);
 	}
 	
 	@When("a childbirth hospital visit is scheduled")
 	public void childbirth_visit_scheduled() {
-		
+		Assert.assertNotNull(sharedChildbirthVisit.getChildbirthVisit());
 	}
 	
 	@When("Daria Griffin gives birth and I enter info for Carly Griffin")
@@ -93,12 +99,16 @@ public class ChildbirthVisitStepDefs {
 	
 	@Then("vaginal delivery is set by default")
 	public void vaginal_delivery_default() {
-		
+		String deliveryType = "vaginalDelivery";
+		childRecord.setDeliveryType(deliveryType);
 	}
 	
 	@Then("her son Chuck Griffin is entered into the system with birthdate 15:00 June 1st 2017")
 	public void chuck_griffin_entered() {
+		String dateWithTime = "2017-06-01 15:00";
+		LocalDateTime dob = LocalDateTime.parse(dateWithTime);
 		
+		childRecord.setDateOfBirth(dob);
 	}
 	
 	

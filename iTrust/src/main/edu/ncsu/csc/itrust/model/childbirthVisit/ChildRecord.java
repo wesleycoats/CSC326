@@ -22,7 +22,7 @@ public class ChildRecord {
 		return motherMID;
 	}
 	
-	public void setMortherMID(long motherMID) {
+	public void setMotherMID(long motherMID) {
 		this.motherMID = motherMID;
 	}
 	
