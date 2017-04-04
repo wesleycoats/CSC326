@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -28,10 +29,11 @@ public class ChildRecordForm {
 	private Boolean sex;
 	private String deliveryType;
 	private LocalDateTime dateTimeOfBirth;
-	private LocalDate dateOfBirth;
-	private LocalTime timeOfBirth;
+	private String dateOfBirth;
+	private String timeOfBirth;
 	
 	private ChildRecord childRecord;
+	private ChildRecordMySQL childsql;
 	private PatientBean newBaby;
 	private PatientBean parent;
 	private PatientDAO patientDAO;
@@ -42,12 +44,14 @@ public class ChildRecordForm {
 		this.sex = true;
 		this.deliveryType = "";
 		this.dateTimeOfBirth = LocalDateTime.now();
-		this.dateOfBirth = dateTimeOfBirth.toLocalDate();
-		this.timeOfBirth = dateTimeOfBirth.toLocalTime();
+		this.dateOfBirth = dateTimeOfBirth.toLocalDate().toString();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+		this.timeOfBirth = dateTimeOfBirth.format(formatter);
 		this.firstName = "";
 		this.lastName = "";
 		
 		try {
+			this.childsql = new ChildRecordMySQL();
 			this.addBaby = new AddPatientAction(factory, SessionUtils.getInstance().getSessionLoggedInMIDLong());
 			this.patientDAO = factory.getPatientDAO();
 			this.parent = patientDAO.getPatient(SessionUtils.getInstance().getCurrentPatientMIDLong().longValue());
@@ -78,12 +82,8 @@ public class ChildRecordForm {
 		this.email = email;
 	}
 	
-	public String getSex() {
-		if(sex) {
-			return "Male";
-		} else {
-			return "Female";
-		}
+	public Boolean getSex() {
+		return sex;
 	}
 	public void setSex(Boolean sex) {
 		this.sex = sex;
@@ -98,26 +98,35 @@ public class ChildRecordForm {
 	public LocalDateTime getDateTimeOfBirth() {
 		return dateTimeOfBirth;
 	}
-	public void setDateTimeOfBirth(LocalDateTime dateTimeOfBirth) {
-		this.dateTimeOfBirth = dateTimeOfBirth;
+	public void setDateTimeOfBirth() {
+		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			LocalDate date = LocalDate.parse(dateOfBirth, formatter);
+			formatter = DateTimeFormatter.ofPattern("hh:mm a");
+			LocalTime time = LocalTime.parse(timeOfBirth, formatter);
+			this.dateTimeOfBirth = LocalDateTime.of(date, time);
+		} catch (DateTimeParseException e) {
+			this.dateTimeOfBirth = null;
+		}
 	}
 	public String getDateOfBirth() {
 		return dateOfBirth.toString();
 	}
-	public void setDateOfBirth(LocalDate dateOfBirth) {
+	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 	public String getTimeOfBirth() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
-		String time = timeOfBirth.format(formatter);
-		return time;
+		return timeOfBirth;
 	}
-	public void setTimeOfBirth(LocalTime timeOfBirth) {
+	public void setTimeOfBirth(String timeOfBirth) {
 		this.timeOfBirth = timeOfBirth;
 	}
 	
 	public void submit() {
-		childRecord = new ChildRecord(sex, deliveryType, dateTimeOfBirth, parent.getMID(), SessionUtils.getInstance().getCurrentOfficeVisitId());
+		Long id = SessionUtils.getInstance().getCurrentOfficeVisitId();
+		this.setDateTimeOfBirth();
+		childRecord = new ChildRecord(sex, deliveryType, dateTimeOfBirth, 
+				parent.getMID(), id);
 		newBaby = new PatientBean();
 		newBaby.setFirstName(firstName);
 		newBaby.setLastName(lastName);
@@ -136,5 +145,13 @@ public class ChildRecordForm {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	
+		try {
+			childsql.addChildRedcord(childRecord);
+		} catch (DBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }
