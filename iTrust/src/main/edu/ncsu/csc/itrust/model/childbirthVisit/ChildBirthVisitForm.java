@@ -7,7 +7,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import edu.ncsu.csc.itrust.exception.DBException;
-import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsVisit;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisitMySQL;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
@@ -16,7 +15,6 @@ import edu.ncsu.csc.itrust.webutils.SessionUtils;
 @ViewScoped
 public class ChildBirthVisitForm {
 	
-	private ChildbirthData data;
 	private Long patientMID;
 	private Long visitID;
 	private Long preferredDelivery;
