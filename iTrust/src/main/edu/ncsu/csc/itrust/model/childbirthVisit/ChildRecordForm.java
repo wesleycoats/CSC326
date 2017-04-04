@@ -117,7 +117,8 @@ public class ChildRecordForm {
 	}
 	
 	public void submit() {
-		childRecord = new ChildRecord(sex, deliveryType, dateTimeOfBirth);
+		long visitID = SessionUtils.getInstance().getCurrentOfficeVisitId();
+		childRecord = new ChildRecord(sex, deliveryType, dateTimeOfBirth, parent.getMID(), visitID);
 		newBaby = new PatientBean();
 		newBaby.setFirstName(firstName);
 		newBaby.setLastName(lastName);

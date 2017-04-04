@@ -20,7 +20,7 @@ public class ChildRecordTest {
 
 	@Test
 	public void testChildRecord() {
-		ChildRecord cr = new ChildRecord(sex, delType, d);
+		ChildRecord cr = new ChildRecord(sex, delType, d, 1l, 1l);
 		
 		assertTrue(cr.getSex());
 		assertEquals(delType, cr.getDeliveryType());
@@ -39,6 +39,8 @@ public class ChildRecordTest {
 		assertEquals(delType2, cr.getDeliveryType());
 		assertEquals(d2, cr.getDateOfBirth());
 		assertNotEquals(d, cr.getDateOfBirth());
+		assertEquals("1", cr.getMotherMID().toString());
+		assertEquals("1", cr.getVisitID().toString());
 	}
 
 }

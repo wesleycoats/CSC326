@@ -41,9 +41,9 @@ public class ChildbirthDataTest {
 		drList2.add(d2);
 		drList2.add(d3);
 		
-		ChildRecord c1 = new ChildRecord(true, "", LocalDateTime.now());
-		ChildRecord c2 = new ChildRecord(true, "1", LocalDateTime.now());
-		ChildRecord c3 = new ChildRecord(false, "13", LocalDateTime.now());
+		ChildRecord c1 = new ChildRecord(true, "", LocalDateTime.now(), 1l, 1l);
+		ChildRecord c2 = new ChildRecord(true, "1", LocalDateTime.now(), 1l, 1l);
+		ChildRecord c3 = new ChildRecord(false, "13", LocalDateTime.now(), 1l, 1l);
 		crList.add(c1);
 		crList.add(c2);
 		crList2.add(c3);
