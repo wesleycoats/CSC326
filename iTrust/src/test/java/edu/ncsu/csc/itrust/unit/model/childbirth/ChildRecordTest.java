@@ -29,7 +29,7 @@ public class ChildRecordTest {
 		// Change the values and retest
 		boolean sex2 = false;
 		String delType2 = "none";
-		LocalDateTime d2 = LocalDateTime.now();
+		LocalDateTime d2 = LocalDateTime.MIN;
 		
 		cr.setSex(sex2);
 		cr.setDeliveryType(delType2);
