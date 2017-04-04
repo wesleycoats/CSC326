@@ -419,7 +419,7 @@ CREATE TABLE childbirthVisit
     visitID BIGINT(20) UNSIGNED,
     patientMID BIGINT(20) UNSIGNED NOT NULL,
     preferredDelivery enum('vaginal delivery', 'vaginal delivery vacuum assist', 'vaginal delivery forceps assist', 'caesarean section', 'miscarriage'),
-    scheduled BIT(1)
+    scheduled BIT(1),
     pitocinDosage int UNSIGNED,
     noDosage int UNSIGNED,
     pethidineDosage int UNSIGNED,
