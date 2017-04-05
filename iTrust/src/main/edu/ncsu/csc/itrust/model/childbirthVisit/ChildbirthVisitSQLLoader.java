@@ -47,7 +47,7 @@ public class ChildbirthVisitSQLLoader implements SQLLoader<ChildbirthVisit> {
 		if(newInstance){
 		stmt = "INSERT INTO childbirthVisit(visitID, patientMID, preferredDelivery, scheduled, "
 				+ "pitocinDosage, noDosage, pethidineDosage, eaDosage, msDosage, rhGlobDosage) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		}
 		else{
 			stmt = "UPDATE childbirthVisit SET visitID = ?, SET patientMID = ?, SET preferredDelivery = ?,"
