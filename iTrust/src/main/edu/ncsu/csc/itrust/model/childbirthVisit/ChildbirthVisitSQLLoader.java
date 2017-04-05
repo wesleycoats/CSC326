@@ -33,6 +33,8 @@ public class ChildbirthVisitSQLLoader implements SQLLoader<ChildbirthVisit> {
 		retVisit.setPitocinDosage(rs.getInt("pitocinDosage"));
 		retVisit.setNitrousOxideDosage(rs.getInt("noDosage"));
 		retVisit.setPethidineDosage(rs.getInt("pethidineDosage"));
+		retVisit.setEpiduralAnaesthesiaDosage(rs.getInt("eaDosage"));
+		retVisit.setMagnesiumSulfateDosage(rs.getInt("msDosage"));
 		retVisit.setRhGlobulinDosage(rs.getInt("rhGlobDosage"));
 		return retVisit;
 	}
@@ -42,9 +44,16 @@ public class ChildbirthVisitSQLLoader implements SQLLoader<ChildbirthVisit> {
 			boolean newInstance) throws SQLException {
 		String stmt = "";
 		int i = 1;
+		if(newInstance){
 		stmt = "INSERT INTO childbirthVisit(visitID, patientMID, preferredDelivery, scheduled, "
 				+ "pitocinDosage, noDosage, pethidineDosage, eaDosage, msDosage, rhGlobDosage) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		}
+		else{
+			stmt = "UPDATE childbirthVisit SET visitID = ?, SET patientMID = ?, SET preferredDelivery = ?,"
+					+ "SET scheduled = ?, SET pitocinDosage = ?, SET noDosage = ?, set pethidineDosage = ?,"
+					+ "SET eaDosage = ?, SET msDosage = ?, set rhGlobDosage = ? ";
+		}
 		ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
 		ps.setLong(i++, cb.getVisitID());
 		ps.setLong(i++, cb.getPatientMID());
