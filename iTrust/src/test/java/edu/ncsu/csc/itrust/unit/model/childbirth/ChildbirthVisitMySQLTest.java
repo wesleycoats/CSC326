@@ -20,6 +20,26 @@ import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 public class ChildbirthVisitMySQLTest {
 	private DataSource ds;
 	private TestDataGenerator gen;
+	private ChildbirthVisitMySQL cbSQL;
+	// Data used to create ChildbirthVisits to add to the database
+	private Long visitID = 1L;
+	private Long patientMID = 2L;
+	private String preferredDelivery = "vaginal delivery";
+	private Boolean scheduled = true;
+	private Integer pitocinDosage = 5;
+	private Integer nitrousOxideDosage = 6;
+	private Integer pethidineDosage = 7;
+	private Integer epiduralAnaesthesiaDosage = 8;
+	private Integer magnesiumSulfateDosage = 9;
+	private Long visitID2 = 2L;
+	private Long patientMID2 = 12L;
+	private String preferredDelivery2 = "vaginal delivery";
+	private Boolean scheduled2 = true;
+	private Integer pitocinDosage2 = 5;
+	private Integer nitrousOxideDosage2 = 6;
+	private Integer pethidineDosage2 = 7;
+	private Integer epiduralAnaesthesiaDosage2 = 8;
+	private Integer magnesiumSulfateDosage2 = 9;
 	
 	@Before
 	public void setUp() throws FileNotFoundException, SQLException, IOException {
@@ -31,7 +51,6 @@ public class ChildbirthVisitMySQLTest {
 
 	@Test
 	public void test() {
-		ChildbirthVisitMySQL cbSQL;
 		// Test the null constructor
 		try {
 			cbSQL = new ChildbirthVisitMySQL();
@@ -47,7 +66,6 @@ public class ChildbirthVisitMySQLTest {
 		} catch (Exception e) {
 			fail(); // Shouldn't throw an exception, because there are visits in the database
 		}
-		//TODO add more tests for getDateOfVisit()
 		
 		ChildbirthVisit cbvINV1 = new ChildbirthVisit();
 		cbvINV1.setPatientMID(null);
@@ -65,6 +83,26 @@ public class ChildbirthVisitMySQLTest {
 		} catch (DBException e) {
 			assertEquals("A database exception has occurred. Please see the log in the console for stacktrace", e.getMessage());
 		}
-		//TODO add more tests for addChildbirthVisit()
+
+		try {
+			cbSQL.updateChildbirthVisit(cbvINV1);
+			fail();
+		} catch (DBException e) {
+			assertEquals("A database exception has occurred. Please see the log in the console for stacktrace", e.getMessage());
+		}
+		try {
+			cbSQL.updateChildbirthVisit(cbvINV2);
+			fail();
+		} catch (DBException e) {
+			assertEquals("A database exception has occurred. Please see the log in the console for stacktrace", e.getMessage());
+		}
+		
+		// Try getting visits for a patient that has no records
+		try {
+			assertNull(cbSQL.getVisitsForPatient(1L));
+			fail(); // An exception should be thrown
+		} catch (DBException e) {
+			assertEquals("A database exception has occurred. Please see the log in the console for stacktrace", e.getMessage());
+		}
 	}
 }
