@@ -148,5 +148,12 @@ public class ChildBirthVisitFormTest {
 	public void testGetScheduled() {
 		assertEquals(form.getScheduled(), scheduled);
 	}
+	
+	@Test
+	public void testLogging(){
+		assertEquals(false, form.logCreateChildbirthVisit(mockSessionUtils));
+		assertEquals(false, form.logUpdateChildbirthVisit(mockSessionUtils));
+		assertEquals(false, form.logAddChildbirthDrugs(mockSessionUtils));
+	}
 
 }

@@ -7,10 +7,13 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import edu.ncsu.csc.itrust.action.EventLoggingAction;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsVisit;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisitMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name = "child_birth_visit_form")
@@ -33,6 +36,7 @@ public class ChildBirthVisitForm {
 	private Integer pitocinDosage;
 	private Boolean found;
 	private SessionUtils utils;
+	private DAOFactory factory;
 	
 	public ChildBirthVisitForm() {
 		this.utils = SessionUtils.getInstance();
@@ -51,6 +55,7 @@ public class ChildBirthVisitForm {
 
 	
 	private void setup() {
+		this.factory = DAOFactory.getProductionInstance();
 		this.ovID = utils.getCurrentOfficeVisitId().toString();
 		this.cbv = new ChildbirthVisit();
 		this.found = false;
@@ -84,6 +89,8 @@ public class ChildBirthVisitForm {
 		if (found) {
 			try {
 				this.cbMySQL.updateChildbirthVisit(cbv);
+				logUpdateChildbirthVisit(utils);
+				if(this.cbv.getEpiduralAnaesthesiaDosage() > 0 || this.cbv.getMagnesiumSulfateDosage() > 0 || this.cbv.getNitrousOxideDosage() > 0 || this.cbv.getPethidineDosage() > 0 || this.cbv.getPitocinDosage() > 0 || this.cbv.getRhGlobulinDosage() > 0) logAddChildbirthDrugs(utils);
 			} catch (Exception e) {
 				//Do Nothing
 				System.out.println("Failed to edit Child Birth Visit.");
@@ -92,6 +99,8 @@ public class ChildBirthVisitForm {
 		else {
 			try {
 				this.cbMySQL.addChildbirthVisit(cbv);
+				logCreateChildbirthVisit(utils);
+				if(this.cbv.getEpiduralAnaesthesiaDosage() > 0 || this.cbv.getMagnesiumSulfateDosage() > 0 || this.cbv.getNitrousOxideDosage() > 0 || this.cbv.getPethidineDosage() > 0 || this.cbv.getPitocinDosage() > 0 || this.cbv.getRhGlobulinDosage() > 0) logAddChildbirthDrugs(utils);
 			} catch (Exception e) {
 				//Do Nothing
 				System.out.println("Failed to add Child Birth Visit.");
@@ -99,6 +108,64 @@ public class ChildBirthVisitForm {
 		}
 	}
 	
+	public boolean logUpdateChildbirthVisit(SessionUtils utils) {
+
+		boolean logged = true;
+		Long id = utils.getCurrentPatientMIDLong();
+		if (id != null) {
+			System.out.println(id);
+			EventLoggingAction logAction = new EventLoggingAction(factory);
+			try {
+				logAction.logEvent(TransactionType.EDIT_CHILDBIRTH_VISIT, utils.getSessionLoggedInMIDLong(), id, "");
+			} catch (DBException e) {
+				logged = false;
+			}
+		} else {
+			logged = false;
+		}
+		return logged;
+		
+	}
+
+	public boolean logCreateChildbirthVisit(SessionUtils utils) {
+
+		boolean logged = true;
+		Long id = utils.getCurrentPatientMIDLong();
+		if (id != null) {
+			System.out.println(id);
+			EventLoggingAction logAction = new EventLoggingAction(factory);
+			try {
+				logAction.logEvent(TransactionType.CREATE_CHILDBIRTH_VISIT, utils.getSessionLoggedInMIDLong(), id, "");
+			} catch (DBException e) {
+				logged = false;
+			}
+		} else {
+			logged = false;
+		}
+		return logged;
+			
+	}
+	
+	public boolean logAddChildbirthDrugs(SessionUtils utils) {
+
+		boolean logged = true;
+		Long id = utils.getCurrentPatientMIDLong();
+		if (id != null) {
+			System.out.println(id);
+			EventLoggingAction logAction = new EventLoggingAction(factory);
+			try {
+				logAction.logEvent(TransactionType.ADD_CHILDBIRTH_DRUGS, utils.getSessionLoggedInMIDLong(), id, "");
+			} catch (DBException e) {
+				logged = false;
+			}
+		} else {
+			logged = false;
+		}
+		return logged;
+			
+	}
+
+
 	public Integer getRHImmuneGlobulin() {
 		return RHImmuneGlobulin;
 	}

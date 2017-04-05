@@ -65,7 +65,7 @@ public class ChildRecordMySQL implements Serializable {
 	
 	}
 	
-	public boolean addChildRedcord(ChildRecord cr) throws DBException {
+	public boolean addChildRecord(ChildRecord cr) throws DBException {
 		Connection conn = null;
 		PreparedStatement pstring = null;
 		try {
