@@ -1,12 +1,11 @@
 package edu.ncsu.csc.itrust.model.childbirthVisit;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,17 +30,15 @@ public class ChildRecordSQLLoader implements SQLLoader<ChildRecord>{
 		Long visitID = rs.getLong("visitID");
 		Boolean sex = rs.getBoolean("sex");
 		String deliveryType = rs.getString("actualDelivery");
-		Date dateOfBirth = rs.getDate("dateOfBirth");
-		LocalDateTime ldtOfBirth = LocalDateTime.ofInstant(dateOfBirth.toInstant(), ZoneId.systemDefault());
+		LocalDateTime dateOfBirth = rs.getTimestamp("dateOfBirth").toLocalDateTime();
 
-		return new ChildRecord(sex, deliveryType, ldtOfBirth, motherMID, visitID);
+		return new ChildRecord(sex, deliveryType, dateOfBirth, motherMID, visitID);
 	}
 
 	@Override
 	public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, ChildRecord cr,
 			boolean newInstance) throws SQLException {
 		String stmt = "";
-		int i = 1;
 		stmt = "INSERT INTO childbirthChildren (motherID, visitID, sex, actualDelivery, "
 				+ "dateOfBirth) "
 				+ "VALUES (?, ?, ?, ?, ?)";
@@ -50,7 +47,8 @@ public class ChildRecordSQLLoader implements SQLLoader<ChildRecord>{
 		ps.setLong(2, cr.getVisitID());
 		ps.setBoolean(3, cr.getSex());
 		ps.setString(4, cr.getDeliveryType());
-		ps.setDate(5, new java.sql.Date(Date.from(cr.getDateOfBirth().atZone(ZoneId.systemDefault()).toInstant()).getTime()));
+		Timestamp ts = Timestamp.valueOf(cr.getDateOfBirth());
+		ps.setTimestamp(5, ts);
 		return ps;
 	}
 
