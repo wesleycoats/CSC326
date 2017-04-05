@@ -55,6 +55,13 @@ public class OfficeVisitForm {
 		return apptTypeID == 7;
 	}
 	
+	public boolean isChildBirthVisit() {
+		if (apptTypeID == null) {
+			return false;
+		}
+		return apptTypeID == 8;
+	}
+	
 	public Long getVisitID() {
 		return visitID;
 	}

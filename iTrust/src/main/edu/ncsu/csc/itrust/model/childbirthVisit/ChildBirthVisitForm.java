@@ -178,46 +178,34 @@ public class ChildBirthVisitForm {
 		//Below is the code used in ObstetricsOfficeVisitForm.java to get the necessary information.
 		//Use this code as a reference.
 
-/*		try {
-			List<ObstetricsVisit> list = mySQL.getVisitsForPatient(pid);
+		try {
+			List<ChildbirthVisit> list = this.cbMySQL.getVisitsForPatient(patientMID);
 			if (list == null || list.size() == 0) {
-				this.obstetricsOV.setVisitID(sid);
+				this.cbv.setVisitID(visitID);
 			}
 			else {
 				for (int i = 0; i < list.size(); i++) {
-					if (list.get(i).getVisitID() == sid) {
-						this.obstetricsOV.setVisitID(list.get(i).getVisitID());
-						this.obstetricsOV = list.get(i);
+					if (list.get(i).getVisitID() == visitID) {
+						this.cbv = list.get(i);
 						break;
 					}
 				}
-				if (this.obstetricsOV.getVisitID() == (long) -1) {
-					this.obstetricsOV.setVisitID(sid);
+				if (this.cbv.getVisitID() == (long) -1) {
+					this.cbv.setVisitID(visitID);
 				}
 			}
-		} catch (DBException e) {
-			//Do Nothing
+		} catch (Exception e) {
+			//Do nothing
 		}
 		
-		
-		this.date = this.mySQL.getDateOfVisit(SessionUtils.getInstance().getCurrentOfficeVisitId());
-		this.lastMenstrualPeriod = sql.getLmpDate(pid);
-		this.patientMID = pid;
-		
-		if (this.obstetricsOV != null) {
-			this.setWeight(this.obstetricsOV.getWeight());
-			setBloodPressure(this.obstetricsOV.getBloodPressure());
-			this.fetalHR = this.obstetricsOV.getFetalHeartRate();
-			this.pregnancies = this.obstetricsOV.getPregnancies();
+		if (this.cbv != null) {
+			this.epiduralAnaesthesiaDosage = cbv.getEpiduralAnaesthesiaDosage();
+			this.magnesiumSulfateDosage = cbv.getMagnesiumSulfateDosage();
+			this.nitrousOxideDosage = cbv.getNitrousOxideDosage();
+			this.pethidineDosage = cbv.getPethidineDosage();
+			this.pitocinDosage = cbv.getPitocinDosage();
+			this.preferredDelivery = cbv.getPreferredDelivery();
+			this.scheduled = cbv.getScheduled();
 		}
-		 
-		if (this.date == null) {
-			this.date = LocalDateTime.now();
-		}
-		if (this.lastMenstrualPeriod == null) {
-			this.lastMenstrualPeriod = LocalDateTime.now();
-		} */
-		
-//		System.out.println(this.date.toLocalDate().toString() + "     " + this.lastMenstrualPeriod.toLocalDate().toString());
 	} 
 }
