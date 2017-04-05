@@ -59,8 +59,8 @@ public class ChildbirthVisitStepDefs {
 		Assert.assertNull(sharedChildbirthVisit.getErrorMessage());
 	}
 	
-	@When("^I submit the data$")
-	public void submit_data() {
+	@When("^I submit the childbirth data$")
+	public void submit_childbirth_data() {
 		sharedChildbirthVisit.addVisitToDatabase();
 	}
 	
