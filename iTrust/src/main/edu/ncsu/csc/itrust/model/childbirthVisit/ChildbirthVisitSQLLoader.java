@@ -30,9 +30,10 @@ public class ChildbirthVisitSQLLoader implements SQLLoader<ChildbirthVisit> {
 		retVisit.setPatientMID(Long.parseLong(rs.getString("patientMID")));
 		retVisit.setPreferredDelivery(rs.getString("preferredDelivery"));
 		retVisit.setScheduled(rs.getBoolean("scheduled"));
-		retVisit.setPitocinDosage((rs.getInt("pitocinDosage")));
+		retVisit.setPitocinDosage(rs.getInt("pitocinDosage"));
 		retVisit.setNitrousOxideDosage(rs.getInt("noDosage"));
 		retVisit.setPethidineDosage(rs.getInt("pethidineDosage"));
+		retVisit.setRhGlobulinDosage(rs.getInt("rhGlobDosage"));
 		return retVisit;
 	}
 
@@ -42,7 +43,7 @@ public class ChildbirthVisitSQLLoader implements SQLLoader<ChildbirthVisit> {
 		String stmt = "";
 		int i = 1;
 		stmt = "INSERT INTO childbirthVisit(visitID, patientMID, preferredDelivery, scheduled, "
-				+ "pitocinDosage, noDosage, pethidineDosage, eaDosage, msDosage) "
+				+ "pitocinDosage, noDosage, pethidineDosage, eaDosage, msDosage, rhGlobDosage) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
 		ps.setLong(i++, cb.getVisitID());
@@ -54,6 +55,7 @@ public class ChildbirthVisitSQLLoader implements SQLLoader<ChildbirthVisit> {
 		ps.setInt(i++, cb.getPethidineDosage());
 		ps.setInt(i++, cb.getEpiduralAnaesthesiaDosage());
 		ps.setInt(i++, cb.getMagnesiumSulfateDosage());
+		ps.setInt(i++, cb.getRhGlobulinDosage());
 		return ps;
 	}
 

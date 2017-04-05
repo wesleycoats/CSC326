@@ -56,6 +56,8 @@ public class ChildbirthVisitValidator extends POJOValidator<ChildbirthVisit> {
 			errorList.addIfNotNull("Epidural Anaesthesia Dosage cannot be negative");
 		if (obj.getMagnesiumSulfateDosage() < 0)
 			errorList.addIfNotNull("Magnesium Sulfate Dosage cannot be negative");
+		if (obj.getRhGlobulinDosage() < 0)
+			errorList.addIfNotNull("RH Immune Globulin cannot be negative");
 		
 		if (errorList.hasErrors()) {
 			throw new FormValidationException(errorList);

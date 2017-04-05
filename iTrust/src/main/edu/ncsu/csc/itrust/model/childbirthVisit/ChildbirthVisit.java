@@ -21,6 +21,7 @@ public class ChildbirthVisit {
 	private Integer pethidineDosage;
 	private Integer epiduralAnaesthesiaDosage;
 	private Integer magnesiumSulfateDosage;
+	private Integer rhGlobulinDosage;
 
 	/**
 	 * Default constructor for OfficeVisit
@@ -129,6 +130,14 @@ public class ChildbirthVisit {
 			e.printStackTrace();
 		}
 		return officeVisit;
+	}
+
+	public Integer getRhGlobulinDosage() {
+		return rhGlobulinDosage;
+	}
+
+	public void setRhGlobulinDosage(Integer rhGlobulinDosage) {
+		this.rhGlobulinDosage = rhGlobulinDosage;
 	}
 
 }

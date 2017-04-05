@@ -425,6 +425,7 @@ CREATE TABLE childbirthVisit
     pethidineDosage int UNSIGNED,
     eaDosage int UNSIGNED,
     msDosage int UNSIGNED,
+    rhGlobDosage int UNSIGNED,
     PRIMARY KEY (visitID),
     FOREIGN KEY (visitID) REFERENCES officeVisit(visitID)
 )  Engine=MyISAM;

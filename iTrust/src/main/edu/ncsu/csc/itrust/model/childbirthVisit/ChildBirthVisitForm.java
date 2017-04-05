@@ -60,7 +60,7 @@ public class ChildBirthVisitForm {
 		this.cbv.setNitrousOxideDosage(nitrousOxideDosage);
 		this.cbv.setPethidineDosage(pethidineDosage);
 		this.cbv.setPitocinDosage(pitocinDosage);
-		this.cbv.setRHImmuneGlobulin(RHImmuneGlobulin);
+		this.cbv.setRhGlobulinDosage(RHImmuneGlobulin);
 
 		if (found) {
 			try {
@@ -234,7 +234,7 @@ public class ChildBirthVisitForm {
 			this.pitocinDosage = cbv.getPitocinDosage();
 			this.preferredDelivery = cbv.getPreferredDelivery();
 			this.scheduled = cbv.getScheduled();
-			this.RHImmuneGlobulin = cbv.getRHImmuneGlobulin();
+			this.RHImmuneGlobulin = cbv.getRhGlobulinDosage();
 		}
 	} 
 }
