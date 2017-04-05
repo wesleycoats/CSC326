@@ -17,13 +17,9 @@ import edu.ncsu.csc.itrust.model.ndcode.NDCCodeMySQL;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisitMySQL;
 import edu.ncsu.csc.itrust.model.old.beans.MedicationBean;
-import edu.ncsu.csc.itrust.model.old.dao.mysql.HospitalsDAO;
-import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
-import edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO;
 import edu.ncsu.csc.itrust.model.prescription.Prescription;
 import edu.ncsu.csc.itrust.model.prescription.PrescriptionMySQL;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
-import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 
 import static org.junit.Assert.fail;
 
@@ -40,12 +36,8 @@ import org.junit.Assert;
  
  public class LabProcedureOfficeVisitStepDefs {
 	 
-	 
-		private PatientDAO patientController;
 		private DataSource ds;
 		private TestDataGenerator gen;
-		private HospitalsDAO hospDAO;
-		private PersonnelDAO persDAO;
 		private OfficeVisitMySQL oVisSQL;
 		private OfficeVisit oVis;
 		private PrescriptionMySQL preSQL;
@@ -57,10 +49,7 @@ import org.junit.Assert;
  
         public LabProcedureOfficeVisitStepDefs() {
         	this.ds = ConverterDAO.getDataSource();
-    		this.patientController = new PatientDAO(TestDAOFactory.getTestInstance());
     		this.gen = new TestDataGenerator();
-    		this.hospDAO = new HospitalsDAO(TestDAOFactory.getTestInstance());
-    		this.persDAO = new PersonnelDAO(TestDAOFactory.getTestInstance());
     		this.oVisSQL = new OfficeVisitMySQL(ds);
     		this.oVis = new OfficeVisit();
     		this.preSQL = new PrescriptionMySQL(ds);	

@@ -1,4 +1,4 @@
-package childbirthVisit;
+package edu.ncsu.csc.itrust.model.childbirthVisit;
 
 public class DrugRecord {
 	

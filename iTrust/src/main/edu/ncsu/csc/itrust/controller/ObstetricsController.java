@@ -161,6 +161,7 @@ public class ObstetricsController extends iTrustController {
 			ObstetricsData newEntry = new ObstetricsData(id, date, LocalDateTime.now());
 			try {
 				this.odsql.addObstetricsData(newEntry);
+				this.logCreateObstetrics();
 			} catch (DBException e) {
 				//Do Nothing
 			}

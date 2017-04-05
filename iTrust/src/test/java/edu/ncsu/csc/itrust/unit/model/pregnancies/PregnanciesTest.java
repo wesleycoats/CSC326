@@ -39,6 +39,29 @@ public class PregnanciesTest {
 		// Test  that the id was correctly set
 		ID = MID + (numChildren*31) + (year + 31) + Math.round(hours * 31 * 31);
 		assertEquals(ID, p.getPregID());
+		
+		// Misc tests for coverage requirements
+		p = new Pregnancies();
+		p.setWeeksPregnant(14);
+		assertEquals(14, p.getWeeksPregnant());
+		
+		p.setPatientMID(1L);
+		assertEquals(1, p.getPatientMID());
+		
+		p.setDelType("Null");
+		assertEquals("Null", p.getDelType());
+		
+		p.setYearOfConception(1998);
+		assertEquals(1998, p.getYearOfConception());
+		
+		p.setHoursInLabor(14.7);
+		assertEquals(14.7, p.getHoursInLabor(), 0.005);
+		
+		p.setWeightGain(31.2);
+		assertEquals(31.2, p.getWeightGain(), 0.005);
+		
+		p.setNumChildren((short) 3);
+		assertEquals(3, p.getNumChildren());
 	}
 
 }

@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
 
+import javax.servlet.http.Part;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -52,5 +54,65 @@ public class ObstetricsOfficeVisitFormTest {
 		assertEquals("8", ov.getPregnancies().toString());
 		assertEquals("7", ov.getApptTypeID().toString());
 		assertEquals("20", ov.getWeeksPregnant().toString());
+	}
+	
+	@Test
+	public void testObstetricsOfficeVisitForm() {
+		try {
+			ov = new ObstetricsOfficeVisitForm();
+			fail(); //should get a NullPointerException
+		} catch (NullPointerException e) {
+			// do nothing, we expected this exception
+		}
+		
+		ov = new ObstetricsOfficeVisitForm(99l);
+		
+		// Test all of the random lines that were missed in the class
+		ov.setLastMenstrualPeriod(null);
+		assertEquals("", ov.getLastMenstrualPeriodString());
+		
+		ov.setcrownRumpLen(0.05);
+		assertEquals(0.05, ov.getcrownRumpLen(), 0.005);
+		
+		ov.setbiparietalDia(0.0432);
+		assertEquals(0.0432, ov.getbiparietalDia(), 0.005);
+		
+		ov.setheadCirc(1);
+		assertEquals(1, ov.getheadCirc(), 0.005);
+		
+		ov.setfemurLen(12);
+		assertEquals(12, ov.getfemurLen(), 0.005);
+		
+		ov.setoccipotoFrontalDia(32);
+		assertEquals(32, ov.getoccipotoFrontalDia(), 0.005);
+		
+		ov.setabdomincalCirc(15);
+		assertEquals(15, ov.getabdomincalCirc(), 0.005);
+		
+		ov.sethumerusLen(9);
+		assertEquals(9, ov.gethumerusLen(), 0.005);
+		
+		ov.setestimatedFetalWeight(8.5);
+		assertEquals(8.5, ov.getestimatedFetalWeight(), 0.005);
+		
+		// Pass in parameters
+		ov.setVisitID(ID);
+		ov.setPatientMID(MID);
+		ov.setWeight(WEIGHT);
+		ov.setBloodPressure(BLOOD_PRESSURE);
+		ov.setFetalHR(FETAL_HEART_RATE);
+		ov.setPregnancies(PREGNANCIES);
+		ov.setLastMenstrualPeriod(DATE1);
+		ov.setDate(DATE2);
+		ov.setExpectedDeliveryDate(DATE3);
+		ov.setApptTypeID(TYPE);
+		ov.setWeeksPregnant(WEEKS_PREGGO);
+		
+		try {
+			ov.submit();
+			fail();
+		} catch (NullPointerException e) {
+			//do nothing
+		}
 	}
 }
