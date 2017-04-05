@@ -21,25 +21,6 @@ public class ChildbirthVisitMySQLTest {
 	private DataSource ds;
 	private TestDataGenerator gen;
 	private ChildbirthVisitMySQL cbSQL;
-	// Data used to create ChildbirthVisits to add to the database
-	private Long visitID = 1L;
-	private Long patientMID = 2L;
-	private String preferredDelivery = "vaginal delivery";
-	private Boolean scheduled = true;
-	private Integer pitocinDosage = 5;
-	private Integer nitrousOxideDosage = 6;
-	private Integer pethidineDosage = 7;
-	private Integer epiduralAnaesthesiaDosage = 8;
-	private Integer magnesiumSulfateDosage = 9;
-	private Long visitID2 = 2L;
-	private Long patientMID2 = 12L;
-	private String preferredDelivery2 = "vaginal delivery";
-	private Boolean scheduled2 = true;
-	private Integer pitocinDosage2 = 5;
-	private Integer nitrousOxideDosage2 = 6;
-	private Integer pethidineDosage2 = 7;
-	private Integer epiduralAnaesthesiaDosage2 = 8;
-	private Integer magnesiumSulfateDosage2 = 9;
 	
 	@Before
 	public void setUp() throws FileNotFoundException, SQLException, IOException {
@@ -99,8 +80,7 @@ public class ChildbirthVisitMySQLTest {
 		
 		// Try getting visits for a patient that has no records
 		try {
-			assertNull(cbSQL.getVisitsForPatient(1L));
-			fail(); // An exception should be thrown
+			assertTrue(cbSQL.getVisitsForPatient(1L).isEmpty());
 		} catch (DBException e) {
 			assertEquals("A database exception has occurred. Please see the log in the console for stacktrace", e.getMessage());
 		}
