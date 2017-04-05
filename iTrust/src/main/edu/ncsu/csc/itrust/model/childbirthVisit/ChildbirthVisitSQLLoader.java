@@ -48,23 +48,35 @@ public class ChildbirthVisitSQLLoader implements SQLLoader<ChildbirthVisit> {
 		stmt = "INSERT INTO childbirthVisit(visitID, patientMID, preferredDelivery, scheduled, "
 				+ "pitocinDosage, noDosage, pethidineDosage, eaDosage, msDosage, rhGlobDosage) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
+			ps.setLong(i++, cb.getVisitID());
+			ps.setLong(i++, cb.getPatientMID());
+			ps.setString(i++, cb.getPreferredDelivery());
+			ps.setBoolean(i++, cb.getScheduled());
+			ps.setInt(i++, cb.getPitocinDosage());
+			ps.setInt(i++, cb.getNitrousOxideDosage());
+			ps.setInt(i++, cb.getPethidineDosage());
+			ps.setInt(i++, cb.getEpiduralAnaesthesiaDosage());
+			ps.setInt(i++, cb.getMagnesiumSulfateDosage());
+			ps.setInt(i++, cb.getRhGlobulinDosage());
 		}
 		else{
-			stmt = "UPDATE childbirthVisit SET visitID = ?, SET patientMID = ?, SET preferredDelivery = ?,"
-					+ "SET scheduled = ?, SET pitocinDosage = ?, SET noDosage = ?, set pethidineDosage = ?,"
-					+ "SET eaDosage = ?, SET msDosage = ?, set rhGlobDosage = ? ";
+			stmt = "UPDATE childbirthVisit SET patientMID = ?, preferredDelivery = ?,"
+					+ "scheduled = ?, pitocinDosage = ?, noDosage = ?, pethidineDosage = ?,"
+					+ "eaDosage = ?, msDosage = ?, rhGlobDosage = ? WHERE visitID = ?";
+			ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
+			ps.setLong(i++, cb.getPatientMID());
+			ps.setString(i++, cb.getPreferredDelivery());
+			ps.setBoolean(i++, cb.getScheduled());
+			ps.setInt(i++, cb.getPitocinDosage());
+			ps.setInt(i++, cb.getNitrousOxideDosage());
+			ps.setInt(i++, cb.getPethidineDosage());
+			ps.setInt(i++, cb.getEpiduralAnaesthesiaDosage());
+			ps.setInt(i++, cb.getMagnesiumSulfateDosage());
+			ps.setInt(i++, cb.getRhGlobulinDosage());
+			ps.setLong(i++, cb.getVisitID());
 		}
-		ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
-		ps.setLong(i++, cb.getVisitID());
-		ps.setLong(i++, cb.getPatientMID());
-		ps.setString(i++, cb.getPreferredDelivery());
-		ps.setBoolean(i++, cb.getScheduled());
-		ps.setInt(i++, cb.getPitocinDosage());
-		ps.setInt(i++, cb.getNitrousOxideDosage());
-		ps.setInt(i++, cb.getPethidineDosage());
-		ps.setInt(i++, cb.getEpiduralAnaesthesiaDosage());
-		ps.setInt(i++, cb.getMagnesiumSulfateDosage());
-		ps.setInt(i++, cb.getRhGlobulinDosage());
+		
 		return ps;
 	}
 
