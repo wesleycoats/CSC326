@@ -1,4 +1,4 @@
-package edu.ncsu.csc.itrust.model.childbirthVisit;
+package edu.ncsu.csc.itrust.unit.model.childbirth;
 
 import static org.junit.Assert.*;
 
@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 
 import com.mysql.jdbc.Statement;
 
+import edu.ncsu.csc.itrust.model.childbirthVisit.ChildbirthVisitSQLLoader;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisitSQLLoader;
 import junit.framework.TestCase;
 

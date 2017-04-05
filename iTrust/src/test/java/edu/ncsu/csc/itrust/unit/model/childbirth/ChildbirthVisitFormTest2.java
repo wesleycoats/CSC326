@@ -13,7 +13,7 @@ import edu.ncsu.csc.itrust.webutils.SessionUtils;
  * Tests the ChildRecordForm class
  * @author rvisador
  */
-public class ChildbirthVisitFormTest {
+public class ChildbirthVisitFormTest2 {
 	private ChildBirthVisitForm cbvf;
 
 	@Test
