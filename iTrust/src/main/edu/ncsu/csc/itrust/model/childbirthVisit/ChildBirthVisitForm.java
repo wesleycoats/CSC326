@@ -25,6 +25,7 @@ public class ChildBirthVisitForm {
 	private OfficeVisitMySQL ovMySQL;
 	private ChildbirthVisitMySQL cbMySQL;
 	private ChildbirthVisit cbv;
+	private Integer RHImmuneGlobulin;
 	private Integer epiduralAnaesthesiaDosage;
 	private Integer magnesiumSulfateDosage;
 	private Integer nitrousOxideDosage;
@@ -59,6 +60,7 @@ public class ChildBirthVisitForm {
 		this.cbv.setNitrousOxideDosage(nitrousOxideDosage);
 		this.cbv.setPethidineDosage(pethidineDosage);
 		this.cbv.setPitocinDosage(pitocinDosage);
+		this.cbv.setRHImmuneGlobulin(RHImmuneGlobulin);
 
 		if (found) {
 			try {
@@ -76,6 +78,14 @@ public class ChildBirthVisitForm {
 				System.out.println("Failed to add Child Birth Visit.");
 			}
 		}
+	}
+	
+	public Integer getRHImmuneGlobulin() {
+		return RHImmuneGlobulin;
+	}
+
+	public void setRHImmuneGlobulin(Integer RHImmuneGlobulin) {
+		this.RHImmuneGlobulin = RHImmuneGlobulin;
 	}
 
 	public Integer getEpiduralAnaesthesiaDosage() {
@@ -224,6 +234,7 @@ public class ChildBirthVisitForm {
 			this.pitocinDosage = cbv.getPitocinDosage();
 			this.preferredDelivery = cbv.getPreferredDelivery();
 			this.scheduled = cbv.getScheduled();
+			this.RHImmuneGlobulin = cbv.getRHImmuneGlobulin();
 		}
 	} 
 }
