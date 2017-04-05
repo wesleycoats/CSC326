@@ -19,14 +19,23 @@ public class ChildBirthVisitForm {
 	private String ovID;
 	private Long patientMID;
 	private Long visitID;
-	private Long preferredDelivery;
+	private String preferredDelivery;
 	private Boolean scheduled;
 	private OfficeVisitMySQL ovMySQL;
+	private ChildbirthVisitMySQL cbMySQL;
+	private ChildbirthVisit cbv;
+	private Integer epiduralAnaesthesiaDosage;
+	private Integer magnesiumSulfateDosage;
+	private Integer nitrousOxideDosage;
+	private Integer pethidineDosage;
+	private Integer pitocinDosage;
 	
 	public ChildBirthVisitForm() {
 		this.ovID = SessionUtils.getInstance().getCurrentOfficeVisitId().toString();
+		this.cbv = new ChildbirthVisit();
 		this.getVisitDate();
 		try {
+			this.cbMySQL = new ChildbirthVisitMySQL();
 			ovMySQL = new OfficeVisitMySQL();
 		} catch (DBException e) {
 			//Do Nothing
@@ -38,13 +47,62 @@ public class ChildBirthVisitForm {
 		//First we will set all of the values, then we will save them to
 		//the database using the mySQL files that have not yet been created.
 		//After that we will direct the user to the Baby Info page.
-		this.setPreferredDelivery(preferredDelivery);
-		this.setScheduled(scheduled);
-		
-		//The following print statements are used to determine if the data is
-		//being obtained correctly from the xhtml page.
-		System.out.println("submitted. " + this.getScheduled());
-		System.out.println(this.getPreferredDelivery());
+		this.cbv.setPatientMID(patientMID);
+		this.cbv.setPreferredDelivery(preferredDelivery);
+		this.cbv.setScheduled(scheduled);
+		this.cbv.setVisitID(visitID);
+		this.cbv.setEpiduralAnaesthesiaDosage(epiduralAnaesthesiaDosage);
+		this.cbv.setMagnesiumSulfateDosage(magnesiumSulfateDosage);
+		this.cbv.setNitrousOxideDosage(nitrousOxideDosage);
+		this.cbv.setPethidineDosage(pethidineDosage);
+		this.cbv.setPitocinDosage(pitocinDosage);
+
+		try {
+			this.cbMySQL.addChildbirthVisit(cbv);
+		} catch (Exception e) {
+			//Do Nothing
+			System.out.println("Failed to add Child Birth Visit.");
+		}
+	}
+
+	public Integer getEpiduralAnaesthesiaDosage() {
+		return epiduralAnaesthesiaDosage;
+	}
+
+	public void setEpiduralAnaesthesiaDosage(Integer epiduralAnaesthesiaDosage) {
+		this.epiduralAnaesthesiaDosage = epiduralAnaesthesiaDosage;
+	}
+
+	public Integer getMagnesiumSulfateDosage() {
+		return magnesiumSulfateDosage;
+	}
+
+	public void setMagnesiumSulfateDosage(Integer magnesiumSulfateDosage) {
+		this.magnesiumSulfateDosage = magnesiumSulfateDosage;
+	}
+
+	public Integer getNitrousOxideDosage() {
+		return nitrousOxideDosage;
+	}
+
+	public void setNitrousOxideDosage(Integer nitrousOxideDosage) {
+		this.nitrousOxideDosage = nitrousOxideDosage;
+	}
+
+	public Integer getPethidineDosage() {
+		return pethidineDosage;
+	}
+
+	public void setPethidineDosage(Integer pethidineDosage) {
+		this.pethidineDosage = pethidineDosage;
+	}
+
+	public Integer getPitocinDosage() {
+		return pitocinDosage;
+	}
+
+	public void setPitocinDosage(Integer pitocinDosage) {
+		this.pitocinDosage = pitocinDosage;
 	}
 
 	public String getDateString() {
@@ -91,13 +149,13 @@ public class ChildBirthVisitForm {
 	}
 
 
-	public Long getPreferredDelivery() {
+	public String getPreferredDelivery() {
 		return preferredDelivery;
 	}
 
 
-	public void setPreferredDelivery(Long preferredDelivery2) {
-		this.preferredDelivery = preferredDelivery2;
+	public void setPreferredDelivery(String preferredDelivery) {
+		this.preferredDelivery = preferredDelivery;
 	}
 
 

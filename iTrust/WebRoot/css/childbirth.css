@@ -5,8 +5,7 @@
  */
 
 #tab-child-birth:checked ~ .tab-content > #content-child-birth,
-#tab-baby-info:checked ~ .tab-content > #content-baby-info,
-#tab-prescriptions:checked ~ .tab-content > #content-prescriptions {
+#tab-baby-info:checked ~ .tab-content > #content-baby-info {
 	display: block;
 }
 
