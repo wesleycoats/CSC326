@@ -50,6 +50,7 @@ public class ObstetricsOfficeVisitForm {
 	private double humerusLen;
 	private double estimatedFetalWeight;
 	private Part uploadedFile;
+	private Boolean found;
 	
 	
 	public Integer getPregnancies() {
@@ -113,13 +114,15 @@ public class ObstetricsOfficeVisitForm {
 			}
 			else {
 				for (int i = 0; i < list.size(); i++) {
-					if (list.get(i).getVisitID() == sid) {
+					if (list.get(i).getVisitID().equals(sid)) {
 						this.obstetricsOV.setVisitID(list.get(i).getVisitID());
 						this.obstetricsOV = list.get(i);
+						this.found = true;
 						break;
 					}
 				}
-				if (this.obstetricsOV.getVisitID() == (long) -1) {
+				Long check = (long) -1;
+				if (this.obstetricsOV.getVisitID().equals(check)) {
 					this.obstetricsOV.setVisitID(sid);
 				}
 			}

@@ -1,6 +1,7 @@
 package edu.ncsu.csc.itrust.model.childbirthVisit;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -29,17 +30,19 @@ public class ChildBirthVisitForm {
 	private Integer nitrousOxideDosage;
 	private Integer pethidineDosage;
 	private Integer pitocinDosage;
+	private Boolean found;
 	
 	public ChildBirthVisitForm() {
 		this.ovID = SessionUtils.getInstance().getCurrentOfficeVisitId().toString();
 		this.cbv = new ChildbirthVisit();
-		this.getVisitDate();
+		this.found = false;
 		try {
 			this.cbMySQL = new ChildbirthVisitMySQL();
 			ovMySQL = new OfficeVisitMySQL();
 		} catch (DBException e) {
 			//Do Nothing
 		}
+		this.getVisitDate();
 	}
 	
 	public void submit() {
@@ -57,11 +60,21 @@ public class ChildBirthVisitForm {
 		this.cbv.setPethidineDosage(pethidineDosage);
 		this.cbv.setPitocinDosage(pitocinDosage);
 
-		try {
-			this.cbMySQL.addChildbirthVisit(cbv);
-		} catch (Exception e) {
-			//Do Nothing
-			System.out.println("Failed to add Child Birth Visit.");
+		if (found) {
+			try {
+				this.cbMySQL.updateChildbirthVisit(cbv);
+			} catch (Exception e) {
+				//Do Nothing
+				System.out.println("Failed to edit Child Birth Visit.");
+			}
+		}
+		else {
+			try {
+				this.cbMySQL.addChildbirthVisit(cbv);
+			} catch (Exception e) {
+				//Do Nothing
+				System.out.println("Failed to add Child Birth Visit.");
+			}
 		}
 	}
 
@@ -174,28 +187,33 @@ public class ChildBirthVisitForm {
 		this.visitID = SessionUtils.getInstance().getCurrentOfficeVisitId();
 		
 		//After this we will need to get the information from a previously existing child birth
-		//office visit. For now I will assume that one does not exist.
-		//Below is the code used in ObstetricsOfficeVisitForm.java to get the necessary information.
-		//Use this code as a reference.
-
+		//office visit. 
+		
 		try {
-			List<ChildbirthVisit> list = this.cbMySQL.getVisitsForPatient(patientMID);
+			List<ChildbirthVisit> list = Collections.EMPTY_LIST;
+			list = this.cbMySQL.getVisitsForPatient(patientMID);
+			
+			System.out.println("made it this far");
 			if (list == null || list.size() == 0) {
 				this.cbv.setVisitID(visitID);
 			}
 			else {
 				for (int i = 0; i < list.size(); i++) {
-					if (list.get(i).getVisitID() == visitID) {
+					System.out.println(list.get(i).getPreferredDelivery());
+					if (list.get(i).getVisitID().equals(visitID)) {
 						this.cbv = list.get(i);
+						this.found = true;
 						break;
 					}
 				}
-				if (this.cbv.getVisitID() == (long) -1) {
+				Long check = (long) -1;
+				if (this.cbv.getVisitID().equals(check)) {
 					this.cbv.setVisitID(visitID);
 				}
 			}
 		} catch (Exception e) {
 			//Do nothing
+			System.out.println("Some issue with getting the list");
 		}
 		
 		if (this.cbv != null) {
