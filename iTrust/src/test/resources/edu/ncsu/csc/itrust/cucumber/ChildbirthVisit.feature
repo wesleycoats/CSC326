@@ -10,7 +10,7 @@ Scenario Outline: Giving birth to twins after an obstetrics office visit, vagina
 	When I search for Princess Peach by MID and select Princess Peach
 	And Princess Peach has a childbirth visit scheduled during an obstetrics visit
 	And I go to enter childbirth information and I enter <epiduralAnaesthesiaDosage>, <magnesiumSulfateDosage>, <nitrousOxideDosage>, <pethidineDosage>, <pitocinDosage>, <preferredDelivery>, <scheduled>
-	And I submit the data
+	And I submit the childbirth data
 	And Princess Peach has fraternal twins Toad and Toadette at 2:30 on May 17 of the current year
 	Then new patient file(s) is/are created for the baby(s)
 	
@@ -20,7 +20,7 @@ Scenario Outline: Giving birth to a daughter after an emergency room visit, vagi
 	And Daria Griffin is in labor and enters the emergency room
 	And a childbirth hospital visit is scheduled
 	And I go to enter childbirth information and I enter <epiduralAnaesthesiaDosage>, <magnesiumSulfateDosage>, <nitrousOxideDosage>, <pethidineDosage>, <pitocinDosage>, <preferredDelivery>, <scheduled>
-	And I submit the data
+	And I submit the childbirth data
 	And Daria Griffin gives birth and I enter info for Carly Griffin
 	Then new patient file(s) is/are created for the baby(s)	
 
