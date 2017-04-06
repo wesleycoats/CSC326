@@ -18,6 +18,7 @@ public class ChildBirthVisitValidatorTest {
 	private Integer pethidineDosage = 7;
 	private Integer epiduralAnaesthesiaDosage = 8;
 	private Integer magnesiumSulfateDosage = 9;
+	private Integer rhGlobulinDosage = 10;
 
 	@Test
 	public void test() {
@@ -33,6 +34,7 @@ public class ChildBirthVisitValidatorTest {
 		cb.setPethidineDosage(pethidineDosage);
 		cb.setEpiduralAnaesthesiaDosage(epiduralAnaesthesiaDosage);
 		cb.setMagnesiumSulfateDosage(magnesiumSulfateDosage);
+		cb.setRhGlobulinDosage(rhGlobulinDosage);
 		
 		// Test each scenario
 		cb.setPatientMID(null);

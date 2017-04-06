@@ -24,6 +24,7 @@ import edu.ncsu.csc.itrust.webutils.SessionUtils;
  */
 public class ChildRecordFormTest {
 	private ChildRecordForm crf;
+	private SessionUtils sesh;
 	private static final String DATE = "2017-04-04";
 	private static final String TIME = "12:34 AM";
 	private static final LocalDateTime DATE_TIME = LocalDateTime.of(2017, 4, 4, 00, 34);
@@ -31,7 +32,7 @@ public class ChildRecordFormTest {
 	@Before
 	public void setUp() throws Exception {
 		DAOFactory dao = TestDAOFactory.getTestInstance();
-		SessionUtils sesh = Mockito.mock(SessionUtils.class);
+		sesh = Mockito.mock(SessionUtils.class);
 		DataSource ds = Mockito.mock(DataSource.class);
 		
 		sesh.setSessionVariable("pid", 1L);
@@ -74,5 +75,12 @@ public class ChildRecordFormTest {
 		assertNull(crf.getDateTimeOfBirth());
 		crf.submit();
 		assertEquals("Input not Valid.", crf.getMessege());
+	}
+	
+	@Test
+	public void testLogging(){
+		assertEquals(true, crf.logBabyBorn(sesh));
+		assertEquals(true, crf.logCreateBabyRecord(sesh, 12L));
+		
 	}
 }

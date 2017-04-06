@@ -10,12 +10,14 @@ import javax.faces.bean.ViewScoped;
 import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.action.AddPatientAction;
+import edu.ncsu.csc.itrust.action.EventLoggingAction;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 
@@ -43,7 +45,7 @@ public class ChildRecordForm {
 	
 	private DAOFactory factory;
 	private SessionUtils session;
-	private String messege = "";
+	private String message = "";
 	
 	public ChildRecordForm(DAOFactory dao, SessionUtils session, DataSource ds) {
 		this.factory = dao;
@@ -86,10 +88,10 @@ public class ChildRecordForm {
 	
 
 	public String getMessege() {
-		return messege;
+		return message;
 	}
 	public void setMessege(String mess) {
-		this.messege = mess;
+		this.message = mess;
 	}
 	public Long getMotherMID() {
 		return motherMID;
@@ -174,20 +176,59 @@ public class ChildRecordForm {
 		newBaby.setMotherMID("" + motherMID);
 		try {
 			long loggedIn = motherMID;
-			addBaby.addDependentPatient(newBaby, loggedIn, loggedIn);
+			Long babyID = addBaby.addDependentPatient(newBaby, loggedIn, loggedIn);
+			logBabyBorn(session);
+			logCreateBabyRecord(session, babyID);
 		} catch (FormValidationException e) {
-			messege = "Input not Valid.";
+			message = "Input not Valid.";
 		} catch (DBException e) {
-			messege = "Database is unhappy";
+			message = "Database is unhappy";
 		} catch (ITrustException e) {
-			messege = "oops! Something went wrong.";
+			message = "oops! Something went wrong.";
 		}
 	
 		try {
-			childsql.addChildRedcord(childRecord);
-			messege = "Baby successfully added.";
+			childsql.addChildRecord(childRecord);
+			message = "Baby successfully added.";
 		} catch (DBException e) {
-			messege = "Input not Valid.";
+			message = "Input not Valid.";
 		}
+	}
+	
+	public boolean logBabyBorn(SessionUtils session){
+		
+		boolean logged = true;
+		Long id = session.getCurrentPatientMIDLong();
+		if (id != null) {
+			System.out.println(id);
+			EventLoggingAction logAction = new EventLoggingAction(factory);
+			try {
+				logAction.logEvent(TransactionType.BABY_BORN, session.getSessionLoggedInMIDLong(), id, "");
+			} catch (DBException e) {
+				logged = false;
+			}
+		} else {
+			logged = false;
+		}
+		return logged;
+
+	}
+
+	public boolean logCreateBabyRecord(SessionUtils session, Long babyID) {
+		
+		boolean logged = true;
+		Long id = session.getCurrentPatientMIDLong();
+		if (id != null) {
+			System.out.println(id);
+			EventLoggingAction logAction = new EventLoggingAction(factory);
+			try {
+				logAction.logEvent(TransactionType.CREATE_BABY_RECORD, session.getSessionLoggedInMIDLong(), id, babyID.toString());
+			} catch (DBException e) {
+				logged = false;
+			}
+		} else {
+			logged = false;
+		}
+		return logged;
 	}
 }

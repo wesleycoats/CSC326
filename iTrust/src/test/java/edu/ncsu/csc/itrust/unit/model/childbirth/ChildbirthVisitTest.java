@@ -16,6 +16,7 @@ public class ChildbirthVisitTest {
 	private Integer pethidineDosage = 7;
 	private Integer epiduralAnaesthesiaDosage = 8;
 	private Integer magnesiumSulfateDosage = 9;
+	private Integer rhGlobDosage = 10;
 
 	@Test
 	public void testChildbirthVisit() {
@@ -30,6 +31,7 @@ public class ChildbirthVisitTest {
 		cbv.setPethidineDosage(pethidineDosage);
 		cbv.setEpiduralAnaesthesiaDosage(epiduralAnaesthesiaDosage);
 		cbv.setMagnesiumSulfateDosage(magnesiumSulfateDosage);
+		cbv.setRhGlobulinDosage(rhGlobDosage);
 		
 		assertEquals(visitID, cbv.getVisitID());
 		assertEquals(patientMID, cbv.getPatientMID());
@@ -40,6 +42,7 @@ public class ChildbirthVisitTest {
 		assertEquals(pethidineDosage, cbv.getPethidineDosage());
 		assertEquals(epiduralAnaesthesiaDosage, cbv.getEpiduralAnaesthesiaDosage());
 		assertEquals(magnesiumSulfateDosage, cbv.getMagnesiumSulfateDosage());
+		assertEquals(rhGlobDosage, cbv.getRhGlobulinDosage());
 		
 		cbv = new ChildbirthVisit(visitID, patientMID, "now", false);
 		assertEquals(visitID, cbv.getVisitID());
