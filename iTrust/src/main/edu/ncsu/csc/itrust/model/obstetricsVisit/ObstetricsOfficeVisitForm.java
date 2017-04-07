@@ -237,7 +237,7 @@ public class ObstetricsOfficeVisitForm {
 		return this.systolicBloodPressure;
 	}
 
-	public void setSystolicBloodPressure(int bloodPressure) {
+	public void setSystolicBloodPressure(Integer bloodPressure) {
 		this.systolicBloodPressure = bloodPressure;
 	}
 
@@ -245,7 +245,7 @@ public class ObstetricsOfficeVisitForm {
 		return this.diastolicBloodPressure;
 	}
 
-	public void setDiastolicBloodPressure(int bloodPressure) {
+	public void setDiastolicBloodPressure(Integer bloodPressure) {
 		this.diastolicBloodPressure = bloodPressure;
 	}
 

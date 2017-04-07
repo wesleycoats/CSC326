@@ -54,7 +54,7 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit>{
 		int i = 1;
 		stmt = "INSERT INTO obstetricsVisit(visitID, patientMID, weeksPregnant, weight, "
 				+ "systolicBloodPressure, diastolicBloodPressure, fetalHeartRate, pregnancies, placentaObserved) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
 		ps.setLong(i++, ov.getVisitID());
 	
