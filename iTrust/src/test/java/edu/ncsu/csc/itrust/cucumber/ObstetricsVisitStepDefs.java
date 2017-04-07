@@ -47,31 +47,33 @@ public class ObstetricsVisitStepDefs {
 		sharedObstetricsVisit.setVisitID(9000000003L);
 	}
 	
-	@When("^I go to enter Obstetrics visit information and I enter (.+), (.+), (.+), (.+), (.+), (.+)$")
-	public void enter_obstetrics_information(String weeksPreggo, String weight, String bloodPressure, String FHR, String numChildren, String placenta) {
+	@When("^I go to enter Obstetrics visit information and I enter (.+), (.+), (.+), (.+), (.+), (.+), (.+)$")
+	public void enter_obstetrics_information(String weeksPreggo, String weight, String systolicBloodPressure, String diastolicBloodPressure, String FHR, String numChildren, String placenta) {
 		int weeksPregnant = Integer.parseInt(weeksPreggo);
 		float patientWeight = Float.parseFloat(weight);
-		int bp = Integer.parseInt(bloodPressure);
+		int sbp = Integer.parseInt(systolicBloodPressure);
+		int dbp = Integer.parseInt(diastolicBloodPressure);
 		int fetalHR = Integer.parseInt(FHR);
 		short children = Short.parseShort(numChildren);
 		boolean p = Boolean.parseBoolean(placenta);
 		
-		sharedObstetricsVisit.setValues(weeksPregnant, patientWeight, bp, fetalHR, children, p);
+		sharedObstetricsVisit.setValues(weeksPregnant, patientWeight, sbp, dbp, fetalHR, children, p);
 		
 		sharedObstetricsVisit.addVisit();
 		Assert.assertNull(sharedObstetricsVisit.getErrorMessage());
 	}
 	
-	@When("^I go to enter invalid Obstetrics visit information and I enter (.+), (.+), (.+), (.+), (.+), (.+)$")
-	public void enter_invalid_obstetrics_information(String weeksPreggo, String weight, String bloodPressure, String FHR, String numChildren, String placenta) {
+	@When("^I go to enter invalid Obstetrics visit information and I enter (.+), (.+), (.+), (.+), (.+), (.+), (.+)$")
+	public void enter_invalid_obstetrics_information(String weeksPreggo, String weight, String systolicBloodPressure, String diastolicBloodPressure, String FHR, String numChildren, String placenta) {
 		int weeksPregnant = Integer.parseInt(weeksPreggo);
 		float patientWeight = Float.parseFloat(weight);
-		int bp = Integer.parseInt(bloodPressure);
+		int sbp = Integer.parseInt(systolicBloodPressure);
+		int dbp = Integer.parseInt(diastolicBloodPressure);
 		int fetalHR = Integer.parseInt(FHR);
 		short children = Short.parseShort(numChildren);
 		boolean p = Boolean.parseBoolean(placenta);
 		
-		sharedObstetricsVisit.setValues(weeksPregnant, patientWeight, bp, fetalHR, children, p);
+		sharedObstetricsVisit.setValues(weeksPregnant, patientWeight, sbp, dbp, fetalHR, children, p);
 		
 		sharedObstetricsVisit.addVisit();
 		Assert.assertNotNull(sharedObstetricsVisit.getErrorMessage());

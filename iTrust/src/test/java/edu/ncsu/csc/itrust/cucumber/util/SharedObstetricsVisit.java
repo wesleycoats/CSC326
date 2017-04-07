@@ -82,11 +82,12 @@ public class SharedObstetricsVisit {
 	public void setVisitID(Long currentOfficeVisitId) {
 		obs.setVisitID(currentOfficeVisitId);
 	}
-	public void setValues(int weeksPregnant, float patientWeight, int bp, int fetalHR, short children,
+	public void setValues(int weeksPregnant, float patientWeight, int sbp, int dbp, int fetalHR, short children,
 			boolean p) {
 		obs.setWeeksPregnant(weeksPregnant);
 		obs.setWeight(patientWeight);
-		obs.setBloodPressure(bp);
+		obs.setSystolicBloodPressure(sbp);
+		obs.setDiastolicBloodPressure(dbp);
 		obs.setFetalHeartRate(fetalHR);
 		obs.setPregnancies(children);
 		obs.setPlacentaObserved(p);

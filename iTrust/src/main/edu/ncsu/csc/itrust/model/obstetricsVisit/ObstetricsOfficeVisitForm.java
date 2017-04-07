@@ -31,7 +31,8 @@ public class ObstetricsOfficeVisitForm {
 	private LocalDateTime date;
 	private Long apptTypeID;
 	private Float weight;
-	private Integer bloodPressure;
+	private Integer systolicBloodPressure;
+	private Integer diastolicBloodPressure;
 	private Integer fetalHR;
 	private Integer pregnancies;
 	private ObstetricsVisitMySQL mySQL;
@@ -64,7 +65,8 @@ public class ObstetricsOfficeVisitForm {
 	public ObstetricsOfficeVisitForm() {
 		this.weight = (float) 0;
 		this.pregnancies = 0;
-		this.bloodPressure = 0;
+		this.systolicBloodPressure = 0;
+		this.diastolicBloodPressure = 0;
 		this.fetalHR = 0;
 		this.obstetricsOV = new ObstetricsVisit();
 		this.expectedDeliveryDate = LocalDateTime.now();
@@ -137,7 +139,8 @@ public class ObstetricsOfficeVisitForm {
 		
 		if (this.obstetricsOV != null) {
 			this.setWeight(this.obstetricsOV.getWeight());
-			setBloodPressure(this.obstetricsOV.getBloodPressure());
+			setSystolicBloodPressure(this.obstetricsOV.getSystolicBloodPressure());
+			setDiastolicBloodPressure(this.obstetricsOV.getDiastolicBloodPressure());
 			this.fetalHR = this.obstetricsOV.getFetalHeartRate();
 			this.pregnancies = this.obstetricsOV.getPregnancies();
 		}
@@ -230,12 +233,20 @@ public class ObstetricsOfficeVisitForm {
 		this.weight = weight;
 	}
 
-	public Integer getBloodPressure() {
-		return bloodPressure;
+	public Integer getSystolicBloodPressure() {
+		return this.systolicBloodPressure;
 	}
 
-	public void setBloodPressure(Integer bloodPressure) {
-		this.bloodPressure = bloodPressure;
+	public void setSystolicBloodPressure(int bloodPressure) {
+		this.systolicBloodPressure = bloodPressure;
+	}
+
+	public Integer getDiastolicBloodPressure() {
+		return this.diastolicBloodPressure;
+	}
+
+	public void setDiastolicBloodPressure(int bloodPressure) {
+		this.diastolicBloodPressure = bloodPressure;
 	}
 
 	public Integer getFetalHR() {
@@ -280,7 +291,8 @@ public class ObstetricsOfficeVisitForm {
 	
 	public void submit() {
 		this.obstetricsOV.setWeight(weight);
-		this.obstetricsOV.setBloodPressure(bloodPressure);
+		this.obstetricsOV.setSystolicBloodPressure(systolicBloodPressure);
+		this.obstetricsOV.setDiastolicBloodPressure(diastolicBloodPressure);
 		this.obstetricsOV.setFetalHeartRate(fetalHR);
 		this.obstetricsOV.setPregnancies(pregnancies);
 		this.obstetricsOV.setWeeksPregnant();

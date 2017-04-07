@@ -14,7 +14,8 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     private ObstetricsVisitValidator ovv;
     
     private float weight = 134;
-    private int bp = 192;
+	private static final int SYSTOLIC_BLOOD_PRESSURE = 52;
+	private static final int DIASTOLIC_BLOOD_PRESSURE = 52;
     private int fhr = 204;
     private short children = 2;
     
@@ -28,7 +29,8 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     public void testCorrectValidation(){
     	ov.setWeight(weight);
     	ov.setFetalHeartRate(fhr);
-    	ov.setBloodPressure(bp);
+		ov.setSystolicBloodPressure(SYSTOLIC_BLOOD_PRESSURE);
+		ov.setDiastolicBloodPressure(DIASTOLIC_BLOOD_PRESSURE);
     	ov.setPregnancies(children);
     	
 		ov.setPatientMID(2l);
@@ -59,7 +61,8 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     	ov = new ObstetricsVisit();
     	ov.setWeight(weight);
     	ov.setFetalHeartRate(fhr);
-    	ov.setBloodPressure(bp);
+		ov.setSystolicBloodPressure(SYSTOLIC_BLOOD_PRESSURE);
+		ov.setDiastolicBloodPressure(DIASTOLIC_BLOOD_PRESSURE);
     	ov.setPregnancies(children);
     	
     	ov.setPatientMID(2l);
@@ -78,7 +81,8 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     	ov = new ObstetricsVisit();
     	ov.setWeight(weight);
     	ov.setFetalHeartRate(fhr);
-    	ov.setBloodPressure(bp);
+		ov.setSystolicBloodPressure(SYSTOLIC_BLOOD_PRESSURE);
+		ov.setDiastolicBloodPressure(DIASTOLIC_BLOOD_PRESSURE);
     	ov.setPregnancies(children);
     	
     	ov.setPatientMID(2l);
@@ -97,7 +101,8 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     public void testNegWeeksPregnant(){
     	ov.setWeight(weight);
     	ov.setFetalHeartRate(fhr);
-    	ov.setBloodPressure(bp);
+		ov.setSystolicBloodPressure(SYSTOLIC_BLOOD_PRESSURE);
+		ov.setDiastolicBloodPressure(DIASTOLIC_BLOOD_PRESSURE);
     	ov.setPregnancies(children);
     	
 		ov.setPatientMID(2l);
@@ -117,7 +122,8 @@ public class ObstetricsVisitValidatorTest extends TestCase {
     	ov = new ObstetricsVisit();
     	ov.setWeight(weight);
     	ov.setFetalHeartRate(fhr);
-    	ov.setBloodPressure(bp);
+		ov.setSystolicBloodPressure(SYSTOLIC_BLOOD_PRESSURE);
+		ov.setDiastolicBloodPressure(DIASTOLIC_BLOOD_PRESSURE);
     	ov.setPregnancies(children);
     	
     	ov.setPatientMID(2l);
