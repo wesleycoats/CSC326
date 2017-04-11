@@ -7,4 +7,7 @@
 #tab-obov-info:checked ~ .tab-content > #content-obov-info {
 	display: block;
 }
+#tab-obov-preg:checked ~ .tab-content > #content-obov-preg {
+    display: block;
+}
 

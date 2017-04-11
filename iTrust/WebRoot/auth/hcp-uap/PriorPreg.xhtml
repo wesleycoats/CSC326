@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    
+                <h:form>
+                
+                                        <h:dataTable var="previousO" 
+                        value="#{obstetrics_controller.getpregList()}" border="1" width="100%">
+                            
+                            <h:column headerText = "Year of Conception">
+                                <h:outputText value="#{previousO.yearOfConception}" />
+                            </h:column>
+                            
+                            <h:column headerText = "Weeks Pregnant">
+                                <h:outputText value="#{previousO.weeksPregnant}" />
+                            </h:column>
+                            
+                            <h:column headerText = "Hours in Labor">
+                                <h:outputText value="#{previousO.hoursInLabor}" />
+                            </h:column>
+                            
+                            <h:column headerText = "Weight Gain">
+                                <h:outputText value="#{previousO.weightGain}" />
+                            </h:column>
+                            
+                            <h:column headerText = "Delivery Type">
+                                <h:outputText value="#{previousO.deliveryType}" />
+                            </h:column>
+                            
+                             <h:column headerText = "Multiple Pregnancy">
+                                <h:outputText value="#{previousO.numChildren}" />
+                            </h:column>
+                            
+                        </h:dataTable>
+                
+
+                </h:form>
+    
+
+</html>
