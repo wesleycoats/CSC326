@@ -9,36 +9,40 @@
     
                 <h:form>
                 
-                                        <h:dataTable var="previousO" 
-                        value="#{obstetrics_controller.getpregList()}" border="1" width="100%">
+                        <h:dataTable var="previousO" 
+                        value="#{past_pregnancies.getpregList()}" border="1" width="100%">
                             
-                            <h:column headerText = "Year of Conception">
+                            <h:column>
+                            <f:facet name="header">Year of Conception</f:facet>
                                 <h:outputText value="#{previousO.yearOfConception}" />
                             </h:column>
                             
-                            <h:column headerText = "Weeks Pregnant">
+                            <h:column>
+                            <f:facet name="header">Weeks Pregnant</f:facet>
                                 <h:outputText value="#{previousO.weeksPregnant}" />
                             </h:column>
                             
-                            <h:column headerText = "Hours in Labor">
+                            <h:column>
+                            <f:facet name="header">Hours in Labor</f:facet>
                                 <h:outputText value="#{previousO.hoursInLabor}" />
                             </h:column>
                             
-                            <h:column headerText = "Weight Gain">
+                            <h:column>
+                            <f:facet name="header">Weight Gain</f:facet>
                                 <h:outputText value="#{previousO.weightGain}" />
                             </h:column>
                             
-                            <h:column headerText = "Delivery Type">
+                            <h:column>
+                            <f:facet name="header">Delivery Type</f:facet>
                                 <h:outputText value="#{previousO.deliveryType}" />
                             </h:column>
                             
-                             <h:column headerText = "Multiple Pregnancy">
+                             <h:column>
+                            <f:facet name="header">Multiple Pregnancy</f:facet>
                                 <h:outputText value="#{previousO.numChildren}" />
                             </h:column>
                             
                         </h:dataTable>
-                
-
                 </h:form>
     
 
