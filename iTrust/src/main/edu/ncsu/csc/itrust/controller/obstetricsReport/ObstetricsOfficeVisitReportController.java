@@ -19,7 +19,7 @@ public class ObstetricsOfficeVisitReportController {
 	private ObstetricsVisitMySQL obovSQL;
 	private SessionUtils utils;
 	
-	public ObstetricsOfficeVisitReportController() {
+	public ObstetricsOfficeVisitReportController() throws DBException {
 		try {
 			this.obovSQL = new ObstetricsVisitMySQL();
 		} catch (DBException e) {
@@ -30,17 +30,22 @@ public class ObstetricsOfficeVisitReportController {
 		this.utils = SessionUtils.getInstance();
 	}
 	
-	public void fetchList() {
-		Long pid = Long.parseLong(utils.getCurrentPatientMID());
+
+	public List<ObstetricsVisit> getList() {
+		Long pid;
+		if (utils.getSessionPID() != null) {
+			pid = Long.valueOf(utils.getSessionPID());
+		}
+		else {
+			pid = Long.valueOf("1");
+		}
+		
 		try {
 			this.list = this.obovSQL.getVisitsForPatient(pid);
 		} catch (DBException e) {
 			//Do nothing
 			System.out.println("Issue getting OB office visits.");
 		}
-	}
-
-	public List<ObstetricsVisit> getList() {
 		return list;
 	}
 

@@ -6,7 +6,7 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
-				
+					
 	<h:dataTable id="obovInfo" styleClass="fTable"
 		value="#{obstetrics_office_visit_controller.list}" var="obov" border="1">
 		<h:column>
@@ -19,7 +19,7 @@
 			<f:facet name="header">
 				<h:outputText value="Weeks Pregnant" />
 			</f:facet>
-			<h:outputText value="#{obov.getWeeksPregnant()}" />
+			<h:outputText value="#{obov.getWeeksPegnant()}" />
 		</h:column>
 		<h:column>
 			<f:facet name="header">
