@@ -494,6 +494,7 @@ CREATE TABLE pregnancies
 	weightGain FLOAT,
 	deliveryType enum("vaginal delivery", "vaginal delivery vacuum assist", "vaginal delivery forceps assist", "caesarean section", "miscarriage"),
 	numChildren INT(3),
+	edd DATETIME,
 	PRIMARY KEY (patientMID, yearOfConception),
 	FOREIGN KEY (patientMID) REFERENCES patients(MID)
 ) ENGINE=MyISAM;

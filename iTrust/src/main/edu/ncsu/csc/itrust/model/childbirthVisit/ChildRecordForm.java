@@ -14,10 +14,16 @@ import edu.ncsu.csc.itrust.action.EventLoggingAction;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsData;
+import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsDataMySQL;
+import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsVisit;
+import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsVisitMySQL;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.model.pregnancies.Pregnancies;
+import edu.ncsu.csc.itrust.model.pregnancies.PregnanciesMySQL;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 
@@ -37,9 +43,13 @@ public class ChildRecordForm {
 	
 	private ChildRecord childRecord;
 	private ChildRecordMySQL childsql;
+	private ObstetricsDataMySQL obsql;
+	private ObstetricsVisitMySQL obvsql;
+	private PregnanciesMySQL psql;
 	private PatientBean newBaby;
 	private Long motherMID;
 	private Long officeID;
+	private Integer hoursInLabor;
 	private PatientDAO patientDAO;
 	private AddPatientAction addBaby;
 	
@@ -51,6 +61,9 @@ public class ChildRecordForm {
 		this.factory = dao;
 		this.session = session;
 		this.childsql = new ChildRecordMySQL(ds);
+		this.obsql = new ObstetricsDataMySQL(ds);
+		this.obvsql = new ObstetricsVisitMySQL(ds);
+		this.psql = new PregnanciesMySQL(ds);
 		setup();
 	}
 	
@@ -58,6 +71,9 @@ public class ChildRecordForm {
 		this.factory = DAOFactory.getProductionInstance();
 		this.session = SessionUtils.getInstance();
 		this.childsql = new ChildRecordMySQL();
+		this.obsql = new ObstetricsDataMySQL();
+		this.obvsql = new ObstetricsVisitMySQL();
+		this.psql = new PregnanciesMySQL();
 		setup();
 	}
 	
@@ -104,6 +120,12 @@ public class ChildRecordForm {
 	}
 	public void setOfficeID(Long officeID) {
 		this.officeID = officeID;
+	}
+	public Integer getHoursInLabor() {
+		return hoursInLabor;
+	}
+	public void setHoursInLabor(Integer hoursInLabor) {
+		this.hoursInLabor = hoursInLabor;
 	}
 	
 	public String getFirstName() {
@@ -192,6 +214,38 @@ public class ChildRecordForm {
 			message = "Baby successfully added.";
 		} catch (DBException e) {
 			message = "Input not Valid.";
+		}
+		createPregnancy();
+	}
+	
+	private void createPregnancy() {
+		Pregnancies p = new Pregnancies();
+		try {
+			ObstetricsData obd = obsql.getVisitsForPatient(motherMID).get(0);
+			LocalDate edd = obd.getEdd().toLocalDate();
+			p.setEdd(edd.atStartOfDay());
+			int lmp_year = obd.getLmp().getYear();
+			p.setYearOfConception(lmp_year);
+		} catch (DBException e) {
+			// No initial obstetrics visit
+		}
+		try {
+			ObstetricsVisit ov = obvsql.getVisitsForPatient(motherMID).get(0);
+			p.setWeightGain(ov.getWeight());
+			p.setNumChildren(ov.getPregnancies().shortValue());
+		} catch (DBException e) {
+			//No obstetrics visits in system
+		}
+		p.setDelType(deliveryType.toLowerCase());
+		p.setHoursInLabor(hoursInLabor);
+		p.setPatientMID(motherMID);
+		
+		try {
+			psql.add(p);
+			System.out.println("yes");
+		} catch (DBException e) {
+			System.out.println("no");
+			//Did it work
 		}
 	}
 	

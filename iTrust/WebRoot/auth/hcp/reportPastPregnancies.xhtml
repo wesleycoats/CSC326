@@ -7,4 +7,23 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
+	<c:if test="#{past_pregnancies.isObstetricsPatient()}">
+		<div align="center">
+				<h2 style="font-size: 175%; font-weight: bold;">
+					Past Pregnancies Report For <br />
+					#{user.getUserNameForID(sessionScope['pid'])}
+				</h2>
+				<br />
+				<h:dataTable var="o" value="#{past_pregnancies.getCRList()}"
+					border="1" width="100%">
+                    <h:column headerText = "Delivery Type">
+                    	<h:outputText value="#{o.deliveryType}" />
+                    </h:column>
+                    
+				
+				</h:dataTable>
+				
+		</div>
+	</c:if>
+		
 </html>

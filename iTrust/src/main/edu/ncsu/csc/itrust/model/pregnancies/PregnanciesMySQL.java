@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -230,6 +232,7 @@ public class PregnanciesMySQL {
 		private static final String TYPE = "deliveryType";
 		private static final String NUM_CHILDREN = "numChildren";
 		private static final String PREG_ID = "pregnancyID";
+		private static final String EDD = "edd";
 		
 		private static final String INSERT = "INSERT INTO " + PREGNANCIES_TABLE_NAME + " (" 
 				+ PATIENT_MID + ", "
@@ -239,14 +242,16 @@ public class PregnanciesMySQL {
 				+ WEIGHT_GAIN + ", "
 				+ TYPE + ", "
 				+ NUM_CHILDREN + ", "
-				+ PREG_ID +	") VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+				+ PREG_ID + ", "
+				+ EDD +	") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		
 		private static final String UPDATE = "UPDATE " + PREGNANCIES_TABLE_NAME + " SET " 
 				+ WEEKS_PREG + "=?, "
 				+ HOURS_IN_LABOR + "=?, "
 				+ WEIGHT_GAIN + "=?, "
 				+ TYPE + "=?, "
-				+ NUM_CHILDREN + "=?, WHERE" + PATIENT_MID + " =?, " + CONCEPTION_YEAR + "=?;";
+				+ NUM_CHILDREN + "=?,"
+				+ EDD + "=? WHERE" + PATIENT_MID + " =?, " + CONCEPTION_YEAR + "=?;";
 		
 		public static final String SELECT_BY_PATIENT_MID = "SELECT * from " + PREGNANCIES_TABLE_NAME + " WHERE "
 				+ PATIENT_MID + "=?;";
@@ -271,7 +276,10 @@ public class PregnanciesMySQL {
 			double weight = rs.getDouble("weightGain");
 			int weeksPregnant = rs.getInt("weeksPregnant");
 			short children = rs.getShort("numChildren");
-			return new Pregnancies(MID, type, year, labor, weight, weeksPregnant, children);
+			LocalDateTime edd = rs.getTimestamp("edd").toLocalDateTime();
+			Pregnancies p = new Pregnancies(MID, type, year, labor, weight, weeksPregnant, children);
+			p.setEdd(edd);
+			return p;
 		}
 		
 		public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, Pregnancies pregnancy, 
@@ -288,6 +296,7 @@ public class PregnanciesMySQL {
 				ps.setString(6, pregnancy.getDelType());
 				ps.setShort(7, pregnancy.getNumChildren());
 				ps.setLong(8, pregnancy.getPregID());
+				ps.setTimestamp(9, Timestamp.valueOf(pregnancy.getEdd()));
 			} else {
 				ps.setInt(1, pregnancy.getWeeksPregnant());
 				ps.setDouble(2, pregnancy.getHoursInLabor());
@@ -296,6 +305,7 @@ public class PregnanciesMySQL {
 				ps.setShort(5, pregnancy.getNumChildren());
 				ps.setLong(6, pregnancy.getPatientMID());
 				ps.setInt(7, pregnancy.getYearOfConception());
+				ps.setTimestamp(8, Timestamp.valueOf(pregnancy.getEdd()));
 			}
 			return ps;
 		}
