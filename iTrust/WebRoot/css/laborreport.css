@@ -1,0 +1,10 @@
+/*
+ * laborreport.css 
+ * 
+ * Show/hide tabbed panels on viewLaborReport.xhtml when clicked
+ */
+
+#tab-obov-info:checked ~ .tab-content > #content-obov-info {
+	display: block;
+}
+

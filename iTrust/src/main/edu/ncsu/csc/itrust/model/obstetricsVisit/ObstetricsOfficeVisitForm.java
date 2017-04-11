@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.servlet.http.Part;
 
 import org.apache.commons.io.IOUtils;
@@ -20,7 +20,7 @@ import edu.ncsu.csc.itrust.model.ultrasound.UltrasoundMySQL;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name = "obstetrics_office_visit_form")
-@ViewScoped
+@SessionScoped
 public class ObstetricsOfficeVisitForm {
 	
 	private long visitID;
