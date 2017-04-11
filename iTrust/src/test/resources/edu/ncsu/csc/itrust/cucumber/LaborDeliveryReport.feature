@@ -10,6 +10,5 @@ Scenario: View Labor Delivery Report for a patient
 	And I decide that Person Random has no STDs
 	And I decide that Person Random was diagnosed with Cancer
 	And god wanted Person Random was allergic to Penicillin
-	And Person Random acquire Herpes Viral Infection of the Penis
 	When I go to view the delivery report
 	Then all of this information is correctly displayed
