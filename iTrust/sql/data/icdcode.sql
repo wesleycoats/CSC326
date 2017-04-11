@@ -1005,5 +1005,8 @@ INSERT INTO icdcode (code, name, is_chronic) VALUES
 ('E1136', 'Type 2 diabetes mellitus with diabetic cataract', 1),
 ('E114', 'Type 2 diabetes mellitus with neurological complications', 1),
 ('E118', 'Type 2 diabetes mellitus with unspecified complications', 1),
-
+('C719', 'Malignant neoplasm of brain, unspecified', 1),
+('C50', 'Malignant neoplasm of breast', 1),
+('C43', 'Malignant melanoma of skin', 1),
+('C40', 'Malignant neoplasm of bone and articular cartilage of limbs', 1)
 ON duplicate key update code=code;
