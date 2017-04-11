@@ -998,5 +998,12 @@ INSERT INTO icdcode (code, name, is_chronic) VALUES
 ('B889', 'Infestation', 0),
 ('B89', 'Unspecified parasitic disease', 0),
 ('B900', 'Sequelae of central nervous sy', 1),
-('B901', 'Sequelae of genitourinary tube', 1)
+('B901', 'Sequelae of genitourinary tube', 1),
+('O210', 'Mild Hyperemesis Gravidarum', 0),
+('E032', 'Hypothiroidism', 1),
+('E110', 'Type 2 diabetes mellitus with hyperosmolarity', 1),
+('E1136', 'Type 2 diabetes mellitus with diabetic cataract', 1),
+('E114', 'Type 2 diabetes mellitus with neurological complications', 1),
+('E118', 'Type 2 diabetes mellitus with unspecified complications', 1),
+
 ON duplicate key update code=code;
