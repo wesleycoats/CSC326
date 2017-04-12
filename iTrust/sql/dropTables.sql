@@ -41,6 +41,7 @@ DROP TABLE IF EXISTS personalrelations;
 DROP TABLE IF EXISTS personalstaticinformation;
 DROP TABLE IF EXISTS personnel;
 DROP TABLE IF EXISTS pregnancies;
+DROP TABLE IF EXISTS pregnancyConditions;
 DROP TABLE IF EXISTS prescription;
 DROP TABLE IF EXISTS profilephotos;
 DROP TABLE IF EXISTS recordsrelease;
