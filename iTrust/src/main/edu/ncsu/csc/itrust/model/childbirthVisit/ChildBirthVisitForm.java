@@ -94,7 +94,7 @@ public class ChildBirthVisitForm {
 			Flag f = new Flag(1l, patientMID, 1l, "Negative Blood Type");
 			try {
 				fMySQL.add(f);
-			} catch (DBException e) {
+			} catch (Exception e) {
 				// Do nothing
 			}
 		}
