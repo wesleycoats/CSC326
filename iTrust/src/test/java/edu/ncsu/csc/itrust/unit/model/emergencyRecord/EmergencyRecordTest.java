@@ -69,7 +69,7 @@ public class EmergencyRecordTest extends TestCase {
         Assert.assertEquals(1, r.getAllergies().size());
         
         AllergyBean a1 = r.getAllergies().get(0);
-        Assert.assertTrue(a1.getId().equals(0));
+        assertEquals(0, a1.getId().longValue());
         Assert.assertEquals(new Date(0L), a1.getFirstFound());
         Assert.assertEquals("Test description", a1.getDescription());
         Assert.assertEquals("Test NDC", a1.getNDCode());
