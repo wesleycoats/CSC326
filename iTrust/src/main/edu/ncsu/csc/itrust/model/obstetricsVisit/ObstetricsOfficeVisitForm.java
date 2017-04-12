@@ -11,6 +11,8 @@ import javax.servlet.http.Part;
 
 import org.apache.commons.io.IOUtils;
 
+import edu.ncsu.csc.itrust.controller.flags.Flag;
+import edu.ncsu.csc.itrust.controller.flags.FlagMySQL;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsDataMySQL;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsVisit;
@@ -36,6 +38,7 @@ public class ObstetricsOfficeVisitForm {
 	private Integer fetalHR;
 	private Integer pregnancies;
 	private ObstetricsVisitMySQL mySQL;
+	private FlagMySQL fMySQL;
 	private ObstetricsVisit obstetricsOV;
 	private ObstetricsDataMySQL sql;
 	
@@ -74,6 +77,7 @@ public class ObstetricsOfficeVisitForm {
 		try {
 			this.mySQL = new ObstetricsVisitMySQL();
 			this.usSQL = new UltrasoundMySQL();
+			this.fMySQL = new FlagMySQL();
 		} catch (DBException e1) {
 			//Do nothing
 		}
@@ -97,6 +101,7 @@ public class ObstetricsOfficeVisitForm {
 		}
 		
 		try {
+			this.fMySQL = new FlagMySQL();
 			this.sql = new ObstetricsDataMySQL();
 			this.lastMenstrualPeriod = this.sql.getLmpDate(patientMID);
 		} catch (DBException e) {
@@ -298,6 +303,32 @@ public class ObstetricsOfficeVisitForm {
 		this.obstetricsOV.setFetalHeartRate(fetalHR);
 		this.obstetricsOV.setPregnancies(pregnancies);
 		this.obstetricsOV.setWeeksPregnant();
+		
+		if(systolicBloodPressure >= 140 || diastolicBloodPressure >= 90) {
+			Flag f = new Flag(1l, patientMID, 1l, "High Blood Pressure");
+			try {
+				fMySQL.add(f);
+			} catch (DBException e) {
+				// Do nothing
+			}
+		}
+		if(fetalHR < 120 || fetalHR > 160) {
+			Flag f = new Flag(1l, patientMID, 1l, "Abnormal FHR");
+			try {
+				fMySQL.add(f);
+			} catch (DBException e) {
+				// Do nothing
+			}
+		}
+		
+		if(weight < 15 || weight > 35) {
+			Flag f = new Flag(1l, patientMID, 1l, "Abnormal Weight Change");
+			try {
+				fMySQL.add(f);
+			} catch (DBException e) {
+				// Do nothing
+			}
+		}
 		
 		save();
 		
