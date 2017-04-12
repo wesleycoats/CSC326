@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class Pregnancies {
 	private long MID;
 	private String delType = "";
+	private String bloodType;
 	private int yearOfConception;
 	private double hoursInLabor;
 	private double weightGain;
@@ -89,6 +90,14 @@ public class Pregnancies {
 
 	public void setDelType(String delType) {
 		this.delType = delType;
+	}
+	
+	public String getBloodType() {
+		return bloodType;
+	}
+
+	public void setBloodType(String bloodType) {
+		this.bloodType = bloodType;
 	}
 
 	public int getYearOfConception() {

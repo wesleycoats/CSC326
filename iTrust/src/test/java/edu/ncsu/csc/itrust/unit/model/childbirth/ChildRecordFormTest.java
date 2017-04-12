@@ -64,6 +64,8 @@ public class ChildRecordFormTest {
 		assertEquals("42", crf.getMotherMID().toString());
 		crf.setOfficeID(99l);
 		assertEquals("99", crf.getOfficeID().toString());
+		crf.setHoursInLabor(10);
+		assertEquals(10, crf.getHoursInLabor().intValue());
 		try {
 			crf.submit();
 		} catch(NullPointerException e) {

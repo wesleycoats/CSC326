@@ -233,6 +233,12 @@ CREATE TABLE billing( /* UC60 */
 	FOREIGN KEY  (HCPID) REFERENCES personnel (MID)
 ) ENGINE=MyISAM;
 
+CREATE TABLE pregnancyConditions(
+	PatientID BIGINT unsigned NOT NULL default '0',
+	Code VARCHAR(15) NOT NULL,
+	FOREIGN KEY (PatientID) REFERENCES patients (MID)
+) ENGINE=MyISAM;
+
 
 CREATE TABLE personalallergies(
 	PatientID BIGINT unsigned NOT NULL COMMENT 'MID of the Patient',
@@ -495,6 +501,7 @@ CREATE TABLE pregnancies
 	deliveryType enum('vaginal delivery', 'vaginal delivery vacuum assist', 'vaginal delivery forceps assist', 'caesarean section', 'miscarriage'),
 	numChildren INT(3),
 	edd DATETIME,
+	bloodType VARCHAR(3) default 'AB+',
 	FOREIGN KEY (patientMID) REFERENCES patients(MID)
 ) ENGINE=MyISAM;
 

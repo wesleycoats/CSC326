@@ -18,7 +18,7 @@
                             </h:column>
                             
                             <h:column>
-                            <f:facet name="header">Weeks Pregnant</f:facet>
+                            <f:facet name="header">Pregnancy Term (Weeks Pregnant)</f:facet>
                                 <h:outputText value="#{previousO.weeksPregnant}" />
                             </h:column>
                             
@@ -37,9 +37,19 @@
                                 <h:outputText value="#{previousO.delType}" />
                             </h:column>
                             
-                             <h:column>
+                            <h:column>
                             <f:facet name="header">Multiple Pregnancy</f:facet>
                                 <h:outputText value="#{previousO.numChildren}" />
+                            </h:column>
+                            
+                            <h:column>
+                            <f:facet name="header">Expected Delivery Date</f:facet>
+                                <h:outputText value="#{previousO.edd}" />
+                            </h:column>
+                            
+                            <h:column>
+                            <f:facet name="header">Blood Type</f:facet>
+                                <h:outputText value="#{previousO.bloodType}" />
                             </h:column>
                             
                         </h:dataTable>
