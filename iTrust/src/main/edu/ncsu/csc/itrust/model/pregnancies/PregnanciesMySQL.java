@@ -161,6 +161,7 @@ public class PregnanciesMySQL {
 
 			pregnancyList = loader.loadList(results);
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DBException(e);
 		} finally {
 			try {

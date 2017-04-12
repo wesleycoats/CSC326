@@ -9,7 +9,7 @@
     
                 <h:form>
                 
-                        <h:dataTable var="previousO" 
+                        <h:dataTable var="previousO" styleClass="fTable"
                         value="#{past_pregnancies.getpregList()}" border="1" width="100%">
                             
                             <h:column>
@@ -34,7 +34,7 @@
                             
                             <h:column>
                             <f:facet name="header">Delivery Type</f:facet>
-                                <h:outputText value="#{previousO.deliveryType}" />
+                                <h:outputText value="#{previousO.delType}" />
                             </h:column>
                             
                              <h:column>

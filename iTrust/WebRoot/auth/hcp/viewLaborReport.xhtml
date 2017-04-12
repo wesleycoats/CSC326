@@ -9,6 +9,7 @@
 <f:view beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
 
 <f:metadata>
+    <f:event type="preRenderView" listener="#{past_pregnancies.generatePregList()}" />
 </f:metadata>
 		  
 <h:body>
