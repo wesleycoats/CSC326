@@ -34,23 +34,20 @@ public class FlagMySQLLoader implements SQLLoader<Flag> {
 			boolean newInstance) throws SQLException {
 		String stmt = "";
 		if (newInstance) {
-			stmt = "INSERT INTO flags(FID, MID, pregID, flagType) "
-					+ "VALUES (? ,?, ?, ?);";
+			stmt = "INSERT INTO flags(MID, flagType) "
+					+ "VALUES (?, ?);";
 
 		} else {
 			long id = f.getMid();
 			long pregID = f.getPregID();
-			stmt = "UPDATE flags SET FID=?, "
+			stmt = "UPDATE flags SET "
 					+ "MID=?, "
-					+ "pregID=?, "
 					+ "flagType=? "
 					+ "WHERE MID=" + id + "AND pregID=" + pregID + ";";
 		}
 		ps = conn.prepareStatement(stmt);
-		ps.setLong(1, f.getFid());
-		ps.setLong(2, f.getMid());
-		ps.setLong(3, f.getPregID());
-		ps.setString(4, f.getFlagType());
+		ps.setLong(1, f.getMid());
+		ps.setString(2, f.getFlagType());
 		return ps;
 	}
 
