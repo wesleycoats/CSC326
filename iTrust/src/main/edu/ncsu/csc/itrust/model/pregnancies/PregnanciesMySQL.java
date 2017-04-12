@@ -112,35 +112,6 @@ public class PregnanciesMySQL {
 	}
 	
 	/**
-	 * Updates the Pregnancy object in the Database with the same patientMID and
-	 * yearOfConception
-	 * @param p
-	 * @return
-	 * @throws DBException
-	 */
-	public boolean update(Pregnancies p) throws DBException {
-		boolean successfullyUpdated = false;
-		Connection conn = null;
-		PreparedStatement updateStatement = null;
-		try {
-			validator.validate(p);
-		} catch (FormValidationException e1) {
-			throw new DBException(new SQLException(e1.getMessage()));
-		}
-		try {
-			conn = ds.getConnection();
-			updateStatement = loader.loadParameters(conn, updateStatement, p, false);
-			int exitStatus = updateStatement.executeUpdate();
-			successfullyUpdated = (exitStatus > 0);
-		} catch (SQLException e) {
-			throw new DBException(e);
-		} finally {
-			DBUtil.closeConnection(conn, updateStatement);
-		}
-		return successfullyUpdated;
-	}
-	
-	/**
 	 * Returns all Pregnancy objects in the database that have the given 
 	 * patient MID
 	 * @param MID
@@ -207,15 +178,6 @@ public class PregnanciesMySQL {
 				+ EDD + ", "
 				+ BLOOD_TYPE + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
-		private static final String UPDATE = "UPDATE " + PREGNANCIES_TABLE_NAME + " SET " 
-				+ WEEKS_PREG + "=?, "
-				+ HOURS_IN_LABOR + "=?, "
-				+ WEIGHT_GAIN + "=?, "
-				+ TYPE + "=?, "
-				+ NUM_CHILDREN + "=?,"
-				+ EDD + "=?,"
-				+ BLOOD_TYPE + "=? WHERE" + PATIENT_MID + " =?, " + CONCEPTION_YEAR + "=?";
-		
 		public static final String SELECT_BY_PATIENT_MID = "SELECT * from " + PREGNANCIES_TABLE_NAME + " WHERE "
 				+ PATIENT_MID + "=?";
 		
@@ -246,7 +208,7 @@ public class PregnanciesMySQL {
 		
 		public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, Pregnancies pregnancy, 
 				boolean newInstance) throws SQLException {
-			StringBuilder query = new StringBuilder(newInstance ? INSERT : UPDATE);
+			StringBuilder query = new StringBuilder(newInstance ? INSERT : "");
 			ps = conn.prepareStatement(query.toString());
 			
 			if (newInstance) {
@@ -259,16 +221,6 @@ public class PregnanciesMySQL {
 				ps.setShort(7, pregnancy.getNumChildren());
 				ps.setTimestamp(8, Timestamp.valueOf(pregnancy.getEdd()));
 				ps.setString(9, pregnancy.getBloodType());
-			} else {
-				ps.setInt(1, pregnancy.getWeeksPregnant());
-				ps.setDouble(2, pregnancy.getHoursInLabor());
-				ps.setDouble(3, pregnancy.getWeightGain());
-				ps.setString(4, pregnancy.getDelType());
-				ps.setShort(5, pregnancy.getNumChildren());
-				ps.setTimestamp(6, Timestamp.valueOf(pregnancy.getEdd()));
-				ps.setString(7, pregnancy.getBloodType());
-				ps.setLong(8, pregnancy.getPatientMID());
-				ps.setInt(9, pregnancy.getYearOfConception());
 			}
 			return ps;
 		}
