@@ -14,8 +14,8 @@ public class AllergyBeanTest extends TestCase {
 
 	public void testGetID() {
 		AllergyBean allergy = new AllergyBean();
-		allergy.setId(7l);
-		assertEquals(7l, allergy.getId());
+		allergy.setId(7);
+		assertTrue(allergy.getId().equals(7));
 		allergy.setDescription("testing");
 		assertEquals("testing", allergy.toString());
 	}
