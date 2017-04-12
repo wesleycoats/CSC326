@@ -492,7 +492,7 @@ CREATE TABLE pregnancies
 	weeksPregnant INT(10) UNSIGNED,
 	hoursInLabor FLOAT UNSIGNED,
 	weightGain FLOAT,
-	deliveryType enum("vaginal delivery", "vaginal delivery vacuum assist", "vaginal delivery forceps assist", "caesarean section", "miscarriage"),
+	deliveryType enum('vaginal delivery', 'vaginal delivery vacuum assist', 'vaginal delivery forceps assist', 'caesarean section', 'miscarriage'),
 	numChildren INT(3),
 	edd DATETIME,
 	PRIMARY KEY (patientMID, yearOfConception),
