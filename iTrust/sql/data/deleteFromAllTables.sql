@@ -92,3 +92,4 @@ DELETE FROM obstetricsVisit;
 DELETE FROM ultrasound;
 DELETE FROM fitbit;
 DELETE FROM microsoft;
+DELETE FROM pregnancyConditions;

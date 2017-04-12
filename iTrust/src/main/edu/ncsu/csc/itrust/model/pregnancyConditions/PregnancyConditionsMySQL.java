@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Resource;
 import javax.naming.Context;
@@ -60,7 +59,7 @@ public class PregnancyConditionsMySQL {
 	 * @return
 	 * @throws DBException 
 	 */
-	public List<String> getAllByMID(long MID) throws DBException {
+	public ArrayList<String> getAllByMID(long MID) throws DBException {
 		Connection conn = null;
 		PreparedStatement query = null;
 		ResultSet results = null;
@@ -73,7 +72,6 @@ public class PregnancyConditionsMySQL {
 
 			conditionList = loader.loadList(results);
 		} catch (SQLException e) {
-			e.printStackTrace();
 			throw new DBException(e);
 		} finally {
 			try {

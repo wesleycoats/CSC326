@@ -85,6 +85,10 @@ public class TestDataGenerator {
 	public void clearAllTables() throws SQLException, FileNotFoundException, IOException {
 		new DBBuilder(factory).executeSQLFile(DIR + "/deleteFromAllTables.sql");
 	}
+	
+	public void LaborDeliveryReportData() throws SQLException, FileNotFoundException, IOException {
+		new DBBuilder(factory).executeSQLFile(DIR + "/UC95.sql");
+	}
 
 	public void clearAppointments() throws SQLException, FileNotFoundException, IOException {
 		new DBBuilder(factory).executeSQLFile(DIR + "/clearAppointments.sql");
@@ -989,6 +993,8 @@ public class TestDataGenerator {
 		patient28();
 		patient29();
 		patient30();
+		
+		LaborDeliveryReportData(); // Load the test data to view the labor delivery report
 		
 		setMode();
 	}

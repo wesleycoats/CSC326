@@ -47,8 +47,7 @@ public class PregnancyConditionsValidator {
 		}
 
 		boolean validCode = false;
-		ArrayList<String> codeList = new ArrayList<String>();
-		for (String s : codeList) {
+		for (String s : CODE_LIST) {
 			if (s.equals(code))
 				validCode = true;
 		}

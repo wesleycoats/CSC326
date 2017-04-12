@@ -51,7 +51,7 @@ public class LaborDeliveryReportStepDefs {
 		//TODO
 	}
 	
-	@Given("I decide that Person Random was diagnosed with Cancer")
+	@Given("I decide that Person Random was diagnosed with Cancer and Diabetes")
 	public void does_have_cancer() {
 		//TODO
 	}
