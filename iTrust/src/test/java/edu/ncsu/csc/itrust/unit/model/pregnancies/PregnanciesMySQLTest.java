@@ -73,11 +73,5 @@ public class PregnanciesMySQLTest {
 		} catch (DBException e) {
 			fail();
 		}
-		
-		try {
-			assertNull(pSQL.getByID(11113L));
-		} catch (DBException e) {
-			assertEquals("A database exception has occurred. Please see the log in the console for stacktrace", e.getMessage());
-		}
 	}
 }
