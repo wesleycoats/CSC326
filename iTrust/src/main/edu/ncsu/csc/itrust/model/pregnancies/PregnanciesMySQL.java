@@ -194,6 +194,7 @@ public class PregnanciesMySQL {
 		private static final String TYPE = "deliveryType";
 		private static final String NUM_CHILDREN = "numChildren";
 		private static final String EDD = "edd";
+		private static final String BLOOD_TYPE = "bloodType";
 		
 		private static final String INSERT = "INSERT INTO " + PREGNANCIES_TABLE_NAME + " (" 
 				+ PATIENT_MID + ", "
@@ -203,7 +204,8 @@ public class PregnanciesMySQL {
 				+ WEIGHT_GAIN + ", "
 				+ TYPE + ", "
 				+ NUM_CHILDREN + ", "
-				+ EDD + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+				+ EDD + ", "
+				+ BLOOD_TYPE + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		private static final String UPDATE = "UPDATE " + PREGNANCIES_TABLE_NAME + " SET " 
 				+ WEEKS_PREG + "=?, "
@@ -211,7 +213,8 @@ public class PregnanciesMySQL {
 				+ WEIGHT_GAIN + "=?, "
 				+ TYPE + "=?, "
 				+ NUM_CHILDREN + "=?,"
-				+ EDD + "=? WHERE" + PATIENT_MID + " =?, " + CONCEPTION_YEAR + "=?";
+				+ EDD + "=?,"
+				+ BLOOD_TYPE + "=? WHERE" + PATIENT_MID + " =?, " + CONCEPTION_YEAR + "=?";
 		
 		public static final String SELECT_BY_PATIENT_MID = "SELECT * from " + PREGNANCIES_TABLE_NAME + " WHERE "
 				+ PATIENT_MID + "=?";
@@ -234,8 +237,10 @@ public class PregnanciesMySQL {
 			int weeksPregnant = rs.getInt("weeksPregnant");
 			short children = rs.getShort("numChildren");
 			LocalDateTime edd = rs.getTimestamp("edd").toLocalDateTime();
+			String blood = rs.getString("bloodType");
 			Pregnancies p = new Pregnancies(MID, type, year, labor, weight, weeksPregnant, children);
 			p.setEdd(edd);
+			p.setBloodType(blood);
 			return p;
 		}
 		
@@ -253,15 +258,17 @@ public class PregnanciesMySQL {
 				ps.setString(6, pregnancy.getDelType());
 				ps.setShort(7, pregnancy.getNumChildren());
 				ps.setTimestamp(8, Timestamp.valueOf(pregnancy.getEdd()));
+				ps.setString(9, pregnancy.getBloodType());
 			} else {
 				ps.setInt(1, pregnancy.getWeeksPregnant());
 				ps.setDouble(2, pregnancy.getHoursInLabor());
 				ps.setDouble(3, pregnancy.getWeightGain());
 				ps.setString(4, pregnancy.getDelType());
 				ps.setShort(5, pregnancy.getNumChildren());
-				ps.setLong(6, pregnancy.getPatientMID());
-				ps.setInt(7, pregnancy.getYearOfConception());
-				ps.setTimestamp(8, Timestamp.valueOf(pregnancy.getEdd()));
+				ps.setTimestamp(6, Timestamp.valueOf(pregnancy.getEdd()));
+				ps.setString(7, pregnancy.getBloodType());
+				ps.setLong(8, pregnancy.getPatientMID());
+				ps.setInt(9, pregnancy.getYearOfConception());
 			}
 			return ps;
 		}

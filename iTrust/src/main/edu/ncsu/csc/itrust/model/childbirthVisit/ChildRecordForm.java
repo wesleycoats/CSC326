@@ -34,6 +34,7 @@ public class ChildRecordForm {
 	private String firstName;
 	private String lastName;
 	private String email;
+	private String bloodType;
 	
 	private Boolean sex;
 	private String deliveryType;
@@ -146,6 +147,12 @@ public class ChildRecordForm {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	public String getBloodType() {
+		return bloodType;
+	}
+	public void setBloodType(String bloodType) {
+		this.bloodType = bloodType;
+	}
 	
 	public Boolean getSex() {
 		return sex;
@@ -240,6 +247,7 @@ public class ChildRecordForm {
 		}
 		p.setDelType(deliveryType.toLowerCase());
 		p.setHoursInLabor(hoursInLabor);
+		p.setBloodType(bloodType);
 		p.setPatientMID(motherMID);
 		
 		try {
