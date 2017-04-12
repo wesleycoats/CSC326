@@ -14,9 +14,12 @@ import javax.sql.DataSource;
 import java.sql.*;
 
 import edu.ncsu.csc.itrust.action.EventLoggingAction;
+import edu.ncsu.csc.itrust.controller.flags.Flag;
+import edu.ncsu.csc.itrust.controller.flags.FlagMySQL;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsData;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsDataMySQL;
+import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.PersonnelLoader;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
@@ -33,6 +36,7 @@ public class ObstetricsController extends iTrustController {
 	private Pregnancies[] pregList;
 	private String lmp = "YYYY-MM-DD";
 	private ObstetricsDataMySQL odsql;
+	private FlagMySQL fMySQL;
 	private PregnanciesMySQL psql;
 	private transient final PersonnelLoader personnelLoader;
 	private SessionUtils sessionUtils;
@@ -45,6 +49,7 @@ public class ObstetricsController extends iTrustController {
 		personnelLoader = new PersonnelLoader();
 		odsql = new ObstetricsDataMySQL();
 		psql = new PregnanciesMySQL();
+		fMySQL = new FlagMySQL();
 		sessionUtils = SessionUtils.getInstance();
 	}
 	
@@ -54,6 +59,7 @@ public class ObstetricsController extends iTrustController {
 		personnelLoader = new PersonnelLoader();
 		odsql = new ObstetricsDataMySQL(ds);
 		psql = new PregnanciesMySQL(ds);
+		fMySQL = new FlagMySQL(ds);
 		this.sessionUtils = sessionUtils;
 	}
 	
@@ -163,10 +169,27 @@ public class ObstetricsController extends iTrustController {
 			} catch (DBException e) {
 				//Do Nothing
 			}
+			checkMaternalAge(newEntry);
 		}
 	}
 	
 	
+	private void checkMaternalAge(ObstetricsData newEntry) {
+		LocalDate birthday;
+		LocalDate edd = newEntry.getEdd().toLocalDate();
+		try {
+			PatientBean p = factory.getPatientDAO().getPatient(sessionUtils.getCurrentPatientMIDLong());
+			birthday = new java.sql.Date(p.getDateOfBirth().getTime()).toLocalDate();
+			int years = edd.getYear() - birthday.getYear();
+			if(years > 34 || (years == 34 && edd.getDayOfYear() > birthday.getDayOfYear())) {
+				Flag f = new Flag(1l, sessionUtils.getCurrentPatientMIDLong(), 1l, "Advanced Maternal Age");
+				fMySQL.add(f);
+			}
+		} catch (DBException e) {
+			// Do Nothing
+		}
+	}
+
 	public boolean logViewObstetrics() {
 		boolean logged = true;
 		Long id = sessionUtils.getCurrentPatientMIDLong();

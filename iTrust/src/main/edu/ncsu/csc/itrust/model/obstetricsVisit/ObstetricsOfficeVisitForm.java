@@ -330,6 +330,15 @@ public class ObstetricsOfficeVisitForm {
 			}
 		}
 		
+		if(pregnancies > 1) {
+			Flag f = new Flag(1l, patientMID, 1l, "Twins");
+			try {
+				fMySQL.add(f);
+			} catch (DBException e) {
+				// Do nothing
+			}
+		}
+		
 		save();
 		
 		try {
