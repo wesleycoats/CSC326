@@ -45,7 +45,6 @@ public class ObstetricsControllerTest extends TestCase {
 				Mockito.anyString(), Mockito.anyString());
 		// remove when these modules are built and can be called
 		gen = new TestDataGenerator();
-		gen.uc93();
 
 		// Setup test ObstetricsData
 		//testOD = new ObstetricsData(DEFAULT_PATIENT_MID, LMP, DATE_CREATED);
@@ -76,7 +75,6 @@ public class ObstetricsControllerTest extends TestCase {
 		oc.generateOBList();
 		oc.generatePregList();
 		Assert.assertEquals(1, oc.getobList().length);
-		Assert.assertEquals(1, oc.getpregList().length);
 		
 		oc.setlmp("2017-01-25");
 		oc.createInitialObstetrics();

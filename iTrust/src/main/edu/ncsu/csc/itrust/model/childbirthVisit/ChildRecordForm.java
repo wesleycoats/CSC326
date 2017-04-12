@@ -224,7 +224,9 @@ public class ChildRecordForm {
 			ObstetricsData obd = obsql.getVisitsForPatient(motherMID).get(0);
 			LocalDate edd = obd.getEdd().toLocalDate();
 			p.setEdd(edd.atStartOfDay());
-			int lmp_year = obd.getLmp().getYear();
+			LocalDateTime lmp = obd.getLmp();
+			p.setWeeksPregnant(this.setWeeksPregnant(lmp, dateTimeOfBirth));
+			int lmp_year = lmp.getYear();
 			p.setYearOfConception(lmp_year);
 		} catch (DBException e) {
 			// No initial obstetrics visit
@@ -247,6 +249,13 @@ public class ChildRecordForm {
 			System.out.println("no");
 			//Did it work
 		}
+	}
+	
+	private int setWeeksPregnant(LocalDateTime lmp, LocalDateTime delivery) {
+		int yearsDiff = delivery.getYear() - lmp.getYear();
+		int daysLMP = lmp.getDayOfYear();
+		int daysNow = delivery.getDayOfYear();
+		return (yearsDiff * 366 + (daysNow - daysLMP)) / 7;
 	}
 	
 	public boolean logBabyBorn(SessionUtils session){
