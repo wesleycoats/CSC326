@@ -228,14 +228,14 @@ public class ChildRecordForm {
 			p.setWeeksPregnant(this.setWeeksPregnant(lmp, dateTimeOfBirth));
 			int lmp_year = lmp.getYear();
 			p.setYearOfConception(lmp_year);
-		} catch (DBException e) {
+		} catch (DBException | NullPointerException e) {
 			// No initial obstetrics visit
 		}
 		try {
 			ObstetricsVisit ov = obvsql.getVisitsForPatient(motherMID).get(0);
 			p.setWeightGain(ov.getWeight());
 			p.setNumChildren(ov.getPregnancies().shortValue());
-		} catch (DBException e) {
+		} catch (DBException | NullPointerException e) {
 			//No obstetrics visits in system
 		}
 		p.setDelType(deliveryType.toLowerCase());
@@ -244,9 +244,7 @@ public class ChildRecordForm {
 		
 		try {
 			psql.add(p);
-			System.out.println("yes");
 		} catch (DBException e) {
-			System.out.println("no");
 			//Did it work
 		}
 	}
@@ -263,7 +261,6 @@ public class ChildRecordForm {
 		boolean logged = true;
 		Long id = session.getCurrentPatientMIDLong();
 		if (id != null) {
-			System.out.println(id);
 			EventLoggingAction logAction = new EventLoggingAction(factory);
 			try {
 				logAction.logEvent(TransactionType.BABY_BORN, session.getSessionLoggedInMIDLong(), id, "");
@@ -282,7 +279,6 @@ public class ChildRecordForm {
 		boolean logged = true;
 		Long id = session.getCurrentPatientMIDLong();
 		if (id != null) {
-			System.out.println(id);
 			EventLoggingAction logAction = new EventLoggingAction(factory);
 			try {
 				logAction.logEvent(TransactionType.CREATE_BABY_RECORD, session.getSessionLoggedInMIDLong(), id, babyID.toString());

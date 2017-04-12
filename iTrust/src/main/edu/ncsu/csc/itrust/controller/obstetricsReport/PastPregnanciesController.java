@@ -41,7 +41,6 @@ public class PastPregnanciesController extends iTrustController {
 		List<Pregnancies> retList = null;
 		Long id = sessionUtils.getCurrentPatientMIDLong();
 		if(id != null) {
-			System.out.println(id);
 			try {
 				retList = psql.getByPatientID(id);
 			} catch (DBException e) {

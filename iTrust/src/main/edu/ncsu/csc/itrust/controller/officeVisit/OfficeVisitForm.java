@@ -367,7 +367,7 @@ public class OfficeVisitForm {
 				}
 				results.close();
 			} catch (SQLException e) {
-				System.out.println("oops");
+				//Do nothing
 			}
 		}
 		

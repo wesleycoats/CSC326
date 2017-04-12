@@ -24,7 +24,6 @@ public class ObstetricsOfficeVisitReportController {
 			this.obovSQL = new ObstetricsVisitMySQL();
 		} catch (DBException e) {
 			//Do nothing
-			System.out.println("There was an error creating the SQL object.");
 		}
 		this.list = Collections.EMPTY_LIST;
 		this.utils = SessionUtils.getInstance();
@@ -44,7 +43,6 @@ public class ObstetricsOfficeVisitReportController {
 			this.list = this.obovSQL.getVisitsForPatient(pid);
 		} catch (DBException e) {
 			//Do nothing
-			System.out.println("Issue getting OB office visits.");
 		}
 		return list;
 	}

@@ -104,7 +104,6 @@ public class PregnanciesMySQL {
 			int exitStatus = addStatement.executeUpdate();
 			successfullyAdded = (exitStatus > 0);
 		} catch (SQLException e) {
-			e.printStackTrace();
 			throw new DBException(e);
 		} finally {
 			DBUtil.closeConnection(conn, addStatement);

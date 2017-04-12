@@ -76,7 +76,6 @@ public class ObstetricsController extends iTrustController {
 		List<Pregnancies> retList = null;
 		Long id = sessionUtils.getCurrentPatientMIDLong();
 		if(id != null) {
-			System.out.println(id);
 			try {
 				retList = psql.getByPatientID(id);
 			} catch (DBException e) {
@@ -140,7 +139,7 @@ public class ObstetricsController extends iTrustController {
 				}
 				results.close();
 			} catch (SQLException e) {
-				System.out.println("oops");
+				//Do nothing
 			}
 		}
 		
@@ -152,7 +151,6 @@ public class ObstetricsController extends iTrustController {
 	
 	public void createInitialObstetrics() {
 		LocalDateTime date = null;
-		System.out.println("clicked");
 		Long id = sessionUtils.getCurrentPatientMIDLong();
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.US);
@@ -189,7 +187,6 @@ public class ObstetricsController extends iTrustController {
 		boolean logged = true;
 		Long id = sessionUtils.getCurrentPatientMIDLong();
 		if (id != null) {
-			System.out.println(id);
 			EventLoggingAction logAction = new EventLoggingAction(factory);
 			try {
 				logAction.logEvent(TransactionType.CREATE_INITIAL_OBSTETRICS_RECORD, sessionUtils.getSessionLoggedInMIDLong(), id, "EDD");
