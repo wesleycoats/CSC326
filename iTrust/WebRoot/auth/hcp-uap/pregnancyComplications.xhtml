@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+	<h:dataTable var="flag" styleClass="fTable"
+		value="#{preg_complications.flagList}" border="1" width="100%">
+                            
+		<h:column>
+			<f:facet name="header">FID</f:facet>
+			<h:outputText value="#{flag.fid}" />
+		</h:column>
+                            
+		<h:column>
+			<f:facet name="header">MID</f:facet>
+			<h:outputText value="#{flag.mid}" />
+		</h:column>
+                           
+		<h:column>
+			<f:facet name="header">Pregnancy ID</f:facet>
+			<h:outputText value="#{flag.pregID}" />
+		</h:column>
+                            
+		<h:column>
+			<f:facet name="header">Flag</f:facet>
+			<h:outputText value="#{flag.flagType}" />
+		</h:column>
+                                                        
+	</h:dataTable>
+    
+
+</html>

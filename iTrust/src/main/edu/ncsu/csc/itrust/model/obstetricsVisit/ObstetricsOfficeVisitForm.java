@@ -143,6 +143,7 @@ public class ObstetricsOfficeVisitForm {
 			setDiastolicBloodPressure(this.obstetricsOV.getDiastolicBloodPressure());
 			this.fetalHR = this.obstetricsOV.getFetalHeartRate();
 			this.pregnancies = this.obstetricsOV.getPregnancies();
+			this.obstetricsOV.setDate(date);
 		}
 		 
 		if (this.date == null) {
@@ -290,6 +291,7 @@ public class ObstetricsOfficeVisitForm {
 	}
 	
 	public void submit() {
+		this.obstetricsOV.setDate(date);
 		this.obstetricsOV.setWeight(weight);
 		this.obstetricsOV.setSystolicBloodPressure(systolicBloodPressure);
 		this.obstetricsOV.setDiastolicBloodPressure(diastolicBloodPressure);

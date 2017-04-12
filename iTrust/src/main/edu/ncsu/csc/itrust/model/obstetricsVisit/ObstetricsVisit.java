@@ -25,6 +25,7 @@ public class ObstetricsVisit {
 	private Integer fetalHeartRate;
 	private Integer pregnancies;
 	private boolean placentaObserved;
+	private LocalDateTime date;
 
 	/**
 	 * Default constructor for OfficeVisit
@@ -71,7 +72,7 @@ public class ObstetricsVisit {
 		this.visitID = visitID;
 	}
 
-	public int getWeeksPegnant() {
+	public Integer getWeeksPegnant() {
 		return weeksPregnant;
 	}
 
@@ -137,6 +138,15 @@ public class ObstetricsVisit {
 		this.placentaObserved = placentaObserved;
 	}
 	
+	public LocalDateTime getDate() {
+		System.out.println(date);
+		return date;
+	}
+
+	public void setDate(LocalDateTime date) {
+		this.date = date;
+	}
+
 	private LocalDateTime getLmp() {
 		LocalDateTime date = null;
 		try {

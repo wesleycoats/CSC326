@@ -36,7 +36,7 @@ public class ObstetricsOfficeVisitReportController {
 			pid = Long.valueOf(utils.getSessionPID());
 		}
 		else {
-			pid = Long.valueOf("1");
+			pid = (long) 0;
 		}
 		
 		try {
