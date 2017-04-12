@@ -35,7 +35,8 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit>{
 		retVisit.setPatientMID(Long.parseLong(rs.getString("patientMID")));
 		retVisit.setWeeksPregnant(getIntOrNull(rs, "weeksPregnant"));
 		retVisit.setWeight(getFloatOrNull(rs, "weight"));
-		retVisit.setBloodPressure(getIntOrNull(rs, "bloodPressure"));
+		retVisit.setSystolicBloodPressure(getIntOrNull(rs, "systolicBloodPressure"));
+		retVisit.setDiastolicBloodPressure(getIntOrNull(rs, "diastolicBloodPressure"));
 		retVisit.setFetalHeartRate(getIntOrNull(rs, "fetalHeartRate"));
 		retVisit.setPregnancies(getIntOrNull(rs, "pregnancies"));
 		retVisit.setPlacentaObserved(Boolean.parseBoolean(rs.getString("placentaObserved")));
@@ -52,15 +53,16 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit>{
 		String stmt = "";
 		int i = 1;
 		stmt = "INSERT INTO obstetricsVisit(visitID, patientMID, weeksPregnant, weight, "
-				+ "bloodPressure, fetalHeartRate, pregnancies, placentaObserved) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+				+ "systolicBloodPressure, diastolicBloodPressure, fetalHeartRate, pregnancies, placentaObserved) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
 		ps.setLong(i++, ov.getVisitID());
 	
 		ps.setLong(i++, ov.getPatientMID());
 		setIntOrNull(ps, i++, ov.getWeeksPegnant());
 		setFloatOrNull(ps, i++, ov.getWeight());
-		setIntOrNull(ps, i++, ov.getBloodPressure());
+		setIntOrNull(ps, i++, ov.getSystolicBloodPressure());
+		setIntOrNull(ps, i++, ov.getDiastolicBloodPressure());
 		setIntOrNull(ps, i++, ov.getFetalHeartRate());
 		setIntOrNull(ps, i++, ov.getPregnancies());
 		ps.setBoolean(i++, ov.getPlacentaObserved());

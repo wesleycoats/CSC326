@@ -53,7 +53,9 @@ public class ObstetricsVisitValidator extends POJOValidator<ObstetricsVisit> {
 		if (obj.getWeight() < 0) {
 			errorList.addIfNotNull("Patient weight cannot be negative");
 		}
-		if (obj.getBloodPressure() < 0)
+		if (obj.getSystolicBloodPressure() < 0)
+			errorList.addIfNotNull("Patient Blood Pressure cannot be negative");
+		if (obj.getDiastolicBloodPressure() < 0)
 			errorList.addIfNotNull("Patient Blood Pressure cannot be negative");
 		if (obj.getFetalHeartRate() < 0)
 			errorList.addIfNotNull("Fetal Heart Rate cannot be negative");

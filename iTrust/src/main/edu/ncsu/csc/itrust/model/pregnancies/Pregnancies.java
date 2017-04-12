@@ -1,5 +1,7 @@
 package edu.ncsu.csc.itrust.model.pregnancies;
 
+import java.time.LocalDateTime;
+
 /**
  * Represents a prior Pregnancy. Holds all of the information that can be seen by iTrust
  * users.
@@ -8,12 +10,14 @@ package edu.ncsu.csc.itrust.model.pregnancies;
 public class Pregnancies {
 	private long MID;
 	private String delType = "";
+	private String bloodType;
 	private int yearOfConception;
 	private double hoursInLabor;
 	private double weightGain;
 	private int weeksPregnant;
 	private short numChildren;
 	private long pregID = -1;
+	private LocalDateTime edd;
 	
 	/**
 	 * Creates a new Pregnancy object with fields inititalized to -1, and delType initialized to null 
@@ -43,7 +47,14 @@ public class Pregnancies {
 	public void setWeeksPregnant(int weeksPregnant) {
 		this.weeksPregnant = weeksPregnant;
 	}
-
+	public LocalDateTime getEdd() {
+		return edd;
+	}
+	
+	public void setEdd(LocalDateTime edd) {
+		this.edd = edd;
+	}
+	
 	private void clearFields() {
 		MID = -1;
 		delType = null;
@@ -79,6 +90,14 @@ public class Pregnancies {
 
 	public void setDelType(String delType) {
 		this.delType = delType;
+	}
+	
+	public String getBloodType() {
+		return bloodType;
+	}
+
+	public void setBloodType(String bloodType) {
+		this.bloodType = bloodType;
 	}
 
 	public int getYearOfConception() {

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+					
+	<h:dataTable id="obovInfo" styleClass="fTable"
+		value="#{obstetrics_office_visit_controller.list}" var="obov" border="1">
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="Obstetrics Office Visit ID" />
+			</f:facet>
+			<h:outputText value="#{obov.getVisitID()}" />
+		</h:column>
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="Weeks Pregnant" />
+			</f:facet>
+			<h:outputText value="#{obov.getWeeksPegnant()}" />
+		</h:column>
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="Weight" />
+			</f:facet>
+			<h:outputText value="#{obov.getWeight()}" />
+		</h:column>
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="Systolic Blood Pressure" />
+			</f:facet>
+			<h:outputText value="#{obov.getSystolicBloodPressure()}" />
+		</h:column>
+				<h:column>
+			<f:facet name="header">
+				<h:outputText value="Diastolic Blood Pressure" />
+			</f:facet>
+			<h:outputText value="#{obov.getDiastolicBloodPressure()}" />
+		</h:column>
+				<h:column>
+			<f:facet name="header">
+				<h:outputText value="Fetal Heart Rate" />
+			</f:facet>
+			<h:outputText value="#{obov.getFetalHeartRate()}" />
+		</h:column>
+				<h:column>
+			<f:facet name="header">
+				<h:outputText value="Single or Multiple" />
+			</f:facet>
+			<h:outputText value="#{obov.getPregnancies()}" />
+		</h:column>
+				<h:column>
+			<f:facet name="header">
+				<h:outputText value="Placenta Observed?" />
+			</f:facet>
+			<h:outputText value="#{obov.getPlacentaObserved()}" />
+		</h:column>
+	</h:dataTable>				
+</html>
+

@@ -20,7 +20,8 @@ public class ObstetricsVisit {
 	/** last menstrual period */
 	private Integer weeksPregnant;
 	private Float weight;
-	private Integer bloodPressure;
+	private Integer systolicBloodPressure;
+	private Integer diastolicBloodPressure;
 	private Integer fetalHeartRate;
 	private Integer pregnancies;
 	private boolean placentaObserved;
@@ -35,11 +36,12 @@ public class ObstetricsVisit {
 	 * constructor for OfficeVisit for already existing values
 	 */
 	public ObstetricsVisit(long visitID, long patientMID, float weight, 
-			int bloodPressure, int fetalHeartRate, int pregnancies, boolean placentaObserved) {
+			int systolicBloodPressure, int diastolicBloodPressure, int fetalHeartRate, int pregnancies, boolean placentaObserved) {
 		this.setVisitID(visitID);
 		this.setPatientMID(patientMID);
 		this.setWeight(weight);
-		this.setBloodPressure(bloodPressure);
+		this.setSystolicBloodPressure(systolicBloodPressure);
+		this.setDiastolicBloodPressure(diastolicBloodPressure);
 		this.setFetalHeartRate(fetalHeartRate);
 		this.setPregnancies(pregnancies);
 		this.setPlacentaObserved(placentaObserved);
@@ -95,12 +97,20 @@ public class ObstetricsVisit {
 		this.weight = weight;
 	}
 
-	public Integer getBloodPressure() {
-		return this.bloodPressure;
+	public Integer getSystolicBloodPressure() {
+		return this.systolicBloodPressure;
 	}
 
-	public void setBloodPressure(int bloodPressure) {
-		this.bloodPressure = bloodPressure;
+	public void setSystolicBloodPressure(int bloodPressure) {
+		this.systolicBloodPressure = bloodPressure;
+	}
+
+	public Integer getDiastolicBloodPressure() {
+		return this.diastolicBloodPressure;
+	}
+
+	public void setDiastolicBloodPressure(int bloodPressure) {
+		this.diastolicBloodPressure = bloodPressure;
 	}
 
 	public Integer getFetalHeartRate() {

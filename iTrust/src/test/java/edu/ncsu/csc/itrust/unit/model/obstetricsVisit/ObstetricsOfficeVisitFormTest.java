@@ -17,7 +17,8 @@ public class ObstetricsOfficeVisitFormTest {
 	private static final long ID = 1l;
 	private static final long MID = 102l;
 	private static final float WEIGHT = 185.23f;
-	private static final int BLOOD_PRESSURE = 52;
+	private static final int SYSTOLIC_BLOOD_PRESSURE = 52;
+	private static final int DIASTOLIC_BLOOD_PRESSURE = 52;
 	private static final int FETAL_HEART_RATE = 73;
 	private static final int PREGNANCIES = 8;
 	private static final LocalDateTime DATE1 = LocalDateTime.of(2017, 01, 01, 0, 0);
@@ -32,7 +33,8 @@ public class ObstetricsOfficeVisitFormTest {
 		ov.setVisitID(ID);
 		ov.setPatientMID(MID);
 		ov.setWeight(WEIGHT);
-		ov.setBloodPressure(BLOOD_PRESSURE);
+		ov.setSystolicBloodPressure(SYSTOLIC_BLOOD_PRESSURE);
+		ov.setDiastolicBloodPressure(DIASTOLIC_BLOOD_PRESSURE);
 		ov.setFetalHR(FETAL_HEART_RATE);
 		ov.setPregnancies(PREGNANCIES);
 		ov.setLastMenstrualPeriod(DATE1);
@@ -49,7 +51,8 @@ public class ObstetricsOfficeVisitFormTest {
 		assertEquals("1", ov.getVisitID().toString());
 		assertEquals("102", ov.getPatientMID().toString());
 		assertEquals("185.23", ov.getWeight().toString());
-		assertEquals("52", ov.getBloodPressure().toString());
+		assertEquals("52", ov.getSystolicBloodPressure().toString());
+		assertEquals("52", ov.getDiastolicBloodPressure().toString());
 		assertEquals("73", ov.getFetalHR().toString());
 		assertEquals("8", ov.getPregnancies().toString());
 		assertEquals("7", ov.getApptTypeID().toString());
@@ -99,7 +102,8 @@ public class ObstetricsOfficeVisitFormTest {
 		ov.setVisitID(ID);
 		ov.setPatientMID(MID);
 		ov.setWeight(WEIGHT);
-		ov.setBloodPressure(BLOOD_PRESSURE);
+		ov.setSystolicBloodPressure(SYSTOLIC_BLOOD_PRESSURE);
+		ov.setDiastolicBloodPressure(DIASTOLIC_BLOOD_PRESSURE);
 		ov.setFetalHR(FETAL_HEART_RATE);
 		ov.setPregnancies(PREGNANCIES);
 		ov.setLastMenstrualPeriod(DATE1);

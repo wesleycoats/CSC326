@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,35 +112,6 @@ public class PregnanciesMySQL {
 	}
 	
 	/**
-	 * Updates the Pregnancy object in the Database with the same patientMID and
-	 * yearOfConception
-	 * @param p
-	 * @return
-	 * @throws DBException
-	 */
-	public boolean update(Pregnancies p) throws DBException {
-		boolean successfullyUpdated = false;
-		Connection conn = null;
-		PreparedStatement updateStatement = null;
-		try {
-			validator.validate(p);
-		} catch (FormValidationException e1) {
-			throw new DBException(new SQLException(e1.getMessage()));
-		}
-		try {
-			conn = ds.getConnection();
-			updateStatement = loader.loadParameters(conn, updateStatement, p, false);
-			int exitStatus = updateStatement.executeUpdate();
-			successfullyUpdated = (exitStatus > 0);
-		} catch (SQLException e) {
-			throw new DBException(e);
-		} finally {
-			DBUtil.closeConnection(conn, updateStatement);
-		}
-		return successfullyUpdated;
-	}
-	
-	/**
 	 * Returns all Pregnancy objects in the database that have the given 
 	 * patient MID
 	 * @param MID
@@ -158,6 +131,7 @@ public class PregnanciesMySQL {
 
 			pregnancyList = loader.loadList(results);
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DBException(e);
 		} finally {
 			try {
@@ -172,46 +146,7 @@ public class PregnanciesMySQL {
 		}
 		return pregnancyList;
 	}
-	
-	/**
-	 * Returns the Pregnancy object in the database with the given pregID,
-	 * or null if none is found with that ID.
-	 * @param ID
-	 * @return
-	 * @throws DBException 
-	 */
-	public Pregnancies getByID(long ID) throws DBException {
-		Pregnancies pregnancy = null;
-		Connection conn = null;
-		PreparedStatement query = null;
-		ResultSet results = null;
-		List<Pregnancies> pregnancyList = null;
-		try {
-			conn = ds.getConnection();
-			query = conn.prepareStatement(PregnancyMySQLLoader.SELECT_BY_PREG_ID);
-			query.setLong(1, ID);
-			results = query.executeQuery();
 
-			pregnancyList = loader.loadList(results);
-			if (pregnancyList.size() > 0 ) {
-				pregnancy = pregnancyList.get(0);
-			}
-		} catch (SQLException e) {
-			throw new DBException(e);
-		} finally {
-			try {
-				if (results != null) {
-					results.close();
-				}
-			} catch (SQLException e) {
-				throw new DBException(e);
-			} finally {
-				DBUtil.closeConnection(conn, query);
-			}
-		}
-		return pregnancy;
-	}
-	
 	/**
 	 * Takes care of loading PreparedStatements and loading the results into lists for
 	 * PregnancyMySQL
@@ -229,7 +164,8 @@ public class PregnanciesMySQL {
 		private static final String WEIGHT_GAIN = "weightGain";
 		private static final String TYPE = "deliveryType";
 		private static final String NUM_CHILDREN = "numChildren";
-		private static final String PREG_ID = "pregnancyID";
+		private static final String EDD = "edd";
+		private static final String BLOOD_TYPE = "bloodType";
 		
 		private static final String INSERT = "INSERT INTO " + PREGNANCIES_TABLE_NAME + " (" 
 				+ PATIENT_MID + ", "
@@ -239,22 +175,13 @@ public class PregnanciesMySQL {
 				+ WEIGHT_GAIN + ", "
 				+ TYPE + ", "
 				+ NUM_CHILDREN + ", "
-				+ PREG_ID +	") VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-		
-		private static final String UPDATE = "UPDATE " + PREGNANCIES_TABLE_NAME + " SET " 
-				+ WEEKS_PREG + "=?, "
-				+ HOURS_IN_LABOR + "=?, "
-				+ WEIGHT_GAIN + "=?, "
-				+ TYPE + "=?, "
-				+ NUM_CHILDREN + "=?, WHERE" + PATIENT_MID + " =?, " + CONCEPTION_YEAR + "=?;";
+				+ EDD + ", "
+				+ BLOOD_TYPE + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		public static final String SELECT_BY_PATIENT_MID = "SELECT * from " + PREGNANCIES_TABLE_NAME + " WHERE "
-				+ PATIENT_MID + "=?;";
+				+ PATIENT_MID + "=?";
 		
-		public static final String SELECT_BY_PREG_ID = "SELECT * from " + PREGNANCIES_TABLE_NAME + " WHERE "
-				+ PREG_ID + "=?";
-		
-		public static final String SELECT_ALL = "SELECT * from " + PREGNANCIES_TABLE_NAME + ";";
+		public static final String SELECT_ALL = "SELECT * from " + PREGNANCIES_TABLE_NAME;
 		
 		public List<Pregnancies> loadList(ResultSet rs) throws SQLException {
 			List<Pregnancies> list = new ArrayList<Pregnancies>();
@@ -271,12 +198,17 @@ public class PregnanciesMySQL {
 			double weight = rs.getDouble("weightGain");
 			int weeksPregnant = rs.getInt("weeksPregnant");
 			short children = rs.getShort("numChildren");
-			return new Pregnancies(MID, type, year, labor, weight, weeksPregnant, children);
+			LocalDateTime edd = rs.getTimestamp("edd").toLocalDateTime();
+			String blood = rs.getString("bloodType");
+			Pregnancies p = new Pregnancies(MID, type, year, labor, weight, weeksPregnant, children);
+			p.setEdd(edd);
+			p.setBloodType(blood);
+			return p;
 		}
 		
 		public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, Pregnancies pregnancy, 
 				boolean newInstance) throws SQLException {
-			StringBuilder query = new StringBuilder(newInstance ? INSERT : UPDATE);
+			StringBuilder query = new StringBuilder(newInstance ? INSERT : "");
 			ps = conn.prepareStatement(query.toString());
 			
 			if (newInstance) {
@@ -287,15 +219,8 @@ public class PregnanciesMySQL {
 				ps.setDouble(5, pregnancy.getWeightGain());
 				ps.setString(6, pregnancy.getDelType());
 				ps.setShort(7, pregnancy.getNumChildren());
-				ps.setLong(8, pregnancy.getPregID());
-			} else {
-				ps.setInt(1, pregnancy.getWeeksPregnant());
-				ps.setDouble(2, pregnancy.getHoursInLabor());
-				ps.setDouble(3, pregnancy.getWeightGain());
-				ps.setString(4, pregnancy.getDelType());
-				ps.setShort(5, pregnancy.getNumChildren());
-				ps.setLong(6, pregnancy.getPatientMID());
-				ps.setInt(7, pregnancy.getYearOfConception());
+				ps.setTimestamp(8, Timestamp.valueOf(pregnancy.getEdd()));
+				ps.setString(9, pregnancy.getBloodType());
 			}
 			return ps;
 		}

@@ -45,8 +45,16 @@
 					</div>
 
 					<div class="form-group">
-						<h:outputLabel for="obovbp">Blood Pressure:</h:outputLabel>
-						<h:inputTextarea value="#{obstetrics_office_visit_form.bloodPressure}" id="obovbp"
+						<h:outputLabel for="obovsbp">Systolic Blood Pressure:</h:outputLabel>
+						<h:inputTextarea value="#{obstetrics_office_visit_form.systolicBloodPressure}" id="obovsbp"
+							cols="10" rows="1" class="form-control inline">
+							<f:convertNumber />
+						</h:inputTextarea>
+					</div>
+					
+					<div class="form-group">
+						<h:outputLabel for="obovdbp">Diastolic Blood Pressure:</h:outputLabel>
+						<h:inputTextarea value="#{obstetrics_office_visit_form.diastolicBloodPressure}" id="obovdbp"
 							cols="10" rows="1" class="form-control inline">
 							<f:convertNumber />
 						</h:inputTextarea>

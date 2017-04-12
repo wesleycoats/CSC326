@@ -1,4 +1,4 @@
-package edu.ncsu.csc.itrust.unit.controller;
+package edu.ncsu.csc.itrust.unit.controller.obstetricsReport;
 
 import javax.faces.application.FacesMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -13,19 +13,18 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 
-import edu.ncsu.csc.itrust.controller.ObstetricsController;
+import edu.ncsu.csc.itrust.controller.obstetricsReport.PastPregnanciesController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
-import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsData;
 import edu.ncsu.csc.itrust.model.pregnancies.Pregnancies;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 import junit.framework.TestCase;
 
-public class ObstetricsControllerTest extends TestCase {
+public class PastPregnanciesControllerTest extends TestCase {
 	
-	@Spy private ObstetricsController oc;
+	@Spy private PastPregnanciesController oc;
 	@Spy private SessionUtils sessionUtils;
 	
 	@Mock private HttpServletRequest mockHttpServletRequest;
@@ -40,7 +39,7 @@ public class ObstetricsControllerTest extends TestCase {
 	public void setUp() throws Exception {
 		ds = ConverterDAO.getDataSource();
 		mockSessionUtils = Mockito.mock(SessionUtils.class);
-		oc = Mockito.spy(new ObstetricsController(ds, mockSessionUtils, TestDAOFactory.getTestInstance()));
+		oc = Mockito.spy(new PastPregnanciesController(ds, mockSessionUtils, TestDAOFactory.getTestInstance()));
 		Mockito.doNothing().when(oc).printFacesMessage(Matchers.any(FacesMessage.Severity.class), Mockito.anyString(),
 				Mockito.anyString(), Mockito.anyString());
 		// remove when these modules are built and can be called
@@ -59,48 +58,22 @@ public class ObstetricsControllerTest extends TestCase {
 
 	@Test
 	public void testNulls() throws DBException {
-		oc = Mockito.spy(new ObstetricsController(ds, SessionUtils.getInstance(), TestDAOFactory.getTestInstance()));
-		oc.generateOBList();
+		oc = Mockito.spy(new PastPregnanciesController(ds, SessionUtils.getInstance(), TestDAOFactory.getTestInstance()));
 		oc.generatePregList();
-		Assert.assertEquals(0, oc.getobList().length);
 		Assert.assertNull(oc.getpregList());
-		Assert.assertFalse(oc.isOBGYN());
-		Assert.assertTrue(oc.isObstetricsPatient());
-		Assert.assertFalse(oc.logCreateObstetrics());
-		Assert.assertFalse(oc.logViewObstetrics());
 	}
 	
 	@Test
 	public void testNonNullValues() {
 		Mockito.doReturn("101").when(mockSessionUtils).getCurrentPatientMID();
-		oc.generateOBList();
 		oc.generatePregList();
-		Assert.assertEquals(0, oc.getobList().length);
-		
-		oc.setlmp("2017-01-25");
-		oc.createInitialObstetrics();
-		oc.generateOBList();
-		Assert.assertEquals(1, oc.getobList().length);
-		
-		Assert.assertFalse(oc.isOBGYN());
-		
-		Assert.assertTrue(oc.logCreateObstetrics());
-		Assert.assertTrue(oc.logViewObstetrics());
 	}
 	
 	@Test
 	public void testGettersSetters() {
-		ObstetricsData[] odList = new ObstetricsData[0];
-		oc.setobList(odList);
-		Assert.assertEquals(0, oc.getobList().length);
-		
 		Pregnancies[] pList = new Pregnancies[0];
 		oc.setpregList(pList);
 		Assert.assertEquals(0, oc.getpregList().length);
-		
-		String lmp = "2017-12-25";
-		oc.setlmp(lmp);
-		Assert.assertEquals(lmp, oc.getlmp());
 	
 	}
 }

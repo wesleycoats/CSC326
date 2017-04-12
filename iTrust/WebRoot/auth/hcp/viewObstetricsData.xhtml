@@ -34,19 +34,23 @@
 						<br />
 						<h:dataTable var="o" value="#{obstetrics_controller.getobList()}"
 							border="1" width="100%">
-		                    <h:column headerText = "Patient MID">
+		                    <h:column>
+		                    <f:facet name="header">Patient MID</f:facet>
 		                    	<h:outputText value="#{o.getPatientMID()}" />
 		                    </h:column>
 		                    
-		                    <h:column headerText = "Date Created">
+		                    <h:column>
+		                    <f:facet name="header">Date Created</f:facet>
 		                    	<h:outputText value="#{o.dateCreated}" />
 		                    </h:column>
 		                    
-		                    <h:column headerText = "LMP">
+		                    <h:column>
+		                    <f:facet name="header">LMP</f:facet>
 		                    	<h:outputText value="#{o.lmp}" />
 		                    </h:column>
 		                    
-		                    <h:column headerText = "EDD">
+		                    <h:column>
+		                    <f:facet name="header">EDD</f:facet>
 		                    	<h:outputText value="#{o.edd}" />
 		                    </h:column>
 						
@@ -57,27 +61,33 @@
 						<h:dataTable var="previousO" 
 						value="#{obstetrics_controller.getpregList()}" border="1" width="100%">
 							
-		                    <h:column headerText = "Year of Conception">
+		                    <h:column>
+		                    <f:facet name="header">Year of Conception</f:facet>
 		                    	<h:outputText value="#{previousO.yearOfConception}" />
 		                    </h:column>
 		                    
-		                    <h:column headerText = "Weeks Pregnant">
+		                    <h:column>
+		                    <f:facet name="header">Weeks Pregnant</f:facet>
 		                    	<h:outputText value="#{previousO.weeksPregnant}" />
 		                    </h:column>
 		                    
-		                    <h:column headerText = "Hours in Labor">
+		                    <h:column>
+		                    <f:facet name="header">Hours in Labor</f:facet>
 		                    	<h:outputText value="#{previousO.hoursInLabor}" />
 		                    </h:column>
 		                    
-		                    <h:column headerText = "Weight Gain">
+		                    <h:column>
+		                    <f:facet name="header">Weight Gain</f:facet>
 		                    	<h:outputText value="#{previousO.weightGain}" />
 		                    </h:column>
 		                    
-							<h:column headerText = "Delivery Type">
-		                    	<h:outputText value="#{previousO.deliveryType}" />
+							<h:column>
+		                    <f:facet name="header">Delivery Type</f:facet>
+		                    	<h:outputText value="#{previousO.delType}" />
 		                    </h:column>
 		                    
-		                     <h:column headerText = "Multiple Pregnancy">
+		                     <h:column>
+		                    <f:facet name="header">Multiple Pregnancy</f:facet>
 		                    	<h:outputText value="#{previousO.numChildren}" />
 		                    </h:column>
 		                    

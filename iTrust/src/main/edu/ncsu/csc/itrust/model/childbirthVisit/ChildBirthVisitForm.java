@@ -93,7 +93,6 @@ public class ChildBirthVisitForm {
 				if(this.cbv.getEpiduralAnaesthesiaDosage() > 0 || this.cbv.getMagnesiumSulfateDosage() > 0 || this.cbv.getNitrousOxideDosage() > 0 || this.cbv.getPethidineDosage() > 0 || this.cbv.getPitocinDosage() > 0 || this.cbv.getRhGlobulinDosage() > 0) logAddChildbirthDrugs(utils);
 			} catch (Exception e) {
 				//Do Nothing
-				System.out.println("Failed to edit Child Birth Visit.");
 			}
 		}
 		else {
@@ -103,7 +102,6 @@ public class ChildBirthVisitForm {
 				if(this.cbv.getEpiduralAnaesthesiaDosage() > 0 || this.cbv.getMagnesiumSulfateDosage() > 0 || this.cbv.getNitrousOxideDosage() > 0 || this.cbv.getPethidineDosage() > 0 || this.cbv.getPitocinDosage() > 0 || this.cbv.getRhGlobulinDosage() > 0) logAddChildbirthDrugs(utils);
 			} catch (Exception e) {
 				//Do Nothing
-				System.out.println("Failed to add Child Birth Visit.");
 			}
 		}
 	}
@@ -113,7 +111,6 @@ public class ChildBirthVisitForm {
 		boolean logged = true;
 		Long id = utils.getCurrentPatientMIDLong();
 		if (id != null) {
-			System.out.println(id);
 			EventLoggingAction logAction = new EventLoggingAction(factory);
 			try {
 				logAction.logEvent(TransactionType.EDIT_CHILDBIRTH_VISIT, utils.getSessionLoggedInMIDLong(), id, "");
@@ -132,7 +129,6 @@ public class ChildBirthVisitForm {
 		boolean logged = true;
 		Long id = utils.getCurrentPatientMIDLong();
 		if (id != null) {
-			System.out.println(id);
 			EventLoggingAction logAction = new EventLoggingAction(factory);
 			try {
 				logAction.logEvent(TransactionType.CREATE_CHILDBIRTH_VISIT, utils.getSessionLoggedInMIDLong(), id, "");
@@ -151,7 +147,6 @@ public class ChildBirthVisitForm {
 		boolean logged = true;
 		Long id = utils.getCurrentPatientMIDLong();
 		if (id != null) {
-			System.out.println(id);
 			EventLoggingAction logAction = new EventLoggingAction(factory);
 			try {
 				logAction.logEvent(TransactionType.ADD_CHILDBIRTH_DRUGS, utils.getSessionLoggedInMIDLong(), id, "");
@@ -289,14 +284,11 @@ public class ChildBirthVisitForm {
 		try {
 			List<ChildbirthVisit> list = Collections.EMPTY_LIST;
 			list = this.cbMySQL.getVisitsForPatient(patientMID);
-			
-			System.out.println("made it this far");
 			if (list == null || list.size() == 0) {
 				this.cbv.setVisitID(visitID);
 			}
 			else {
 				for (int i = 0; i < list.size(); i++) {
-					System.out.println(list.get(i).getPreferredDelivery());
 					if (list.get(i).getVisitID().equals(visitID)) {
 						this.cbv = list.get(i);
 						this.found = true;
@@ -310,7 +302,6 @@ public class ChildBirthVisitForm {
 			}
 		} catch (Exception e) {
 			//Do nothing
-			System.out.println("Some issue with getting the list");
 		}
 		
 		if (this.cbv != null) {
