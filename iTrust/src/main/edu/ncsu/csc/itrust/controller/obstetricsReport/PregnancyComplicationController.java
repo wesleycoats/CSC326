@@ -11,6 +11,7 @@ import edu.ncsu.csc.itrust.controller.flags.Flag;
 import edu.ncsu.csc.itrust.controller.flags.FlagMySQL;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.pregnancyConditions.PregnancyConditionsMySQL;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name = "preg_complications")
@@ -20,32 +21,42 @@ public class PregnancyComplicationController extends iTrustController {
 	private Flag[] flagList;
 	private FlagMySQL fsql;
 	private SessionUtils sessionUtils;
-	private DAOFactory factory;
+	private PregnancyConditionsMySQL pcsql;
 
 	public PregnancyComplicationController() throws DBException {
 		super();
-		factory = DAOFactory.getProductionInstance();
 		fsql = new FlagMySQL();
 		sessionUtils = SessionUtils.getInstance();
-
+		pcsql = new PregnancyConditionsMySQL();
 	}
 	
 	public PregnancyComplicationController(DataSource ds, SessionUtils sessionUtils, DAOFactory dao) {
 		super();
-		factory = dao;
 		fsql = new FlagMySQL(ds);
+		pcsql = new PregnancyConditionsMySQL(ds);
 		this.sessionUtils = sessionUtils;
 	}
 	
 	public void generateFlagList(){
-		List<Flag> retList = null;
 		Long id = sessionUtils.getCurrentPatientMIDLong();
+		List<Flag> retList = null;
 		if(id != null) {
 			try {
 				retList = fsql.getByPatientID(id);
 			} catch (DBException e) {
 				e.printStackTrace();
 			}
+		}
+		try {
+			List<String> pcList = pcsql.getAllByMID(id);
+			for(int i = 0; i < pcList.size(); i++) {
+				if(pcList.get(i).equalsIgnoreCase("Mild Hyperemesis Gravidarum") || pcList.get(i).equalsIgnoreCase("Hypothiroidism")) {
+					Flag f = new Flag(0l, id, 1l, "Pregnancy relevant pre-existing conditions");
+					retList.add(f);
+				}
+			}
+		} catch (DBException e1) {
+			// TODO Auto-generated catch block
 		}
 		if(retList != null && retList.size() != 0) {
 			flagList = new Flag[retList.size()];
