@@ -55,7 +55,15 @@ public class ObstetricsOfficeVisitForm {
 	private double estimatedFetalWeight;
 	private Part uploadedFile;
 	private Boolean found;
+	private Boolean placenta;
 	
+	public Boolean getPlacenta() {
+		return placenta;
+	}
+
+	public void setPlacenta(Boolean placenta) {
+		this.placenta = placenta;
+	}
 	
 	public Integer getPregnancies() {
 		return pregnancies;
@@ -66,6 +74,7 @@ public class ObstetricsOfficeVisitForm {
 	}
 	
 	public ObstetricsOfficeVisitForm() {
+		this.placenta = false;
 		this.weight = (float) 0;
 		this.pregnancies = 0;
 		this.systolicBloodPressure = 0;
@@ -303,7 +312,16 @@ public class ObstetricsOfficeVisitForm {
 		this.obstetricsOV.setFetalHeartRate(fetalHR);
 		this.obstetricsOV.setPregnancies(pregnancies);
 		this.obstetricsOV.setWeeksPregnant();
+		this.obstetricsOV.setPlacentaObserved(placenta);
 		
+		if(placenta){
+			Flag f = new Flag(1l, patientMID, 1l, "Low-Lying Placenta");
+			try {
+				fMySQL.add(f);
+			} catch (DBException e) {
+				// Do nothing
+			}
+		}
 		if(systolicBloodPressure >= 140 || diastolicBloodPressure >= 90) {
 			Flag f = new Flag(1l, patientMID, 1l, "High Blood Pressure");
 			try {
