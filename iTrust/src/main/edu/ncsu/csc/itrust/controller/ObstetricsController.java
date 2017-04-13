@@ -185,7 +185,7 @@ public class ObstetricsController extends iTrustController {
 				Flag f = new Flag(1l, sessionUtils.getCurrentPatientMIDLong(), 1l, "Advanced Maternal Age");
 				fMySQL.add(f);
 			}
-		} catch (DBException e) {
+		} catch (Exception e) {
 			// Do Nothing
 		}
 	}
