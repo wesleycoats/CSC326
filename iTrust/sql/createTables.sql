@@ -95,8 +95,8 @@ CREATE TABLE patients(
 
 CREATE TABLE flags(
 	FID BIGINT unsigned auto_increment,
-	MID BIGINT unsigned NOT NULL default '1',
-	pregId BIGINT unsigned NOT NULL default '0',
+	MID BIGINT unsigned NOT NULL default '0',
+	pregId BIGINT unsigned NOT NULL default '1',
 	flagType enum('High Blood Pressure', 'Advanced Maternal Age', 'Maternal Allergies', 'Low-Lying Placenta',
 		'Genetic Miscarriage', 'Abnormal FHR', 'Twins', 'Abnormal Weight Change', 'Negative Blood Type', 'Pregnancy relevant pre-existing conditions'),
 	PRIMARY KEY (FID)

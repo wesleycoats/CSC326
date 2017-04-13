@@ -31,7 +31,7 @@ public class ChildBirthVisitForm {
 	private ChildbirthVisitMySQL cbMySQL;
 	private FlagMySQL fMySQL;
 	private ChildbirthVisit cbv;
-	private Integer RHImmuneGlobulin;
+	private Integer RHImmuneGlobulin = 0;
 	private Integer epiduralAnaesthesiaDosage;
 	private Integer magnesiumSulfateDosage;
 	private Integer nitrousOxideDosage;
