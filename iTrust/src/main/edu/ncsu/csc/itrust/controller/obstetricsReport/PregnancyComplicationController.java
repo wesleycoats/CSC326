@@ -55,7 +55,7 @@ public class PregnancyComplicationController extends iTrustController {
 					retList.add(f);
 				}
 			}
-		} catch (DBException e1) {
+		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 		}
 		if(retList != null && retList.size() != 0) {
