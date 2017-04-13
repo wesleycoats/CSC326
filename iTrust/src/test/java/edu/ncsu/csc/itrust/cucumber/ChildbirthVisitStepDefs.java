@@ -4,6 +4,9 @@ import edu.ncsu.csc.itrust.model.childbirthVisit.*;
 import java.time.LocalDateTime;
 
 import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -18,6 +21,7 @@ public class ChildbirthVisitStepDefs {
 	private SharedPersonnel sharedPersonnel;
 	private SharedChildbirthVisit sharedChildbirthVisit;
 	private ChildRecord childRecord;
+	private HtmlUnitDriver driver = null;
 	
 	
 	@Given("I log in as Kelly Doctor")
@@ -84,12 +88,20 @@ public class ChildbirthVisitStepDefs {
 	
 	@When("I search for Daryl Griffin instead of Daria Griffin")
 	public void wrong_search_daryl_daria() {
-		
+		driver = new HtmlUnitDriver();
+		WebElement user = driver.findElement(By.name("searchBox"));
+		user.sendKeys("Daryl Griffin");
+		user.clear();
+		user.sendKeys("Daria Griffin");
 	}
 	
 	@When("I search MID 103 instead of 104")
 	public void wrong_mid() {
-		
+		driver = new HtmlUnitDriver();
+		WebElement user = driver.findElement(By.name("searchBox"));
+		user.sendKeys("103");
+		user.clear();
+		user.sendKeys("104");
 	}
 	
 	@Then("new patient file(s) is/are created for the baby(s)")

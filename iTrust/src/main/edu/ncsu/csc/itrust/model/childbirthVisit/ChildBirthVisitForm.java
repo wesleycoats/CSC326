@@ -8,6 +8,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import edu.ncsu.csc.itrust.action.EventLoggingAction;
+import edu.ncsu.csc.itrust.controller.flags.Flag;
+import edu.ncsu.csc.itrust.controller.flags.FlagMySQL;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsVisit;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
@@ -27,8 +29,9 @@ public class ChildBirthVisitForm {
 	private Boolean scheduled;
 	private OfficeVisitMySQL ovMySQL;
 	private ChildbirthVisitMySQL cbMySQL;
+	private FlagMySQL fMySQL;
 	private ChildbirthVisit cbv;
-	private Integer RHImmuneGlobulin;
+	private Integer RHImmuneGlobulin = 0;
 	private Integer epiduralAnaesthesiaDosage;
 	private Integer magnesiumSulfateDosage;
 	private Integer nitrousOxideDosage;
@@ -62,6 +65,7 @@ public class ChildBirthVisitForm {
 		try {
 			this.cbMySQL = new ChildbirthVisitMySQL();
 			ovMySQL = new OfficeVisitMySQL();
+			fMySQL = new FlagMySQL();
 		} catch (DBException e) {
 			//Do Nothing
 		}
@@ -86,6 +90,14 @@ public class ChildBirthVisitForm {
 		this.cbv.setPitocinDosage(pitocinDosage);
 		this.cbv.setRhGlobulinDosage(RHImmuneGlobulin);
 
+		if(RHImmuneGlobulin > 0) {
+			Flag f = new Flag(1l, patientMID, 1l, "Negative Blood Type");
+			try {
+				fMySQL.add(f);
+			} catch (Exception e) {
+				// Do nothing
+			}
+		}
 		if (found) {
 			try {
 				this.cbMySQL.updateChildbirthVisit(cbv);

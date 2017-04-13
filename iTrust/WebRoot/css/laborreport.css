@@ -4,10 +4,9 @@
  * Show/hide tabbed panels on viewLaborReport.xhtml when clicked
  */
 
-#tab-obov-info:checked ~ .tab-content > #content-obov-info {
+#tab-obov-info:checked ~ .tab-content > #content-obov-info,
+#tab-obov-preg:checked ~ .tab-content > #content-obov-preg,
+#tab-obov-allergies:checked ~ .tab-content > #content-obov-allergies,
+#tab-obov-comp:checked ~ .tab-content > #content-obov-comp {
 	display: block;
 }
-#tab-obov-preg:checked ~ .tab-content > #content-obov-preg {
-    display: block;
-}
-

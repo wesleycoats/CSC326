@@ -57,7 +57,7 @@ public class EmergencyRecordTest extends TestCase {
     	List<AllergyBean> allergies = new ArrayList<AllergyBean>();
     	
     	AllergyBean a0 = new AllergyBean();
-    	a0.setId(0L);
+    	a0.setId((long) 0);
     	a0.setFirstFound(new Date(0L));
     	a0.setDescription("Test description");
     	a0.setNDCode("Test NDC");
@@ -69,7 +69,7 @@ public class EmergencyRecordTest extends TestCase {
         Assert.assertEquals(1, r.getAllergies().size());
         
         AllergyBean a1 = r.getAllergies().get(0);
-        Assert.assertEquals(0L, a1.getId());
+        assertEquals(0, a1.getId().longValue());
         Assert.assertEquals(new Date(0L), a1.getFirstFound());
         Assert.assertEquals("Test description", a1.getDescription());
         Assert.assertEquals("Test NDC", a1.getNDCode());

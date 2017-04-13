@@ -13,7 +13,7 @@ import java.util.Date;
  * these easily)
  */
 public class AllergyBean {
-	private long id;
+	private Long id;
 	private long patientID;
 	private String description;
 	private String ndcode;
@@ -90,7 +90,7 @@ public class AllergyBean {
 	 * 
 	 * @return
 	 */
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
