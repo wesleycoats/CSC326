@@ -90,8 +90,4 @@ public class FlagMySQL {
 		}
 		return flagList;
 	}
-
-
-
-
 }
