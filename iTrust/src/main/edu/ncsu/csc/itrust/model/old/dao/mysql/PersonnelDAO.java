@@ -58,7 +58,7 @@ public class PersonnelDAO {
 	 * @throws DBException
 	 */
 	public String getName(final long mid) throws ITrustException, DBException {
-		return factory.getName(mid);
+		return factory.getName(mid, false);
 	}
 
 	public long getNextID(final Role role) throws DBException, ITrustException {

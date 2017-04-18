@@ -58,7 +58,7 @@ public class PatientDAO {
 	 * @throws DBException
 	 */
 	public String getName(long mid) throws ITrustException, DBException {
-		return factory.getName(mid); 
+		return factory.getName(mid, true); 
 	}
 
 	/**

@@ -26,7 +26,6 @@ import edu.ncsu.csc.itrust.model.old.dao.mysql.*;
 public class DAOFactory {
 	private static DAOFactory productionInstance = null;
 	private IConnectionDriver driver;
-	private transient final DAOFactory factory = null;
 
 	/**
 	 * 
@@ -247,10 +246,12 @@ public class DAOFactory {
 		return new MicrosoftBandDAO(this);
 	}
 	
-	public String getName(final long mid) throws ITrustException, DBException {
-		try (Connection conn = factory.getConnection();
+	public String getName(final long mid, boolean patient) throws ITrustException, DBException {
+		String person = "personnel";
+		if(patient) person = "patients";
+		try (Connection conn = this.getConnection();
 				PreparedStatement stmt = conn
-						.prepareStatement("SELECT firstName, lastName FROM list WHERE MID=?");) {
+						.prepareStatement("SELECT firstName, lastName FROM " + person + " WHERE MID=?");) {
 			stmt.setLong(1, mid);
 			ResultSet results = stmt.executeQuery();
 			if (!results.next()) {
