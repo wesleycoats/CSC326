@@ -496,7 +496,11 @@ public class LabProcedureControllerTest {
 	 */
 	@Test
 	public void testLabProcedure() {
-		controller = new LabProcedureController();
+		try {
+			controller = new LabProcedureController();
+		} catch (DBException e) {
+			// Do nothing, we expected an exception here
+		}
 		Assert.assertNotNull(controller);
 	}
 

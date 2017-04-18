@@ -26,13 +26,9 @@ public class LabProcedureController extends iTrustController {
 	private static final String INVALID_LAB_PROCEDURE = "Invalid lab procedure";
 	private LabProcedureData labProcedureData;
 
-	public LabProcedureController() {
+	public LabProcedureController() throws DBException {
 		super();
-		try {
-			labProcedureData = new LabProcedureMySQL();
-		} catch (DBException e) {
-			e.printStackTrace();
-		}
+		labProcedureData = new LabProcedureMySQL();
 	}
 
 	/**
