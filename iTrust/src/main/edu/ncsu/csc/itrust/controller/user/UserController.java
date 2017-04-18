@@ -60,22 +60,6 @@ public class UserController {
 	}
 	
 	public boolean doesUserExistWithID(String mid) throws DBException{
-//		User user = null;
-//		if( mid == null) return false;
-//		long id = -1;
-//		try{
-//			id = Long.parseLong(mid);
-//		}
-//		catch(NumberFormatException ne){
-//			return false;
-//		}
-//		user = userData.getByID(id);
-//		if(!(user == null)){
-//				return true;
-//		}
-//		else{
-//			return false;
-//		}
 		return RefactorSmell7.smell7(mid, userData);
 
 		
