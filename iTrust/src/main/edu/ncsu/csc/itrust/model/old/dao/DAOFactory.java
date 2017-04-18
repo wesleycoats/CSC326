@@ -1,8 +1,12 @@
 package edu.ncsu.csc.itrust.model.old.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.fitBit.FitBitDAO;
 import edu.ncsu.csc.itrust.model.microsoftBand.MicrosoftBandDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.*;
@@ -22,6 +26,7 @@ import edu.ncsu.csc.itrust.model.old.dao.mysql.*;
 public class DAOFactory {
 	private static DAOFactory productionInstance = null;
 	private IConnectionDriver driver;
+	private transient final DAOFactory factory = null;
 
 	/**
 	 * 
@@ -242,5 +247,21 @@ public class DAOFactory {
 		return new MicrosoftBandDAO(this);
 	}
 	
+	public String getName(final long mid) throws ITrustException, DBException {
+		try (Connection conn = factory.getConnection();
+				PreparedStatement stmt = conn
+						.prepareStatement("SELECT firstName, lastName FROM list WHERE MID=?");) {
+			stmt.setLong(1, mid);
+			ResultSet results = stmt.executeQuery();
+			if (!results.next()) {
+				throw new ITrustException("User does not exist");
+			}
+			final String result = results.getString("firstName") + " " + results.getString("lastName");
+			results.close();
+			return result;
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
 
 }
