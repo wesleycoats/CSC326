@@ -116,7 +116,7 @@ public class ObstetricsDataMySQL implements Serializable {
 		try {
 			unsorted = this.getVisitsForPatient(patientMID);
 			if(unsorted.size() > 0) {
-				date = unsorted.get(0).getDateCreated();
+				date = unsorted.get(0).getLmp();
 			}
 		} catch (DBException e) {
 			//Do Nothing
