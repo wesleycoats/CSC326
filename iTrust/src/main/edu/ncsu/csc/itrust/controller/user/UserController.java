@@ -17,18 +17,9 @@ public class UserController {
 	}
 	
 	public String getUserNameForID(String mid) throws DBException{
-		User user = null;
-		if( mid == null) return "";
-		if(mid.isEmpty()) return "";
-		long id = -1;
-		try{
-			id = Long.parseLong(mid);
-		}
-		catch(NumberFormatException ne){
-			return "";
-		}
+		if(UserRefactorSmell2.smell2(mid) == -1) return "";
 		//if(id<1) return "";
-		user = userData.getByID(id);
+		User user = userData.getByID(UserRefactorSmell2.smell2(mid));
 		if(user != null){
 			if(user.getRole().equals(Role.TESTER)){
 				return Long.toString(user.getMID());
@@ -44,18 +35,9 @@ public class UserController {
 		
 	}
 	public String getUserRoleForID(String mid) throws DBException{
-		User user = null;
-		if( mid == null) return "";
-		if(mid.isEmpty()) return "";
-		long id = -1;
-		try{
-			id = Long.parseLong(mid);
-		}
-		catch(NumberFormatException ne){
-			return "";
-		}
-		if(id<1) return "";
-		user = userData.getByID(id);
+		if(UserRefactorSmell2.smell2(mid) == -1) return "";
+		if(UserRefactorSmell2.smell2(mid) < 1) return "";
+		User user = userData.getByID(UserRefactorSmell2.smell2(mid));
 		return user.getRole().getUserRolesString().toLowerCase();
 	}
 	
