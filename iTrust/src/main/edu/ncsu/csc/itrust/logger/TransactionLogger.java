@@ -18,11 +18,24 @@ public class TransactionLogger {
 
 	/** The DAO which exposes logging functionality to the singleton */
 	TransactionDAO dao;
-
+	
+	private TransactionLogger(DAOFactory d) {
+		dao = d.getTransactionDAO();
+	}
+	
 	private TransactionLogger() {
 		dao = DAOFactory.getProductionInstance().getTransactionDAO();
 	}
 
+	/**
+	 * @return Singleton instance of this transaction logging mechanism.
+	 */
+	public static synchronized TransactionLogger getInstance(DAOFactory d) {
+		if (singleton == null)
+			singleton = new TransactionLogger(d);
+		return singleton;
+	}
+	
 	/**
 	 * @return Singleton instance of this transaction logging mechanism.
 	 */

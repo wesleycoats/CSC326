@@ -19,6 +19,7 @@ public class ManageHospitalAssignmentsAction {
 	private PersonnelDAO personnelDAO;
 	private HospitalsDAO hospitalsDAO;
 	private long loggedInMID;
+	private TransactionLogger tl;
 	/**
 	 * Set up defaults
 	 * 
@@ -31,6 +32,7 @@ public class ManageHospitalAssignmentsAction {
 		this.personnelDAO = factory.getPersonnelDAO();
 		this.hospitalsDAO = factory.getHospitalsDAO();
 		this.loggedInMID = loggedInMID;
+		tl = TransactionLogger.getInstance(factory);
 	}
 
 	/**
@@ -86,7 +88,7 @@ public class ManageHospitalAssignmentsAction {
 			long hcpID = Long.valueOf(midString);
 			boolean confirm = hospitalsDAO.assignHospital(hcpID, hospitalID);
 			if (confirm) {
-			    TransactionLogger.getInstance().logTransaction(TransactionType.LHCP_ASSIGN_HOSPITAL, loggedInMID, hcpID, "");
+			    tl.logTransaction(TransactionType.LHCP_ASSIGN_HOSPITAL, loggedInMID, hcpID, "");
 				return "HCP successfully assigned.";
 			} else
 				return "Assignment did not occur";
@@ -110,7 +112,7 @@ public class ManageHospitalAssignmentsAction {
 			long hcpID = Long.valueOf(midString);
 			boolean confirm = hospitalsDAO.removeHospitalAssignment(hcpID, hospitalID);
 			if (confirm) {
-			    TransactionLogger.getInstance().logTransaction(TransactionType.LHCP_REMOVE_HOSPITAL, loggedInMID, hcpID, "");
+			    tl.logTransaction(TransactionType.LHCP_REMOVE_HOSPITAL, loggedInMID, hcpID, "");
 				return "HCP successfully unassigned";
 			} else
 				return "HCP not unassigned";

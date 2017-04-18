@@ -32,6 +32,7 @@ public class EditPatientAction extends PatientBaseAction {
 	private AuthDAO authDAO;
 	private long loggedInMID;
 	private EmailUtil emailutil;
+	private TransactionLogger tl;
 
 	/**
 	 * The super class validates the patient id
@@ -48,6 +49,7 @@ public class EditPatientAction extends PatientBaseAction {
 		this.authDAO = factory.getAuthDAO();
 		this.loggedInMID = loggedInMID;
 		emailutil = new EmailUtil(factory);
+		tl = TransactionLogger.getInstance(factory);
 	}
 
 	/**
@@ -99,7 +101,7 @@ public class EditPatientAction extends PatientBaseAction {
     	email.setBody("Dear " + pb.getFullName() + ",\n\tYour patient record information has been updated. " + 
     			"Please login to iTrust to see who has viewed your records.");
     	
-    	TransactionLogger.getInstance().logTransaction(TransactionType.EMAIL_SEND, loggedInMID, pb.getMID(), "");
+    	tl.logTransaction(TransactionType.EMAIL_SEND, loggedInMID, pb.getMID(), "");
 		return email;
 	}
 	
@@ -144,7 +146,7 @@ public class EditPatientAction extends PatientBaseAction {
 	}
 	
 	public boolean setDependent(boolean dependency) {
-	    TransactionLogger.getInstance().logTransaction(TransactionType.HCP_CHANGE_PATIENT_DEPENDENCY, loggedInMID, pid, "");
+	    tl.logTransaction(TransactionType.HCP_CHANGE_PATIENT_DEPENDENCY, loggedInMID, pid, "");
 		try {
 			authDAO.setDependent(pid, dependency);
 			if (dependency)

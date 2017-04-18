@@ -591,11 +591,11 @@ public class AuthDAO {
 	
 	/** Logs that given user was logged in */
 	public void logUserAuthenticated(Long mid) {
-		TransactionLogger.getInstance().logTransaction(TransactionType.LOGIN_SUCCESS, mid, null, "");
+		TransactionLogger.getInstance(factory).logTransaction(TransactionType.LOGIN_SUCCESS, mid, null, "");
 	}
 	
 	/** Logs that given user was logged out */
 	public void logUserLoggedOut(Long mid) {
-		TransactionLogger.getInstance().logTransaction(TransactionType.LOGOUT, mid, null, "");
+		TransactionLogger.getInstance(factory).logTransaction(TransactionType.LOGOUT, mid, null, "");
 	}
 }
