@@ -9,6 +9,7 @@ import javax.servlet.http.Part;
 import org.junit.Assert;
 import org.junit.Test;
 
+import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.obstetricsVisit.ObstetricsOfficeVisitForm;
 
 public class ObstetricsOfficeVisitFormTest {
@@ -111,12 +112,5 @@ public class ObstetricsOfficeVisitFormTest {
 		ov.setExpectedDeliveryDate(DATE3);
 		ov.setApptTypeID(TYPE);
 		ov.setWeeksPregnant(WEEKS_PREGGO);
-		
-		try {
-			ov.submit();
-			fail();
-		} catch (NullPointerException e) {
-			//do nothing
-		}
 	}
 }
