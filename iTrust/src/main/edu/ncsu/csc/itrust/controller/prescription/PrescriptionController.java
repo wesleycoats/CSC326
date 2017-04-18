@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.sql.DataSource;
 
+import edu.ncsu.csc.itrust.controller.Adder;
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
@@ -45,19 +46,8 @@ public class PrescriptionController extends iTrustController {
 	}
 
 	public void add(Prescription prescription) {
-		try {
-			if (sql.add(prescription)) {
-				printFacesMessage(FacesMessage.SEVERITY_INFO, "Prescription is successfully created",
-						"Prescription is successfully created", null);
-				logTransaction(TransactionType.PRESCRIPTION_ADD, getSessionUtils().getCurrentOfficeVisitId().toString());
-			} else {
-				throw new Exception();
-			}
-		} catch (SQLException e) {
-			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_PRESCRIPTION, e.getMessage(), null);
-		} catch (Exception e) {
-			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_PRESCRIPTION, INVALID_PRESCRIPTION, null);
-		}
+		Adder a = new Adder();
+        a.add(prescription, sql, false);
 	}
 
 	public void edit(Prescription prescription) {

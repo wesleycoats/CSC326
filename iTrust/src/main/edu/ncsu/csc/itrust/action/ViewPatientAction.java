@@ -24,6 +24,7 @@ public class ViewPatientAction extends PatientBaseAction {
 	private long loggedInMID;
 	/**Viewer is the patient bean for the person that is logged in*/ 
 	private PatientBean viewer;
+	private TransactionLogger tl;
 
 	/**
 	 * ViewPateintAction is the constructor for this action class. It simply initializes the
@@ -39,7 +40,8 @@ public class ViewPatientAction extends PatientBaseAction {
 		this.patientDAO = factory.getPatientDAO();
 		this.loggedInMID = loggedInMID;
 		this.viewer = patientDAO.getPatient(loggedInMID);
-		TransactionLogger.getInstance().logTransaction(TransactionType.ACTIVITY_FEED_VIEW, loggedInMID, 0L , "");
+		tl = TransactionLogger.getInstance(factory);
+		tl.logTransaction(TransactionType.ACTIVITY_FEED_VIEW, loggedInMID, 0L , "");
 	}
 	
 	/**
@@ -85,10 +87,10 @@ public class ViewPatientAction extends PatientBaseAction {
 	}
 	
 	public void logViewDemographics(Long mid, Long secondaryMID) {
-		TransactionLogger.getInstance().logTransaction(TransactionType.DEMOGRAPHICS_VIEW, mid, secondaryMID, "");
+		tl.logTransaction(TransactionType.DEMOGRAPHICS_VIEW, mid, secondaryMID, "");
 	}
 	
 	public void logEditDemographics(Long mid, Long secondaryMID) {
-		TransactionLogger.getInstance().logTransaction(TransactionType.DEMOGRAPHICS_EDIT, mid, secondaryMID, "");
+		tl.logTransaction(TransactionType.DEMOGRAPHICS_EDIT, mid, secondaryMID, "");
 	}
 }

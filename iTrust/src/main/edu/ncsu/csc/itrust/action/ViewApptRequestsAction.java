@@ -26,6 +26,7 @@ public class ViewApptRequestsAction {
 	private long hcpid;
 	private SendMessageAction msgAction;
 	private PersonnelDAO pnDAO;
+	private TransactionLogger tl;
 
 	/**
 	 * ViewApptRequestsAction
@@ -38,7 +39,8 @@ public class ViewApptRequestsAction {
 		pnDAO = factory.getPersonnelDAO();
 		this.hcpid = hcpid;
 		msgAction = new SendMessageAction(factory, hcpid);
-		TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_REQUEST_VIEW, hcpid, 0L, "");
+		tl = TransactionLogger.getInstance(factory);
+		tl.logTransaction(TransactionType.APPOINTMENT_REQUEST_VIEW, hcpid, 0L, "");
 	}
 
 	/**
@@ -92,7 +94,7 @@ public class ViewApptRequestsAction {
 			} catch (Exception e) {
 				//TODO
 			}
-			TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_REQUEST_APPROVED, loggedInMID, patientMID, "");
+			tl.logTransaction(TransactionType.APPOINTMENT_REQUEST_APPROVED, loggedInMID, patientMID, "");
 			return "The appointment request you selected has been accepted and scheduled.";
 		} else {
 			return "The appointment request you selected has already been acted upon.";
@@ -122,7 +124,7 @@ public class ViewApptRequestsAction {
 			} catch (Exception e) {
 				//TODO
 			}
-			TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_REQUEST_REJECTED,
+			tl.logTransaction(TransactionType.APPOINTMENT_REQUEST_REJECTED,
 					loggedInMID, patientMID, "");
 			return "The appointment request you selected has been rejected.";
 		} else {

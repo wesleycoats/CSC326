@@ -21,6 +21,7 @@ public class EditApptAction extends ApptAction {
 	private long loggedInMID;
 	private long originalPatient;
 	private long originalApptID;
+	private TransactionLogger tl;
 	
 	/**
 	 * EditApptAction
@@ -29,6 +30,7 @@ public class EditApptAction extends ApptAction {
 	 */
 	public EditApptAction(DAOFactory factory, long loggedInMID) {
 		this(factory, loggedInMID, 0L, 0L);
+		tl = TransactionLogger.getInstance(factory);
 	}
 	
 	public void setOriginalApptID(long id) {
@@ -40,7 +42,7 @@ public class EditApptAction extends ApptAction {
 	}
 	
 	public void logViewAction() {
-		TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_VIEW, loggedInMID, originalPatient, "");
+		tl.logTransaction(TransactionType.APPOINTMENT_VIEW, loggedInMID, originalPatient, "");
 	}
 	
 	/**
@@ -99,9 +101,9 @@ public class EditApptAction extends ApptAction {
 		
 		try {
 			apptDAO.editAppt(appt);
-			TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_EDIT, loggedInMID, originalPatient, ""+appt.getApptID());
+			tl.logTransaction(TransactionType.APPOINTMENT_EDIT, loggedInMID, originalPatient, ""+appt.getApptID());
 			if(ignoreConflicts){
-				TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_CONFLICT_OVERRIDE, loggedInMID, originalPatient, "");
+				tl.logTransaction(TransactionType.APPOINTMENT_CONFLICT_OVERRIDE, loggedInMID, originalPatient, "");
 			}
 			return "Success: Appointment changed";
 		} catch (DBException e) {
@@ -122,7 +124,7 @@ public class EditApptAction extends ApptAction {
 	public String removeAppt(ApptBean appt) throws DBException, SQLException {
 		try {
 			apptDAO.removeAppt(appt);
-			TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_REMOVE, loggedInMID, originalPatient, ""+originalApptID);
+			tl.logTransaction(TransactionType.APPOINTMENT_REMOVE, loggedInMID, originalPatient, ""+originalApptID);
 			return "Success: Appointment removed";
 		} catch (SQLException e) {
 			

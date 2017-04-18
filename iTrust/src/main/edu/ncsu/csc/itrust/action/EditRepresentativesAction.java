@@ -21,6 +21,7 @@ public class EditRepresentativesAction extends PatientBaseAction {
 	private PatientDAO patientDAO;
 	private AuthDAO authDAO;
 	private long loggedInMID;
+	private TransactionLogger tl;
 	/**
 	 * Super class validates the patient mid
 	 * 
@@ -35,6 +36,7 @@ public class EditRepresentativesAction extends PatientBaseAction {
 		this.patientDAO = factory.getPatientDAO();
 		this.loggedInMID = loggedInMID;
 		this.authDAO = factory.getAuthDAO();
+		tl = TransactionLogger.getInstance(factory);
 	}
 	
 	/**
@@ -84,7 +86,7 @@ public class EditRepresentativesAction extends PatientBaseAction {
 				throw new ITrustException(patientDAO.getPatient(representee).getFullName() + "cannot be added as a representee, they are not active.");
 			boolean confirm = patientDAO.addRepresentative(pid, representee);
 			if (confirm) {	
-				TransactionLogger.getInstance().logTransaction(TransactionType.HEALTH_REPRESENTATIVE_DECLARE, loggedInMID, representee, "Represented by: " + pid);
+				tl.logTransaction(TransactionType.HEALTH_REPRESENTATIVE_DECLARE, loggedInMID, representee, "Represented by: " + pid);
 				return "Patient represented";
 			} else
 				return "No change made";
@@ -106,7 +108,7 @@ public class EditRepresentativesAction extends PatientBaseAction {
 			long representee = Long.valueOf(input);
 			boolean confirm = patientDAO.removeRepresentative(pid, representee);
 			if (confirm) {
-				TransactionLogger.getInstance().logTransaction(TransactionType.HEALTH_REPRESENTATIVE_UNDECLARE, loggedInMID, representee, "Represented by: " + pid);
+				tl.logTransaction(TransactionType.HEALTH_REPRESENTATIVE_UNDECLARE, loggedInMID, representee, "Represented by: " + pid);
 				return "Patient represented";
 			} else
 				return "No change made";

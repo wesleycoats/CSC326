@@ -24,6 +24,7 @@ public class AddUAPAction {
 	private PersonnelDAO personnelDAO;
 	private AuthDAO authDAO;
 	private long loggedInMID;
+	private TransactionLogger tl;
 	/**
 	 * Sets up the defaults for the class
 	 * 
@@ -34,6 +35,7 @@ public class AddUAPAction {
 		this.personnelDAO = factory.getPersonnelDAO();
 		this.loggedInMID = loggedInMID;
 		this.authDAO = factory.getAuthDAO();
+		tl = TransactionLogger.getInstance(factory);
 	}
 	
 	
@@ -52,7 +54,7 @@ public class AddUAPAction {
 		personnelDAO.editPersonnel(p);
 		String pwd = authDAO.addUser(newMID, Role.UAP, RandomPassword.getRandomPassword());
 		p.setPassword(pwd);
-		TransactionLogger.getInstance().logTransaction(TransactionType.UAP_CREATE, loggedInMID, p.getMID(), "");
+		tl.logTransaction(TransactionType.UAP_CREATE, loggedInMID, p.getMID(), "");
 		return newMID;
 	}
 }
