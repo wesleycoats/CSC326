@@ -1026,6 +1026,13 @@ public class TestDataGenerator {
 				} catch (SQLException e) {
 					return false;
 				}
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					return false;
+				}
+			}
 		}
 
 		return false;

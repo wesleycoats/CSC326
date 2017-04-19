@@ -38,11 +38,5 @@ public class ObstetricsVisitTest {
 		assertEquals("8", ov.getPregnancies().toString());
 		assertTrue(ov.getPlacentaObserved());
 		assertEquals((Integer) 3, ov.getWeeksPegnant());
-		
-		try {
-			ov = new ObstetricsVisit(ID, MID, WEIGHT, SYSTOLIC_BLOOD_PRESSURE, DIASTOLIC_BLOOD_PRESSURE, FETAL_HEART_RATE, PREGNANCIES, PLACENTA_OBSERVED);
-		} catch (NullPointerException e) {
-			// Do nothing, we wanted to throw this
-		}
 	}
 }
